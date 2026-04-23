@@ -21,13 +21,69 @@
             overflow-x: hidden;
         }
 
-        /* الاقتراح 1: Matrix Rain Canvas */
+        /* Matrix Rain Canvas */
         #matrix-canvas {
             position: fixed;
             top: 0;
             left: 0;
             z-index: -1;
             opacity: 0.15;
+        }
+
+        /* UI Controls Panel */
+        .ui-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .ui-controls button {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ui-controls button:hover {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .ui-controls button.off {
+            border-color: #555;
+            color: #555;
+            text-decoration: line-through;
+        }
+
+        /* System Logs Box */
+        #system-logs {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 250px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.7rem;
+            padding: 10px;
+            overflow-y: hidden;
+            color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+            z-index: 100;
         }
 
         section { padding: 40px 20px; display: flex; flex-direction: column; align-items: center; position: relative; }
@@ -45,25 +101,6 @@
             margin: 0;
             filter: drop-shadow(0 0 15px rgba(150, 0, 255, 0.6));
             text-transform: uppercase;
-        }
-
-        /* الاقتراح 2: System Logs Box */
-        #system-logs {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 250px;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--neon-blue);
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 0.7rem;
-            padding: 10px;
-            overflow-y: hidden;
-            color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
-            z-index: 100;
         }
 
         .identity-wrapper {
@@ -87,7 +124,6 @@
         .bio-line { margin: 10px 0; font-size: 1rem; line-height: 1.6; text-align: left; }
         .bio-key { color: var(--neon-purple); font-weight: bold; }
 
-        /* شريط الإحصائيات (Stats Bar) */
         .stats-container {
             width: 100%;
             max-width: 1000px;
@@ -153,6 +189,11 @@
     
     <div id="system-logs"></div>
 
+    <div class="ui-controls">
+        <button onclick="toggleMatrix()" id="matrixBtn"><i class="fas fa-code"></i> Matrix</button>
+        <button onclick="toggleLogs()" id="logsBtn"><i class="fas fa-terminal"></i> Logs</button>
+    </div>
+
     <section id="hero">
         <div class="logo-container">
             <svg viewBox="0 0 100 100" class="neon-logo">
@@ -181,7 +222,7 @@
                 <div class="terminal-header" style="color: var(--neon-purple);">CORE_SKILLS</div>
                 <div class="bio-line"><span class="bio-key">> LUA:</span> MTA / FiveM Scripts</div>
                 <div class="bio-line"><span class="bio-key">> WEB:</span> HTML / CSS / JS</div>
-                <div class="bio-line"><span class="bio-key">> AI:</span> Python / Bot Architect</div>
+                <div class="bio-line"><span class="bio-key">> SEC:</span> Cyber Security Enthusiast</div>
             </div>
         </div>
 
@@ -201,12 +242,12 @@
         </div>
 
         <div class="bot-card">
-            <div style="font-size: 2.5rem; color: var(--neon-blue);"><i class="fas fa-robot"></i></div>
+            <div style="font-size: 2.5rem; color: var(--neon-blue); margin-left: 20px;"><i class="fas fa-robot"></i></div>
             <div style="text-align: left; flex: 1;">
                 <div style="color: var(--neon-blue); font-weight: bold; letter-spacing: 2px;">BOT OPERATIONS</div>
                 <p style="margin: 5px 0; font-size: 0.9rem; color: #bbb;">Official Bot on Top.gg - Utility & Fun.</p>
             </div>
-            <a href="https://top.gg/bot/1488965929810526308" target="_blank" style="background: var(--neon-blue); color: black; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold;">TOP.GG</a>
+            <a href="https://top.gg/bot/1488965929810526308" target="_blank" style="background: var(--neon-blue); color: black; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-right: 20px;">TOP.GG</a>
         </div>
     </section>
 
@@ -220,9 +261,12 @@
     </footer>
 
     <script>
-        // 1. Matrix Rain Animation
+        // 1. Matrix Rain Script
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
+        let matrixInterval;
+        let isMatrixOn = true;
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
@@ -234,7 +278,7 @@
         function drawMatrix() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#9600ff"; // لون بنفسجي
+            ctx.fillStyle = "#9600ff";
             ctx.font = fontSize + "px monospace";
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
@@ -243,9 +287,24 @@
                 drops[i]++;
             }
         }
-        setInterval(drawMatrix, 50);
+        
+        matrixInterval = setInterval(drawMatrix, 50);
 
-        // 2. System Logs Animation
+        function toggleMatrix() {
+            const btn = document.getElementById('matrixBtn');
+            isMatrixOn = !isMatrixOn;
+            if (isMatrixOn) {
+                canvas.style.display = "block";
+                btn.classList.remove('off');
+                matrixInterval = setInterval(drawMatrix, 50);
+            } else {
+                canvas.style.display = "none";
+                btn.classList.add('off');
+                clearInterval(matrixInterval);
+            }
+        }
+
+        // 2. System Logs Script
         const logsBox = document.getElementById('system-logs');
         const messages = [
             "[INFO] Initializing system...",
@@ -268,7 +327,18 @@
         }
         addLog();
 
-        // Load Projects
+        function toggleLogs() {
+            const btn = document.getElementById('logsBtn');
+            if (logsBox.style.display === "none") {
+                logsBox.style.display = "block";
+                btn.classList.remove('off');
+            } else {
+                logsBox.style.display = "none";
+                btn.classList.add('off');
+            }
+        }
+
+        // 3. Data Fetch Script
         fetch('data.json')
             .then(response => response.json())
             .then(data => {
