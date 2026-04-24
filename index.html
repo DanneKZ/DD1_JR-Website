@@ -30,21 +30,20 @@
             opacity: 0.4; 
         }
 
-        /* [Visitor Counter] - مكان جديد: أقصى أعلى اليسار */
+        /* [Visitor Counter] - النسخة المصلحة والمبسطة */
         .visitor-counter-fixed {
             position: fixed;
             top: 15px;
-            left: 200px; /* بجانب أزرار التحكم ليكون متناسقاً */
+            left: 310px; /* تم تحريكه لليسار لكي لا يغطي الأزرار */
             z-index: 2000;
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px 12px;
-            border-radius: 20px;
+            gap: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
             border: 1px solid var(--neon-purple);
             font-family: monospace;
-            font-size: 0.7rem;
             box-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
         }
 
@@ -81,7 +80,6 @@
 
         .ui-controls button.off { border-color: #444; color: #444; }
 
-        /* System Logs Box */
         #system-logs {
             position: fixed;
             bottom: 20px;
@@ -101,7 +99,6 @@
         }
 
         section { padding: 40px 20px; display: flex; flex-direction: column; align-items: center; position: relative; }
-
         .logo-container { margin-bottom: -10px; z-index: 10; }
         .neon-logo { width: 80px; height: 80px; filter: drop-shadow(0 0 8px var(--neon-purple)); }
 
@@ -202,8 +199,8 @@
     <canvas id="matrix-canvas"></canvas>
     
     <div class="visitor-counter-fixed">
-        <span style="color: var(--neon-purple); font-weight: bold;">[TRAFFIC]</span>
-        <img src="https://komarev.com/ghpvc/?username=DanneKZ-DD1_JR&color=bc13fe&style=flat-square&label=VISITS" alt="Visitor Count">
+        <span style="color: var(--neon-purple); font-size: 0.7rem;">[TRAFFIC]</span>
+        <img src="https://komarev.com/ghpvc/?username=DanneKZ-JR&color=bc13fe&style=flat-square&label=VISITS" alt="Visits">
     </div>
 
     <div id="system-logs"></div>
@@ -296,12 +293,10 @@
         function drawMatrix() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
             ctx.shadowBlur = 8; 
             ctx.shadowColor = "#bc13fe";
             ctx.fillStyle = "#bc13fe"; 
             ctx.font = "bold " + fontSize + "px monospace";
-            
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -330,15 +325,7 @@
         }
 
         const logsBox = document.getElementById('system-logs');
-        const messages = [
-            "[INFO] Initializing system...",
-            "[SUCCESS] Connection encrypted.",
-            "[INFO] Fetching user data...",
-            "[INFO] Scanning active operations...",
-            "[SUCCESS] 4 items found.",
-            "[WARNING] Unauthorized access blocked.",
-            "[INFO] Daniel identity verified."
-        ];
+        const messages = ["[INFO] Initializing system...", "[SUCCESS] Connection encrypted.", "[INFO] Fetching user data...", "[INFO] Scanning active operations...", "[SUCCESS] 4 items found.", "[WARNING] Unauthorized access blocked.", "[INFO] Daniel identity verified."];
         let msgIndex = 0;
         function addLog() {
             const p = document.createElement('p');
@@ -377,11 +364,9 @@
                             </div>
                             <div class="progress-bg"><div class="progress-fill" style="width: ${p.progress || p.percent}%"></div></div>
                             <p style="font-size: 0.8rem; color: #888; margin: 0;">Status: ${p.status || 'Active'}</p>
-                        </div>
-                    `;
+                        </div>`;
                 });
-            })
-            .catch(err => console.log("Waiting for data.json..."));
+            }).catch(err => console.log("Waiting for data.json..."));
     </script>
 </body>
 </html>
