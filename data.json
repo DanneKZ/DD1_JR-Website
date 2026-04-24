@@ -31,6 +31,14 @@
       "status": "🏗️ Working",
       "eta": "1 Week",
       "color": "var(--neon-blue)"
-    }
+    },
+    {
+      "name": "Shadow Gateway",
+      "status": "In Progress",
+      "progress": 15,
+      "color": "#bc13fe",
+      "priority": "HIGH_CONFIDENTIAL",
+      "details": "Encrypted tunnel for neural data transit."
+}
   ]
 }
