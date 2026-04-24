@@ -30,10 +30,28 @@
             opacity: 0.4; 
         }
 
+        /* [Visitor Counter] - مكان جديد: أقصى أعلى اليسار */
+        .visitor-counter-fixed {
+            position: fixed;
+            top: 15px;
+            left: 200px; /* بجانب أزرار التحكم ليكون متناسقاً */
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--neon-purple);
+            font-family: monospace;
+            font-size: 0.7rem;
+            box-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
+        }
+
         /* UI Controls */
         .ui-controls {
             position: fixed;
-            top: 20px;
+            top: 15px;
             left: 20px;
             display: flex;
             gap: 10px;
@@ -176,21 +194,6 @@
         .social-bar a { color: #888; font-size: 1.5rem; transition: 0.3s; }
         .social-bar a:hover { color: var(--neon-blue); transform: scale(1.2); }
 
-        /* Visitor Counter Styling */
-        .visitor-counter {
-            margin-top: 30px;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid #222;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: #555;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         footer { padding: 40px; text-align: center; color: #444; font-size: 0.8rem; }
     </style>
 </head>
@@ -198,6 +201,11 @@
 
     <canvas id="matrix-canvas"></canvas>
     
+    <div class="visitor-counter-fixed">
+        <span style="color: var(--neon-purple); font-weight: bold;">[TRAFFIC]</span>
+        <img src="https://komarev.com/ghpvc/?username=DanneKZ-DD1_JR&color=bc13fe&style=flat-square&label=VISITS" alt="Visitor Count">
+    </div>
+
     <div id="system-logs"></div>
 
     <div class="ui-controls">
@@ -235,11 +243,6 @@
                 <div class="bio-line"><span class="bio-key">> WEB:</span> HTML / CSS / JS</div>
                 <div class="bio-line"><span class="bio-key">> SEC:</span> Cyber Security Specialist</div>
             </div>
-        </div>
-
-        <div class="visitor-counter">
-            <span style="color: var(--neon-purple);">[TRAFFIC_MONITOR]:</span>
-            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdannekz.github.io%2FDD1_JR&count_bg=%23bc13fe&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=VISITS&edge_flat=false" alt="Visitor Count">
         </div>
 
         <div class="stats-container">
