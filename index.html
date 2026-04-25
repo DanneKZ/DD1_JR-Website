@@ -3,245 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD1_JR | CYBER SYSTEM</title>
+    <title>DD1_JR | CYBER OS V2</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+
     <style>
+        /* --- [إعدادات الألوان والنيون] --- */
         :root {
-            --neon-purple: #bc13fe;
-            --neon-blue: #00d2ff;
-            --bg-dark: #020202;
-            --card-bg: rgba(10, 10, 10, 0.9);
+            --purple: #bc13fe;
+            --cyan: #00d2ff;
+            --dark-bg: #000000;
+            --card-glass: rgba(10, 10, 10, 0.9);
+            --neon-glow: 0 0 15px #bc13fe, 0 0 30px rgba(188, 19, 254, 0.3);
         }
 
         body, html {
-            margin: 0; padding: 0; background-color: var(--bg-dark);
-            color: white; font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
             overflow-x: hidden;
         }
 
-        /* [1] MATRIX BACKGROUND */
-        #matrix-bg { position: fixed; top: 0; left: 0; z-index: -1; transition: opacity 0.5s; }
-
-        /* [2] TOP CONTROLS */
-        .top-nav { display: flex; justify-content: space-between; padding: 20px; position: sticky; top: 0; z-index: 1000; }
-        .control-group { display: flex; gap: 15px; }
-        .btn-ctrl {
-            background: rgba(0,0,0,0.7); border: 1px solid var(--neon-purple);
-            color: white; padding: 6px 15px; cursor: pointer; font-family: monospace;
-            border-radius: 5px; box-shadow: 0 0 10px var(--neon-purple); transition: 0.3s;
-        }
-        .btn-ctrl.off { border-color: #444; box-shadow: none; color: #666; }
-        .btn-ctrl:hover { box-shadow: 0 0 20px var(--neon-purple); transform: translateY(-2px); }
-
-        /* [3] LOGO SECTION - DANIEL STYLE */
-        .logo-container { text-align: center; margin: 40px 0; }
-        .small-d { font-size: 2rem; color: var(--neon-purple); font-weight: bold; text-shadow: 0 0 15px var(--neon-purple); margin-bottom: -15px; }
-        .main-logo { 
-            font-size: 6rem; font-weight: 900; letter-spacing: 5px; margin: 0;
-            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px var(--neon-purple));
+        /* --- [شاشة الانترو الأسطورية] --- */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 1s ease-in-out;
         }
 
-        /* [4] INFORMATION CARDS */
-        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
-        .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .intro-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            color: var(--purple);
+            text-shadow: var(--neon-glow);
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.5; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1.05); }
+        }
+
+        .loader-container {
+            width: 300px;
+            height: 4px;
+            background: #111;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--purple);
+            box-shadow: var(--neon-glow);
+            transition: width 0.3s;
+        }
+
+        /* --- [خلفية الماتريكس - واضحة جداً] --- */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.7; /* جعلتها واضحة */
+        }
+
+        /* --- [الأزرار العلوية وتأثيراتها] --- */
+        .system-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 25px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .cyber-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--purple);
+            color: #fff;
+            padding: 10px 25px;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: var(--neon-glow);
+            transition: 0.4s;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .cyber-btn:hover {
+            background: var(--purple);
+            color: #000;
+            box-shadow: 0 0 30px var(--purple);
+        }
+
+        .cyber-btn.disabled {
+            border-color: #333;
+            color: #444;
+            box-shadow: none;
+        }
+
+        /* --- [اللوجو الرئيسي DD1_JR] --- */
+        .main-header {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .sub-d {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--purple);
+            font-size: 2rem;
+            margin-bottom: -15px;
+            text-shadow: 0 0 10px var(--purple);
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            filter: drop-shadow(0 0 15px var(--purple));
+        }
+
+        /* --- [كروت المعلومات - التوزيع الأصلي] --- */
+        .content-wrapper {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
         .cyber-card {
-            background: var(--card-bg); border: 1px solid #333; border-radius: 15px;
-            padding: 25px; position: relative; overflow: hidden;
+            background: var(--card-glass);
+            border: 1px solid #222;
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border-top: 4px solid var(--purple);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .card-title { color: var(--neon-blue); font-family: monospace; font-size: 0.9rem; margin-bottom: 15px; border-bottom: 1px solid #222; }
-        .bio-line { margin: 10px 0; font-size: 1.1rem; }
-        .bio-key { color: var(--neon-purple); font-weight: bold; margin-right: 8px; }
 
-        /* [5] STATS */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
-        .stat-item { 
-            background: var(--card-bg); border: 1px dashed var(--neon-purple); 
-            border-radius: 10px; padding: 20px; text-align: center; transition: 0.3s;
+        .card-label {
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            display: block;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
         }
-        .stat-item:hover { border-style: solid; box-shadow: 0 0 15px var(--neon-purple); }
 
-        /* [6] BOT OPERATION */
-        .bot-card {
-            background: var(--card-bg); border: 1px solid var(--neon-blue);
-            padding: 20px; border-radius: 15px; display: flex; align-items: center;
-            gap: 20px; margin-bottom: 30px; box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+        .info-line {
+            margin: 15px 0;
+            font-size: 1.2rem;
         }
-        .btn-topgg { background: var(--neon-blue); color: black; border: none; padding: 10px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-left: auto; }
 
-        /* [7] PROJECTS */
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .p-bar-bg { background: #111; height: 10px; border-radius: 5px; margin: 15px 0; }
-        .p-bar-fill { height: 100%; border-radius: 5px; box-shadow: 0 0 10px currentColor; transition: 1.5s; }
+        .key { color: var(--purple); font-weight: bold; margin-right: 10px; }
 
-        /* [8] TERMINAL LOGS */
-        #logs-panel {
-            position: fixed; bottom: 20px; right: 20px; width: 320px; height: 200px;
-            background: rgba(0,0,0,0.9); border: 1px solid var(--neon-blue);
-            border-radius: 10px; padding: 15px; font-family: monospace; font-size: 0.8rem;
-            display: flex; flex-direction: column; overflow: hidden; z-index: 2000;
+        /* --- [قسم البوت الذكي] --- */
+        .bot-banner {
+            background: linear-gradient(45deg, #050505, #111);
+            border: 1px solid var(--cyan);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.1);
         }
+
+        .bot-icon {
+            font-size: 4rem;
+            color: var(--cyan);
+            filter: drop-shadow(0 0 10px var(--cyan));
+        }
+
+        .btn-action {
+            margin-left: auto;
+            background: var(--cyan);
+            color: #000;
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 0 0 15px var(--cyan);
+        }
+
+        /* --- [نافذة اللوجس - Logs] --- */
+        #logs-window {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 350px;
+            height: 220px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--cyan);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column-reverse;
+            overflow: hidden;
+            z-index: 1000;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.2);
+        }
+
+        .log-entry { margin-bottom: 8px; }
+        .log-time { color: #555; margin-right: 10px; }
+        .log-msg { color: var(--cyan); }
+
     </style>
 </head>
 <body>
 
-    <canvas id="matrix-bg"></canvas>
-
-    <nav class="top-nav">
-        <div class="control-group">
-            <button id="matrix-btn" class="btn-ctrl" onclick="toggleMatrix()">MATRIX: ON</button>
-            <button id="logs-btn" class="btn-ctrl" onclick="toggleLogs()">LOGS: ON</button>
+    <div id="intro-screen">
+        <div class="intro-logo">DD1_JR</div>
+        <div class="loader-container">
+            <div id="bar" class="loader-bar"></div>
         </div>
-        <button class="btn-ctrl" style="border-color: var(--neon-blue)">TRAFFIC | VISITS: 472</button>
-    </nav>
-
-    <div class="container">
-        <div class="logo-container">
-            <div class="small-d">D</div>
-            <h1 class="main-logo">DD1_JR</h1>
-            <div style="margin-top: 15px; font-size: 1.8rem; color: #888;">
-                <i class="fab fa-github" style="margin: 0 15px; cursor: pointer;"></i>
-                <i class="fab fa-discord" style="margin: 0 15px; cursor: pointer;"></i>
-                <i class="fas fa-shield-alt" style="margin: 0 15px; cursor: pointer;"></i>
-            </div>
-        </div>
-
-        <div class="grid-info">
-            <div class="cyber-card">
-                <div class="card-title">> USER_IDENTITY_DATA</div>
-                <div class="bio-line"><span class="bio-key">> NAME:</span> Daniel (DD1_JR)</div>
-                <div class="bio-line"><span class="bio-key">> AGE:</span> 15 Years Old</div>
-                <div class="bio-line"><span class="bio-key">> ORIGIN:</span> Iraqi Roots 🇮🇶</div>
-                <div class="bio-line"><span class="bio-key">> BORN:</span> Netherlands 🇳🇱 | <span class="bio-key">LIVE:</span> Sweden 🇸🇪</div>
-            </div>
-            <div class="cyber-card">
-                <div class="card-title">> CORE_SKILLS</div>
-                <div class="bio-line"><span class="bio-key">> LUA:</span> MTA / FiveM Scripts</div>
-                <div class="bio-line"><span class="bio-key">> WEB:</span> HTML / CSS / JS</div>
-                <div class="bio-line"><span class="bio-key">> SEC:</span> Cyber Security Specialist</div>
-            </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-item"><span style="font-size: 2rem; color: var(--neon-blue);">5+</span><br><small>PROJECTS</small></div>
-            <div class="stat-item"><span style="font-size: 2rem; color: var(--neon-purple);">2.8k</span><br><small>COMMITS</small></div>
-            <div class="stat-item"><span style="font-size: 2rem; color: #0f0; text-shadow: 0 0 10px #0f0;">ONLINE</span><br><small>STATUS</small></div>
-        </div>
-
-        <div class="bot-card">
-            <i class="fas fa-robot" style="font-size: 3rem; color: var(--neon-blue);"></i>
-            <div>
-                <h3 style="margin:0; color: var(--neon-blue);">BOT OPERATIONS</h3>
-                <p style="margin:5px 0; color: #888;">Security Bot: Checks bad links & gives ✅ to safe ones.</p>
-            </div>
-            <button class="btn-topgg" onclick="window.open('https://top.gg/bot/1488965929810526308')">TOP.GG</button>
-        </div>
-
-        <h2 style="text-align:center; color: var(--neon-blue); letter-spacing: 5px; margin: 40px 0;">ACTIVE OPERATIONS</h2>
-        
-        <div class="project-grid" id="project-container">
-            </div>
+        <p id="status-text" style="margin-top: 15px; font-family: monospace; color: #444;">SYSETM BOOTING...</p>
     </div>
 
-    <div id="logs-panel">
-        <div id="logs-content"></div>
+    <canvas id="matrix-canvas"></canvas>
+
+    <nav class="system-nav">
+        <div style="display: flex; gap: 20px;">
+            <button id="m-btn" class="cyber-btn" onclick="toggleMatrix()">Matrix: ON</button>
+            <button id="l-btn" class="cyber-btn" onclick="toggleLogs()">Logs: ON</button>
+        </div>
+        <button class="cyber-btn" style="border-color: var(--cyan); color: var(--cyan);">VISITS: 472</button>
+    </nav>
+
+    <div class="content-wrapper">
+        
+        <header class="main-header">
+            <div class="sub-d">D</div>
+            <h1 class="main-title">DD1_JR</h1>
+            <div style="margin-top: 25px;">
+                <i class="fab fa-github fa-2x" style="margin: 0 20px; color: var(--purple);"></i>
+                <i class="fab fa-discord fa-2x" style="margin: 0 20px; color: var(--cyan);"></i>
+                <i class="fas fa-terminal fa-2x" style="margin: 0 20px; color: var(--purple);"></i>
+            </div>
+        </header>
+
+        <div class="info-grid">
+            <div class="cyber-card">
+                <span class="card-label">> SYSTEM_USER_IDENTITY</span>
+                <div class="info-line"><span class="key">> NAME:</span> Daniel (DD1_JR)</div>
+                <div class="info-line"><span class="key">> AGE:</span> 15 Years Old</div>
+                <div class="info-line"><span class="key">> ORIGIN:</span> Iraqi Roots 🇮🇶</div>
+                <div class="info-line"><span class="key">> LOCATION:</span> Sweden 🇸🇪</div>
+            </div>
+
+            <div class="cyber-card">
+                <span class="card-label">> CORE_SKILLS_LIST</span>
+                <div class="info-line"><span class="key">> LUA:</span> Advanced Scripting</div>
+                <div class="info-line"><span class="key">> WEB:</span> HTML5 / CSS3 / JS</div>
+                <div class="info-line"><span class="key">> CYBER:</span> Security & Reversing</div>
+            </div>
+        </div>
+
+        <div class="bot-banner">
+            <i class="fas fa-robot bot-icon"></i>
+            <div>
+                <h2 style="margin: 0; color: var(--cyan);">SHIELD PROTOCOL BOT</h2>
+                <p style="color: #888; margin: 10px 0;">Protecting Discord servers with AI link scanning.</p>
+            </div>
+            <a href="https://top.gg/bot/1488965929810526308" class="btn-action">VIEW ON TOP.GG</a>
+        </div>
+
+    </div>
+
+    <div id="logs-window">
+        <div id="log-content"></div>
     </div>
 
     <script>
-        // [1] MATRIX SYSTEM (PURPLE)
-        const canvas = document.getElementById('matrix-bg');
+        // --- [إعدادات الماتريكس البنفسجي الواضح] ---
+        const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&*%";
-        const fontSize = 16;
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@&";
+        const fontSize = 18; // أكبر لتكون أوضح
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
 
         function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#bc13fe";
-            ctx.font = fontSize + "px monospace";
+
+            ctx.fillStyle = "#bc13fe"; // بنفسجي ساطع
+            ctx.font = fontSize + "px 'JetBrains Mono'";
+
             for (let i = 0; i < drops.length; i++) {
-                const text = alphabet[Math.floor(Math.random() * alphabet.alphabet)];
-                ctx.fillText(alphabet[Math.floor(Math.random()*alphabet.length)], i*fontSize, drops[i]*fontSize);
-                if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
                 drops[i]++;
             }
         }
-        let matrixInterval = setInterval(drawMatrix, 45);
+        let matrixInterval = setInterval(drawMatrix, 50);
 
-        // [2] TOGGLES
+        // --- [تحكم الأزرار] ---
         function toggleMatrix() {
-            const btn = document.getElementById('matrix-btn');
-            const bg = document.getElementById('matrix-bg');
-            if(bg.style.opacity === '0') {
-                bg.style.opacity = '1';
-                btn.innerText = "MATRIX: ON";
-                btn.classList.remove('off');
+            const btn = document.getElementById('m-btn');
+            if (canvas.style.display === "none") {
+                canvas.style.display = "block";
+                btn.innerText = "Matrix: ON";
+                btn.classList.remove('disabled');
             } else {
-                bg.style.opacity = '0';
-                btn.innerText = "MATRIX: OFF";
-                btn.classList.add('off');
+                canvas.style.display = "none";
+                btn.innerText = "Matrix: OFF";
+                btn.classList.add('disabled');
             }
         }
 
         function toggleLogs() {
-            const btn = document.getElementById('logs-btn');
-            const panel = document.getElementById('logs-panel');
-            if(panel.style.display === 'none') {
-                panel.style.display = 'flex';
-                btn.innerText = "LOGS: ON";
-                btn.classList.remove('off');
+            const win = document.getElementById('logs-window');
+            const btn = document.getElementById('l-btn');
+            if (win.style.display === "none") {
+                win.style.display = "flex";
+                btn.innerText = "Logs: ON";
+                btn.classList.remove('disabled');
             } else {
-                panel.style.display = 'none';
-                btn.innerText = "LOGS: OFF";
-                btn.classList.add('off');
+                win.style.display = "none";
+                btn.innerText = "Logs: OFF";
+                btn.classList.add('disabled');
             }
         }
 
-        // [3] PROJECTS DATA
-        const projects = [
-            { name: "Knightfall (Auth)", progress: 89, color: "#bc13fe", status: "🏗️ Working" },
-            { name: "Shield AI Bot", progress: 10, color: "#00d2ff", status: "⏳ Waiting" },
-            { name: "Blooket Hack", progress: 80, color: "#bc13fe", status: "⏳ Later" },
-            { name: "My Website", progress: 95, color: "#00d2ff", status: "🏗️ Working" }
-        ];
+        // --- [منطق الانترو] ---
+        let bar = document.getElementById('bar');
+        let statusText = document.getElementById('status-text');
+        let progress = 0;
 
-        const pContainer = document.getElementById('project-container');
-        projects.forEach(p => {
-            pContainer.innerHTML += `
-                <div class="cyber-card">
-                    <div style="display:flex; justify-content:space-between">
-                        <strong style="color: ${p.color}">${p.name}</strong>
-                        <small style="color: #666">P-LEVEL</small>
-                    </div>
-                    <div class="p-bar-bg">
-                        <div class="p-bar-fill" style="width: ${p.progress}%; background: ${p.color}; color: ${p.color}"></div>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #888;">Status: ${p.status}</div>
-                </div>
-            `;
-        });
+        let loadManager = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadManager);
+                statusText.innerText = "ACCESS GRANTED";
+                statusText.style.color = "var(--cyan)";
+                
+                setTimeout(() => {
+                    document.getElementById('intro-screen').style.opacity = "0";
+                    setTimeout(() => {
+                        document.getElementById('intro-screen').style.display = "none";
+                    }, 1000);
+                }, 800);
+            }
+            bar.style.width = progress + "%";
+        }, 200);
 
-        // [4] TERMINAL LOGS
-        const logData = [
-            "[SUCCESS] 4 items found.",
-            "[INFO] Daniel identity verified.",
-            "[WARNING] Unauthorized access blocked.",
-            "[INFO] Initializing system protocols...",
-            "[SUCCESS] Neural link established."
-        ];
-        const logsContent = document.getElementById('logs-content');
+        // --- [تحديث اللوجس تلقائياً] ---
+        const logContent = document.getElementById('log-content');
+        const phrases = ["Syncing Data...", "Security Breach: NONE", "Auth Success", "Daniel Logged In", "Kernel Stabilized"];
+
         setInterval(() => {
-            const line = document.createElement('div');
-            line.style.color = "#00d2ff";
-            line.style.marginBottom = "5px";
-            line.innerText = `> ${logData[Math.floor(Math.random()*logData.length)]}`;
-            logsContent.prepend(line);
-            if(logsContent.childNodes.length > 8) logsContent.lastChild.remove();
-        }, 2000);
+            const now = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = "log-entry";
+            div.innerHTML = `<span class="log-time">[${now}]</span> <span class="log-msg">> ${phrases[Math.floor(Math.random()*phrases.length)]}</span>`;
+            logContent.prepend(div);
+            
+            if (logContent.childNodes.length > 8) {
+                logContent.removeChild(logContent.lastChild);
+            }
+        }, 2500);
+
     </script>
 </body>
 </html>
