@@ -1,381 +1,665 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="cyber-os">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD1_JR | Advanced OS Interface</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>TERMINAL_DD1_JR // CORE_V4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* [1] Variables & Core Styles */
+        /* [CORE CSS - SECTION 1: GLOBAL RESET & VARIABLES] */
         :root {
-            --neon-purple: #bc13fe; 
+            --neon-purple: #bc13fe;
             --neon-blue: #00d2ff;
             --neon-red: #ff0055;
-            --bg-dark: #050505;
-            --card-bg: rgba(10, 10, 10, 0.9);
-            --border-glow: rgba(188, 19, 254, 0.3);
-            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --neon-green: #39ff14;
+            --bg-black: #020202;
+            --card-glass: rgba(10, 10, 10, 0.95);
+            --border-clr: rgba(188, 19, 254, 0.3);
+            --terminal-green: #00ff41;
+            --transition-speed: 0.4s;
+            --glitch-speed: 0.2s;
         }
 
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            user-select: none; -webkit-font-smoothing: antialiased;
+        }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-black);
             color: #fff;
-            font-family: var(--font-main);
-            margin: 0;
-            overflow-x: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            height: 100vh; width: 100vw;
+            overflow: hidden;
+            display: flex; flex-direction: column;
             cursor: crosshair;
         }
 
-        /* [2] Intro Animation Section */
-        #intro-overlay {
+        /* [SECTION 2: CYBER INTRO BOOT SEQUENCE] */
+        #boot-sequence {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000; display: flex;
-            flex-direction: column; justify-content: center; align-items: center;
-        }
-        .intro-box { text-align: center; }
-        .intro-text {
-            font-size: 5rem; font-weight: 900; letter-spacing: 15px;
-            background: linear-gradient(90deg, #000, #fff, #000);
-            background-size: 80% 100%; background-repeat: no-repeat;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 2s linear infinite;
-        }
-        @keyframes shine { 0% { background-position: -500%; } 100% { background-position: 500%; } }
-        .loading-bar-container { width: 300px; height: 4px; background: #111; margin-top: 30px; border-radius: 10px; overflow: hidden; border: 1px solid #222; }
-        #loading-fill { width: 0%; height: 100%; background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
-
-        /* [3] Header & Controls */
-        header {
-            padding: 20px 40px; display: flex; justify-content: space-between;
-            align-items: center; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+            background: #000; z-index: 99999; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .status-badge {
-            display: flex; align-items: center; gap: 10px; font-family: monospace;
-            color: var(--neon-blue); font-size: 0.8rem; text-transform: uppercase;
-        }
-        .dot { width: 8px; height: 8px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        .ui-btns { display: flex; gap: 15px; }
-        .cyber-btn {
-            background: transparent; border: 1px solid var(--neon-purple); color: var(--neon-purple);
-            padding: 10px 20px; border-radius: 4px; cursor: pointer; font-family: monospace;
-            position: relative; overflow: hidden;
-        }
-        .cyber-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(188, 19, 254, 0.2), transparent);
-            transition: 0.5s;
-        }
-        .cyber-btn:hover::before { left: 100%; }
-        .cyber-btn:hover { box-shadow: 0 0 15px var(--neon-purple); background: rgba(188, 19, 254, 0.1); }
-        .cyber-btn.off { border-color: #444; color: #444; }
-
-        /* [4] Matrix & Background Effects */
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; transition: opacity 1s; }
-
-        /* [5] Main Grid Content */
-        main {
-            flex: 1; display: grid; grid-template-columns: 300px 1fr 300px;
-            gap: 20px; padding: 20px; overflow-y: auto; z-index: 10;
+        .boot-terminal {
+            width: 600px; height: 400px; background: rgba(5, 5, 5, 0.8);
+            border: 1px solid #222; padding: 20px; font-size: 12px;
+            color: var(--terminal-green); overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 1);
         }
 
-        .side-panel { display: flex; flex-direction: column; gap: 20px; }
+        .boot-line { margin-bottom: 5px; white-space: nowrap; overflow: hidden; }
+        .boot-cursor { animation: blink 0.8s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+        #boot-progress-container {
+            width: 500px; height: 2px; background: #111;
+            margin-top: 40px; position: relative; border-radius: 10px;
+        }
+
+        #boot-bar {
+            position: absolute; left: 0; top: 0; height: 100%;
+            width: 0%; background: var(--neon-purple);
+            box-shadow: 0 0 20px var(--neon-purple);
+            transition: width 0.1s linear;
+        }
+
+        /* [SECTION 3: BACKGROUND ENGINE] */
+        #canvas-particles { position: fixed; top: 0; left: 0; z-index: 1; }
+        #matrix-bg { position: fixed; top: 0; left: 0; z-index: 0; opacity: 0.15; transition: opacity 1s; }
+
+        .scanline {
+            width: 100%; height: 100px; z-index: 2;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(188, 19, 254, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+            opacity: 0.1; position: absolute; bottom: 100%;
+            animation: scanline 8s linear infinite; pointer-events: none;
+        }
+        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100%; } }
+
+        /* [SECTION 4: NAVIGATION & OS BAR] */
+        .os-nav {
+            height: 60px; background: rgba(0,0,0,0.8); border-bottom: 1px solid #222;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 30px; z-index: 1000; backdrop-filter: blur(10px);
+        }
+
+        .os-logo {
+            font-size: 24px; font-weight: 900; letter-spacing: 5px;
+            color: #fff; text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        .os-stats { display: flex; gap: 30px; font-size: 11px; font-family: monospace; color: #666; }
+        .stat-group { display: flex; flex-direction: column; }
+        .stat-value { color: var(--neon-blue); }
+
+        .os-controls { display: flex; gap: 10px; }
+        .control-btn {
+            background: rgba(20, 20, 20, 0.5); border: 1px solid #333;
+            color: #fff; padding: 8px 15px; border-radius: 4px;
+            cursor: pointer; font-size: 10px; text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .control-btn:hover { border-color: var(--neon-purple); background: rgba(188, 19, 254, 0.1); }
+        .control-btn.active { border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple); }
+        .control-btn.off { border-color: #222; color: #444; }
+
+        /* [SECTION 5: MAIN WORKSPACE] */
+        .workspace {
+            flex: 1; display: grid; grid-template-columns: 350px 1fr 350px;
+            grid-template-rows: 1fr 250px; gap: 20px; padding: 20px;
+            position: relative; z-index: 10;
+        }
+
+        /* [SECTION 6: MODULES & WIDGETS] */
+        .module {
+            background: var(--card-glass); border: 1px solid #1a1a1a;
+            border-radius: 12px; position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .module:hover { border-color: #333; }
+
+        .module-header {
+            padding: 12px 15px; background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid #1a1a1a; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .module-title { font-size: 10px; letter-spacing: 2px; color: #555; text-transform: uppercase; }
+        .module-body { flex: 1; padding: 20px; overflow-y: auto; }
+
+        /* Module: Profile Advanced */
+        .profile-hero { text-align: center; margin-bottom: 25px; }
+        .avatar-frame {
+            width: 100px; height: 100px; margin: 0 auto 15px;
+            border: 2px solid var(--neon-purple); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; box-shadow: 0 0 20px var(--neon-purple);
+        }
+        .avatar-frame::after {
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 1px solid var(--neon-blue); border-radius: 50%;
+            animation: rotate 4s linear infinite;
+        }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Module: Skills Radar */
+        .radar-container {
+            width: 100%; height: 200px; position: relative;
+            background: radial-gradient(circle, #111 0%, #000 70%);
+            border-radius: 50%; margin: 10px 0; border: 1px solid #222;
+        }
+        .radar-sweep {
+            position: absolute; top: 50%; left: 50%; width: 50%; height: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), transparent);
+            transform-origin: left center; animation: sweep 4s linear infinite;
+        }
+        @keyframes sweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Module: Projects Grid */
+        .project-item {
+            background: #080808; border: 1px solid #111;
+            padding: 15px; border-radius: 8px; margin-bottom: 10px;
+            transition: 0.3s; position: relative;
+        }
+        .project-item:hover { transform: translateX(5px); border-color: var(--neon-blue); }
+        .project-tag {
+            position: absolute; top: 10px; right: 10px; font-size: 8px;
+            background: var(--neon-blue); color: #000; padding: 2px 5px; border-radius: 3px;
+        }
+
+        /* [SECTION 7: CENTRAL HUB] */
+        .hub-container { grid-column: 2; grid-row: 1 / 3; display: flex; flex-direction: column; gap: 20px; }
         
-        /* Unified Glass Card Design */
-        .glass-card {
-            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
-            padding: 20px; border-radius: 12px; position: relative;
-            backdrop-filter: blur(5px); overflow: hidden;
-        }
-        .glass-card:hover { border-color: var(--neon-purple); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
-        .glass-card::after {
-            content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 40px;
-            background: linear-gradient(135deg, transparent 50%, rgba(188, 19, 254, 0.2) 50%);
+        .main-display {
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; position: relative;
         }
 
-        .card-label { font-size: 0.7rem; color: var(--neon-blue); font-family: monospace; margin-bottom: 15px; letter-spacing: 2px; }
-
-        /* [6] Hero Center Section */
-        .center-content { display: flex; flex-direction: column; gap: 20px; }
-        .hero-banner {
-            height: 300px; display: flex; flex-direction: column; justify-content: center;
-            align-items: center; background: radial-gradient(circle, rgba(188, 19, 254, 0.1) 0%, transparent 70%);
-            border-radius: 20px;
+        .cyber-logo-large {
+            font-size: 120px; font-weight: 900; color: #fff;
+            text-shadow: 0 0 30px var(--neon-purple);
+            animation: glitch 3s infinite;
         }
-        .main-title { font-size: 6rem; font-weight: 900; margin: 0; letter-spacing: -5px; filter: drop-shadow(0 0 20px var(--neon-purple)); }
-        .subtitle { font-family: monospace; color: var(--neon-blue); letter-spacing: 5px; margin-top: -10px; }
-
-        /* [7] Dynamic Progress Bars */
-        .progress-wrapper { margin-bottom: 20px; }
-        .progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 8px; }
-        .bar-container { height: 6px; background: #111; border-radius: 10px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 10px; position: relative; }
-        .bar-fill::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: sweep 2s infinite;
-        }
-        @keyframes sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-        /* [8] Live Logs Terminal */
-        #terminal-emulator {
-            background: #000; border: 1px solid #111; border-radius: 8px;
-            height: 200px; font-family: 'Courier New', monospace; font-size: 0.75rem;
-            padding: 15px; overflow-y: hidden; color: #0f0;
-        }
-        .log-line { margin-bottom: 5px; opacity: 0.8; }
-        .log-time { color: #555; margin-right: 10px; }
-
-        /* [9] Bot Card Advanced */
-        .bot-os-card {
-            display: flex; align-items: center; gap: 20px; background: linear-gradient(90deg, #0a0a0a, #111);
-            border: 1px solid var(--neon-blue); padding: 25px; border-radius: 15px;
-            position: relative;
-        }
-        .bot-icon { font-size: 3rem; color: var(--neon-blue); filter: drop-shadow(0 0 10px var(--neon-blue)); }
-        .bot-stats { display: flex; gap: 15px; margin-top: 10px; }
-        .b-stat { font-size: 0.65rem; padding: 3px 8px; border: 1px solid #333; border-radius: 4px; }
-
-        /* [10] Footer Bar */
-        footer {
-            padding: 15px 40px; background: rgba(0,0,0,0.8); border-top: 1px solid #111;
-            display: flex; justify-content: space-between; font-size: 0.7rem; color: #444; font-family: monospace;
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
         }
 
-        /* Scrollbar Style */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #050505; }
+        .search-os {
+            width: 80%; background: rgba(255,255,255,0.05); border: 1px solid #222;
+            padding: 15px 25px; border-radius: 50px; display: flex; align-items: center;
+            gap: 15px; margin-top: 50px; border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.2);
+        }
+        .search-os input {
+            background: transparent; border: none; color: #fff; flex: 1;
+            outline: none; font-family: monospace; font-size: 16px;
+        }
+
+        /* [SECTION 8: LIVE DATA TERMINAL] */
+        .terminal-module { grid-column: 1; grid-row: 2; background: #000 !important; }
+        .terminal-stream {
+            height: 100%; overflow-y: auto; font-family: 'Courier New', monospace;
+            font-size: 11px; color: var(--terminal-green); line-height: 1.4;
+        }
+
+        /* [SECTION 9: SYSTEM NOTIFICATIONS] */
+        #notification-center {
+            position: fixed; bottom: 80px; right: 20px; width: 300px;
+            display: flex; flex-direction: column; gap: 10px; z-index: 10000;
+        }
+        .toast {
+            background: var(--card-glass); border-left: 4px solid var(--neon-blue);
+            padding: 15px; border-radius: 4px; animation: slideIn 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+        /* [SECTION 10: BOTTOM SYSTEM BAR] */
+        .bottom-bar {
+            height: 40px; background: rgba(5, 5, 5, 0.95);
+            border-top: 1px solid #1a1a1a; display: flex;
+            justify-content: space-between; align-items: center;
+            padding: 0 20px; font-size: 10px; color: #444; z-index: 1000;
+        }
+
+        /* GLITCH TEXT EFFECT */
+        .glitch-text { position: relative; display: inline-block; }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch-text::before { left: 2px; text-shadow: -2px 0 var(--neon-red); clip: rect(44px, 450px, 56px, 0); animation: glitch-1 5s infinite linear alternate-reverse; }
+        .glitch-text::after { left: -2px; text-shadow: -2px 0 var(--neon-blue); clip: rect(44px, 450px, 56px, 0); animation: glitch-2 5s infinite linear alternate-reverse; }
+
+        @keyframes glitch-1 { 0% { clip: rect(10px, 9999px, 9px, 0); } 100% { clip: rect(90px, 9999px, 100px, 0); } }
+        @keyframes glitch-2 { 0% { clip: rect(50px, 9999px, 30px, 0); } 100% { clip: rect(20px, 9999px, 40px, 0); } }
+
+        /* UI SCROLLBAR */
+        ::-webkit-scrollbar { width: 3px; height: 3px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 10px; }
-
-        /* Traffic Widget */
-        .traffic-box { position: absolute; bottom: 20px; left: 20px; border: 1px solid var(--neon-purple); padding: 5px; border-radius: 5px; background: #000; }
     </style>
 </head>
-<body>
+<body onload="startBootSequence()">
 
-    <div id="intro-overlay">
-        <div class="intro-box">
-            <div class="intro-text">DD1_JR</div>
-            <div class="loading-bar-container"><div id="loading-fill"></div></div>
-            <div id="status-text" style="color: #444; font-family: monospace; margin-top: 10px; font-size: 0.8rem;">INITIALIZING_CORE_SYSTEMS...</div>
+    <div id="boot-sequence">
+        <div class="boot-terminal" id="boot-terminal">
+            </div>
+        <div id="boot-progress-container">
+            <div id="boot-bar"></div>
         </div>
     </div>
 
-    <canvas id="matrix-canvas"></canvas>
+    <canvas id="matrix-bg"></canvas>
+    <canvas id="canvas-particles"></canvas>
+    <div class="scanline"></div>
 
-    <header>
-        <div class="status-badge">
-            <div class="dot"></div>
-            <span>System: Online</span>
-            <span style="margin-left: 20px; opacity: 0.5;">|</span>
-            <span id="live-clock">00:00:00</span>
-        </div>
+    <nav class="os-nav">
+        <div class="os-logo glitch-text" data-text="DD1_JR">DD1_JR</div>
         
-        <div class="ui-btns">
-            <button class="cyber-btn on" id="mToggle" onclick="toggleMatrix()">
-                <i class="fas fa-microchip"></i> MATRIX_FEED: ON
-            </button>
-            <button class="cyber-btn on" id="lToggle" onclick="toggleLogs()">
-                <i class="fas fa-terminal"></i> LOGS_STREAM: ON
-            </button>
+        <div class="os-stats">
+            <div class="stat-group">
+                <span>CPU_USAGE</span>
+                <span class="stat-value" id="cpu-val">0%</span>
+            </div>
+            <div class="stat-group">
+                <span>MEM_LOAD</span>
+                <span class="stat-value" id="mem-val">0.0GB</span>
+            </div>
+            <div class="stat-group">
+                <span>SYSTEM_CLOCK</span>
+                <span class="stat-value" id="os-clock">00:00:00</span>
+            </div>
         </div>
-    </header>
 
-    <main>
-        <div class="side-panel">
-            <div class="glass-card">
-                <div class="card-label">DATABASE_INFO</div>
-                <div style="font-size: 0.9rem; line-height: 1.8;">
-                    <div><span style="color: var(--neon-purple);">[USER]</span> Daniel</div>
-                    <div><span style="color: var(--neon-purple);">[ALIAS]</span> DD1_JR</div>
-                    <div><span style="color: var(--neon-purple);">[LEVEL]</span> Senior Dev</div>
-                    <div><span style="color: var(--neon-purple);">[LOC]</span> Sweden 🇸🇪</div>
-                    <div style="margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
-                        <span style="color: #666; font-size: 0.7rem;">Verified Iraqi Roots 🇮🇶</span>
+        <div class="os-controls">
+            <button class="control-btn active" id="matrix-toggle" onclick="toggleMatrix()">Matrix: ON</button>
+            <button class="control-btn active" id="fx-toggle" onclick="toggleFX()">FX: ON</button>
+            <button class="control-btn" onclick="emergencyExit()">Kill_Process</button>
+        </div>
+    </nav>
+
+    <main class="workspace">
+        
+        <aside class="side-panel">
+            <div class="module">
+                <div class="module-header">
+                    <span class="module-title">Identity_Vault</span>
+                    <i class="fas fa-user-shield" style="color: var(--neon-purple);"></i>
+                </div>
+                <div class="module-body">
+                    <div class="profile-hero">
+                        <div class="avatar-frame">
+                            <i class="fas fa-user-secret fa-3x"></i>
+                        </div>
+                        <h2 style="letter-spacing: 2px;">DANIEL</h2>
+                        <p style="font-size: 10px; color: #666; margin-top: 5px;">FULL-STACK SECURITY ARCHITECT</p>
+                    </div>
+                    <div class="info-list" style="font-size: 11px; font-family: monospace;">
+                        <div style="margin-bottom: 8px;"><span style="color:var(--neon-purple)">> ROOT:</span> Iraq 🇮🇶</div>
+                        <div style="margin-bottom: 8px;"><span style="color:var(--neon-purple)">> BASE:</span> Sweden 🇸🇪</div>
+                        <div style="margin-bottom: 8px;"><span style="color:var(--neon-purple)">> AUTH:</span> Level_99_Dev</div>
+                        <div style="margin-bottom: 8px;"><span style="color:var(--neon-purple)">> STAT:</span> Online_Encrypted</div>
                     </div>
                 </div>
             </div>
 
-            <div class="glass-card">
-                <div class="card-label">SKILL_LOADOUT</div>
-                <div class="progress-wrapper">
-                    <div class="progress-info"><span>LUA SCRIPTING</span><span>95%</span></div>
-                    <div class="bar-container"><div class="bar-fill" style="width: 95%; background: var(--neon-purple);"></div></div>
+            <div class="module" style="margin-top: 20px;">
+                <div class="module-header">
+                    <span class="module-title">Skill_Radar</span>
                 </div>
-                <div class="progress-wrapper">
-                    <div class="progress-info"><span>CYBER SECURITY</span><span>80%</span></div>
-                    <div class="bar-container"><div class="bar-fill" style="width: 80%; background: var(--neon-blue);"></div></div>
-                </div>
-                <div class="progress-wrapper">
-                    <div class="progress-info"><span>WEB_ENGINEERING</span><span>88%</span></div>
-                    <div class="bar-container"><div class="bar-fill" style="width: 88%; background: var(--neon-purple);"></div></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="center-content">
-            <div class="hero-banner">
-                <h1 class="main-title">DD1_JR</h1>
-                <div class="subtitle">SECURITY & DEVELOPMENT OPERATIONS</div>
-                <div class="social-bar" style="margin-top: 30px;">
-                    <a href="#" style="color: var(--neon-purple); font-size: 2rem; margin: 0 15px;"><i class="fab fa-github"></i></a>
-                    <a href="#" style="color: var(--neon-blue); font-size: 2rem; margin: 0 15px;"><i class="fab fa-discord"></i></a>
-                    <a href="#" style="color: var(--neon-red); font-size: 2rem; margin: 0 15px;"><i class="fas fa-shield-halved"></i></a>
+                <div class="module-body" style="text-align: center;">
+                    <div class="radar-container">
+                        <div class="radar-sweep"></div>
+                        <div style="position: absolute; top: 10%; left: 50%; transform: translateX(-50%); font-size: 8px; color: var(--neon-blue);">LUA</div>
+                        <div style="position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); font-size: 8px; color: var(--neon-purple);">WEB</div>
+                        <div style="position: absolute; top: 50%; right: 10%; transform: translateY(-50%); font-size: 8px; color: var(--neon-red);">SEC</div>
+                    </div>
+                    <p style="font-size: 9px; color: #444; margin-top: 10px;">SCANNING_FOR_NEW_COMPETENCIES...</p>
                 </div>
             </div>
+        </aside>
 
-            <div class="bot-os-card">
-                <div class="bot-icon"><i class="fas fa-robot"></i></div>
-                <div style="flex: 1;">
-                    <h3 style="margin: 0; letter-spacing: 2px;">SHIELD_PROTOCOL.exe</h3>
-                    <p style="color: #888; font-size: 0.8rem; margin: 5px 0;">Automated Neural Link Scanner. Actively purging malicious strings in real-time.</p>
-                    <div class="bot-stats">
-                        <span class="b-stat" style="border-color: #0f0; color: #0f0;">Uptime: 99.9%</span>
-                        <span class="b-stat" style="border-color: var(--neon-blue); color: var(--neon-blue);">Safe_Links: 14.2k</span>
+        <section class="hub-container">
+            <div class="main-display">
+                <h1 class="cyber-logo-large">DD1_JR</h1>
+                <div style="color: var(--neon-blue); letter-spacing: 10px; font-size: 12px;">SYSTEM OPERATIONS INTERFACE</div>
+                
+                <div class="search-os">
+                    <i class="fas fa-terminal" style="color: var(--neon-purple);"></i>
+                    <input type="text" placeholder="Execute command or search encrypted database..." id="cmdInput">
+                    <span style="font-size: 10px; color: #444;">[ENTER]</span>
+                </div>
+                
+                <div style="margin-top: 40px; display: flex; gap: 30px;">
+                    <a href="https://github.com/DanneKZ" class="control-btn" style="padding: 15px 25px;"><i class="fab fa-github fa-2x"></i></a>
+                    <a href="https://discord.com/users/1336353146020298816" class="control-btn" style="padding: 15px 25px;"><i class="fab fa-discord fa-2x"></i></a>
+                    <a href="https://top.gg/bot/1488965929810526308" class="control-btn" style="padding: 15px 25px;"><i class="fas fa-robot fa-2x"></i></a>
+                </div>
+            </div>
+
+            <div class="module" style="height: 120px;">
+                <div class="module-body" style="display: flex; align-items: center; gap: 30px;">
+                    <i class="fas fa-shield-virus fa-3x" style="color: var(--neon-blue); filter: drop-shadow(0 0 10px var(--neon-blue));"></i>
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; color: var(--neon-blue);">SHIELD_PROTOCOL.CORE</div>
+                        <div style="font-size: 11px; color: #666; margin-top: 5px;">Active monitoring for malicious links and phishing attempts.</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 20px; font-weight: bold; color: var(--neon-green);">SECURE</div>
+                        <div style="font-size: 9px;">PROTECTION_ENABLED</div>
                     </div>
                 </div>
-                <button style="background: var(--neon-blue); border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer;">DEPLOY_ON_TG</button>
             </div>
+        </section>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="glass-card" style="border-left: 4px solid var(--neon-purple);">
-                    <div class="card-label">ACTIVE_PROJECT_01</div>
-                    <h4 style="margin: 0;">KNIGHTFALL AUTH</h4>
-                    <p style="font-size: 0.7rem; color: #666;">Status: EST_ETA_2_DAYS</p>
+        <aside class="side-panel">
+            <div class="module" style="flex: 1;">
+                <div class="module-header">
+                    <span class="module-title">Active_Threads</span>
+                    <span style="font-size: 9px; color: var(--neon-purple);">3_LOADED</span>
                 </div>
-                <div class="glass-card" style="border-left: 4px solid var(--neon-blue);">
-                    <div class="card-label">ACTIVE_PROJECT_02</div>
-                    <h4 style="margin: 0;">SHIELD AI CORE</h4>
-                    <p style="font-size: 0.7rem; color: #666;">Status: SYNCHING_MODULES</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="side-panel">
-            <div class="glass-card" style="flex: 1; display: flex; flex-direction: column;">
-                <div class="card-label">SYSTEM_LIVE_LOGS</div>
-                <div id="terminal-emulator">
+                <div class="module-body">
+                    <div class="project-item">
+                        <span class="project-tag">85%</span>
+                        <div style="color: var(--neon-purple); font-weight: bold;">KNIGHTFALL_AUTH</div>
+                        <div style="font-size: 9px; color: #555; margin-top: 5px;">🏗️ Deploying Auth Modules...</div>
+                        <div style="height: 2px; width: 100%; background: #111; margin-top: 10px;">
+                            <div style="height: 100%; width: 85%; background: var(--neon-purple);"></div>
+                        </div>
                     </div>
-                <div style="margin-top: auto; padding-top: 15px; border-top: 1px solid #222;">
-                    <div class="card-label">TRAFFIC_MONITOR</div>
-                    <img src="https://komarev.com/ghpvc/?username=Daniel-DD1JR-Stats&color=bc13fe&style=flat-square&label=TRAFFIC" style="width: 100%; border-radius: 4px;">
+
+                    <div class="project-item">
+                        <span class="project-tag" style="background: var(--neon-purple);">FIXED</span>
+                        <div style="color: var(--neon-blue); font-weight: bold;">SHIELD_AI_V4</div>
+                        <div style="font-size: 9px; color: #555; margin-top: 5px;">✅ Core Logic Synched</div>
+                        <div style="height: 2px; width: 100%; background: #111; margin-top: 10px;">
+                            <div style="height: 100%; width: 100%; background: var(--neon-blue);"></div>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <span class="project-tag" style="background: var(--neon-red);">STOPPED</span>
+                        <div style="color: #444; font-weight: bold;">OLD_PROJECT_STUB</div>
+                        <div style="font-size: 9px; color: #333; margin-top: 5px;">❌ Deprecated...</div>
+                    </div>
                 </div>
             </div>
+
+            <div class="module" style="margin-top: 20px; height: 180px;">
+                <div class="module-header">
+                    <span class="module-title">Satellite_Traffic</span>
+                </div>
+                <div class="module-body" style="padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <img src="https://komarev.com/ghpvc/?username=Daniel-DD1JR-Stats&color=bc13fe&style=flat-square&label=VISITS" alt="Traffic" style="width: 100%; filter: contrast(1.2) brightness(0.8);">
+                    <div style="margin-top: 15px; font-size: 9px; color: #444; font-family: monospace;">ENCRYPTED_IP_STREAM_ACTIVE</div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="module terminal-module">
+            <div class="module-header" style="background: #050505;">
+                <span class="module-title">System_Console</span>
+                <span style="font-size: 8px; color: var(--terminal-green);">LIVE_FEED</span>
+            </div>
+            <div class="module-body terminal-stream" id="term-feed">
+                </div>
         </div>
+
     </main>
 
-    <footer>
-        <div>SYSTEM_VERSION: 4.0.2-STABLE</div>
-        <div>AUTHORIZED_ACCESS_ONLY // DD1_JR // 2026</div>
-        <div>LATENCY: <span id="ping">24</span>ms</div>
+    <div id="notification-center"></div>
+
+    <footer class="bottom-bar">
+        <div class="footer-left">
+            <i class="fas fa-code-branch"></i> BRANCH: MAIN // REVISION: 4.0.0-BETA
+        </div>
+        <div class="footer-center">
+            [ SECURED BY DD1_JR NEURAL SHIELD ]
+        </div>
+        <div class="footer-right">
+            LATENCY: <span id="ping-val">24ms</span> // 2026-CORE
+        </div>
     </footer>
 
     <script>
-        // [1] Intro Animation
-        const fill = document.getElementById('loading-fill');
-        const statusText = document.getElementById('status-text');
-        const introOverlay = document.getElementById('intro-overlay');
-        const statuses = ["MOUNTING_DRIVES...", "BYPASSING_FIREWALLS...", "DECRYPTING_ASSETS...", "SYSTEM_READY"];
-        
-        let p = 0;
-        const load = setInterval(() => {
-            p += Math.random() * 8;
-            if (p >= 100) {
-                p = 100; clearInterval(load);
-                setTimeout(() => { 
-                    introOverlay.style.transform = "scale(2)"; 
-                    introOverlay.style.opacity = "0";
-                    setTimeout(() => { 
-                        introOverlay.style.display = "none"; 
-                        document.body.style.overflowY = "auto";
-                        document.body.style.height = "auto";
+        // 1. [BOOT SEQUENCE ENGINE]
+        const bootLines = [
+            "INITIALIZING DD1_JR BIOS V4.0...",
+            "CHECKING RAM.................. [OK]",
+            "MOUNTING ENCRYPTED_DRIVES..... [DONE]",
+            "CONNECTING TO NEURAL_NET...... [SUCCESS]",
+            "BYPASSING KERNEL_RESTRICTIONS.. [BYPASSED]",
+            "LOADING UI_CORE_MODULES....... [99%]",
+            "ESTABLISHING SECURE_TUNNEL.... [CONNECTED]",
+            "WELCOME BACK, COMMANDER DANIEL."
+        ];
+
+        function startBootSequence() {
+            const term = document.getElementById('boot-terminal');
+            const bar = document.getElementById('boot-bar');
+            let lineIdx = 0;
+
+            const printLine = () => {
+                if(lineIdx < bootLines.length) {
+                    const l = document.createElement('div');
+                    l.className = 'boot-line';
+                    l.innerHTML = `<span style="color:#555">[${new Date().toLocaleTimeString()}]</span> ${bootLines[lineIdx]}`;
+                    term.appendChild(l);
+                    lineIdx++;
+                    
+                    // Update progress bar
+                    bar.style.width = (lineIdx / bootLines.length) * 100 + "%";
+                    
+                    setTimeout(printLine, Math.random() * 400 + 100);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('boot-sequence').style.transform = "translateY(-100%)";
+                        sendNotification("System online. Neural link established.", "blue");
                     }, 800);
-                }, 500);
-            }
-            fill.style.width = p + "%";
-            statusText.innerText = statuses[Math.floor(p/26)];
-        }, 120);
+                }
+                term.scrollTop = term.scrollHeight;
+            };
+            printLine();
+        }
 
-        // [2] Matrix Logic
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const letters = "01ABCDEF01";
-        const drops = Array(Math.floor(canvas.width/20)).fill(1);
+        // 2. [MATRIX BACKGROUND ENGINE]
+        const matrixCanvas = document.getElementById('matrix-bg');
+        const mCtx = matrixCanvas.getContext('2d');
+        matrixCanvas.width = window.innerWidth;
+        matrixCanvas.height = window.innerHeight;
 
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#bc13fe"; ctx.font = "15px monospace";
-            drops.forEach((y, i) => {
-                const text = letters[Math.floor(Math.random()*letters.length)];
-                ctx.fillText(text, i*20, y*20);
-                if(y*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+        const fontSize = 16;
+        const columns = matrixCanvas.width / fontSize;
+        const rainDrops = Array.from({ length: columns }).fill(1);
+
+        const drawMatrix = () => {
+            mCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            mCtx.fillStyle = '#bc13fe';
+            mCtx.font = fontSize + 'px monospace';
+
+            rainDrops.forEach((y, x) => {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                mCtx.fillText(text, x * fontSize, y * fontSize);
+                if (y * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                    rainDrops[x] = 0;
+                }
+                rainDrops[x]++;
             });
-        }
-        let mInterval = setInterval(drawMatrix, 50);
+        };
+        let mInterval = setInterval(drawMatrix, 30);
 
-        function toggleMatrix() {
-            const btn = document.getElementById('mToggle');
-            if (canvas.style.opacity === "0") {
-                canvas.style.opacity = "0.4";
-                btn.innerHTML = '<i class="fas fa-microchip"></i> MATRIX_FEED: ON';
-                btn.classList.remove('off');
-            } else {
-                canvas.style.opacity = "0";
-                btn.innerHTML = '<i class="fas fa-microchip"></i> MATRIX_FEED: OFF';
-                btn.classList.add('off');
+        // 3. [PARTICLE ENGINE (MOUSE FOLLOW)]
+        const partCanvas = document.getElementById('canvas-particles');
+        const pCtx = partCanvas.getContext('2d');
+        partCanvas.width = window.innerWidth;
+        partCanvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = '#bc13fe';
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if(this.size > 0.2) this.size -= 0.01;
+            }
+            draw() {
+                pCtx.fillStyle = this.color;
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                pCtx.fill();
             }
         }
 
-        // [3] Terminal Logs Emulation
-        const term = document.getElementById('terminal-emulator');
+        function handleParticles() {
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.3) {
+                    particlesArray.splice(i, 1); i--;
+                }
+            }
+        }
+
+        function animateParticles() {
+            pCtx.clearRect(0, 0, partCanvas.width, partCanvas.height);
+            if (mouse.x && mouse.y) {
+                for(let i=0; i<2; i++) particlesArray.push(new Particle(mouse.x, mouse.y));
+            }
+            handleParticles();
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // 4. [OS LOGIC & UI CONTROLS]
+        function toggleMatrix() {
+            const btn = document.getElementById('matrix-toggle');
+            if (matrixCanvas.style.opacity === "0") {
+                matrixCanvas.style.opacity = "0.15";
+                btn.innerText = "Matrix: ON";
+                btn.classList.add('active');
+            } else {
+                matrixCanvas.style.opacity = "0";
+                btn.innerText = "Matrix: OFF";
+                btn.classList.remove('active');
+            }
+        }
+
+        function toggleFX() {
+            const btn = document.getElementById('fx-toggle');
+            const particles = document.getElementById('canvas-particles');
+            if (particles.style.display === "none") {
+                particles.style.display = "block";
+                btn.innerText = "FX: ON";
+                btn.classList.add('active');
+            } else {
+                particles.style.display = "none";
+                btn.innerText = "FX: OFF";
+                btn.classList.remove('active');
+            }
+        }
+
+        function emergencyExit() {
+            document.body.style.filter = "invert(1) grayscale(1)";
+            setTimeout(() => { window.location.href = "https://github.com/DanneKZ"; }, 500);
+        }
+
+        // 5. [SYSTEM MONITORING (CPU/MEM/CLOCK)]
+        setInterval(() => {
+            const cpu = Math.floor(Math.random() * 15) + 5;
+            const mem = (Math.random() * 2 + 4).toFixed(1);
+            const ping = Math.floor(Math.random() * 20) + 10;
+            
+            document.getElementById('cpu-val').innerText = cpu + "%";
+            document.getElementById('mem-val').innerText = mem + "GB";
+            document.getElementById('os-clock').innerText = new Date().toLocaleTimeString();
+            document.getElementById('ping-val').innerText = ping + "ms";
+        }, 1000);
+
+        // 6. [TERMINAL FEED SIMULATOR]
+        const terminal = document.getElementById('term-feed');
         const commands = [
-            "SCANNING PORT 8080...", "SSL_HANDSHAKE_SUCCESS", "SHIELD_PROTO_V4_LOADED", 
-            "UPDATING_CORE_ENGINE", "ENCRYPTING_USER_DATA", "CLEANING_CACHE...", 
-            "DD1_JR_LOGIN: VERIFIED", "FIREWALL_STATUS: ACTIVE"
+            "> GET /api/v1/security/status 200 OK",
+            "> SHIELD_PROTO: PACKET_INSPECTED (PASS)",
+            "> NEURAL_LINK: LATENCY_STABLE",
+            "> DB_QUERY: USER_DANIEL_LOADED",
+            "> WARN: UNAUTHORIZED_ACCESS_ATTEMPT_BLOCKED",
+            "> KERNEL: OPTIMIZING_RESOURCES",
+            "> CRON: BACKUP_SYNC_COMPLETED",
+            "> INTEL: NO_THREATS_DETECTED_IN_RANGE"
         ];
 
         setInterval(() => {
-            const line = document.createElement('div');
-            line.className = "log-line";
-            line.innerHTML = `<span class="log-time">[${new Date().toLocaleTimeString()}]</span> > ${commands[Math.floor(Math.random()*commands.length)]}`;
-            term.appendChild(line);
-            if (term.childNodes.length > 10) term.firstChild.remove();
-            term.scrollTop = term.scrollHeight;
-        }, 2500);
+            const p = document.createElement('div');
+            p.style.marginBottom = "4px";
+            p.innerHTML = `<span style="color:#333">[${new Date().toLocaleTimeString()}]</span> ${commands[Math.floor(Math.random()*commands.length)]}`;
+            terminal.appendChild(p);
+            if(terminal.childNodes.length > 20) terminal.firstChild.remove();
+            terminal.scrollTop = terminal.scrollHeight;
+        }, 3000);
 
-        function toggleLogs() {
-            const btn = document.getElementById('lToggle');
-            if (term.style.visibility === "hidden") {
-                term.style.visibility = "visible"; term.style.opacity = "1";
-                btn.innerHTML = '<i class="fas fa-terminal"></i> LOGS_STREAM: ON';
-                btn.classList.remove('off');
-            } else {
-                term.style.visibility = "hidden"; term.style.opacity = "0";
-                btn.innerHTML = '<i class="fas fa-terminal"></i> LOGS_STREAM: OFF';
-                btn.classList.add('off');
+        // 7. [COMMAND INPUT SYSTEM]
+        document.getElementById('cmdInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = this.value.toLowerCase();
+                if(cmd === 'clear') {
+                    terminal.innerHTML = "";
+                    sendNotification("Terminal cleared.", "purple");
+                } else if(cmd === 'help') {
+                    sendNotification("Commands: clear, help, matrix, exit", "blue");
+                } else {
+                    sendNotification(`Executing: ${cmd}`, "blue");
+                }
+                this.value = "";
             }
+        });
+
+        // 8. [NOTIFICATION SYSTEM]
+        function sendNotification(text, color) {
+            const center = document.getElementById('notification-center');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderColor = color === 'blue' ? 'var(--neon-blue)' : 'var(--neon-purple)';
+            toast.innerHTML = `<div style="font-size:10px; color:#555">SYSTEM_ALERT</div><div>${text}</div>`;
+            center.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 4000);
         }
 
-        // [4] Utility: Clock & Ping
-        setInterval(() => {
-            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
-            document.getElementById('ping').innerText = Math.floor(Math.random()*15 + 15);
-        }, 1000);
-
-        // [5] ESC Key to Home
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") window.location.href = "https://dannekz.github.io/DD1_JR/";
+        // 9. [WINDOW RESIZE ADAPTATION]
+        window.addEventListener('resize', () => {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            partCanvas.width = window.innerWidth;
+            partCanvas.height = window.innerHeight;
         });
+
+        // ESC Key Support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") emergencyExit();
+        });
+
     </script>
 </body>
 </html>
