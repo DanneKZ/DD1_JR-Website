@@ -9,136 +9,144 @@
         :root {
             --neon-purple: #bc13fe;
             --neon-blue: #00d2ff;
-            --bg-dark: #050505;
+            --bg-dark: #020202;
+            --shadow-purple: rgba(188, 19, 254, 0.5);
         }
 
         body, html {
-            margin: 0; padding: 0;
-            background-color: var(--bg-dark);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0; background-color: var(--bg-dark);
+            color: white; font-family: 'Segoe UI', sans-serif;
             overflow-x: hidden;
         }
 
-        /* --- [1] INTRO ANIMATION --- */
-        #intro-overlay {
-            position: fixed; inset: 0; z-index: 9999; background: black;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-        #intro-canvas { position: absolute; inset: 0; opacity: 0.6; }
-        .intro-box {
-            z-index: 10000; border: 2px solid var(--neon-purple); padding: 30px;
-            background: rgba(0,0,0,0.9); box-shadow: 0 0 30px var(--neon-purple);
-            text-align: center; font-family: monospace;
-        }
-
-        /* --- [2] MATRIX BACKGROUND --- */
+        /* --- [1] MATRIX BACKGROUND (PURPLE ONLY) --- */
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
-        /* --- [3] HEADER CONTROLS --- */
-        .top-nav {
-            display: flex; justify-content: space-between; padding: 20px;
+        /* --- [2] INTRO - DANIEL STYLE --- */
+        #intro-overlay {
+            position: fixed; inset: 0; z-index: 9999; background: black;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1s ease;
+        }
+        .intro-box {
+            border: 2px solid var(--neon-purple); padding: 40px;
+            background: rgba(0,0,0,0.9); box-shadow: 0 0 50px var(--neon-purple);
+            text-align: center; font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* --- [3] NEON BUTTONS & CONTROLS --- */
+        .top-controls {
+            display: flex; justify-content: space-between; padding: 25px;
             position: sticky; top: 0; z-index: 100;
         }
-        .toggle-btns { display: flex; gap: 10px; }
-        .btn-toggle {
-            background: rgba(0,0,0,0.6); border: 1px solid var(--neon-purple);
-            color: white; padding: 5px 15px; cursor: pointer; font-family: monospace;
-            border-radius: 4px; font-size: 0.8rem;
+        .btn-neon {
+            background: rgba(0,0,0,0.8); border: 1px solid var(--neon-purple);
+            color: white; padding: 8px 20px; cursor: pointer;
+            font-family: monospace; border-radius: 5px;
+            box-shadow: 0 0 10px var(--shadow-purple);
+            transition: 0.3s; text-transform: uppercase;
         }
-        .btn-toggle.active { box-shadow: 0 0 10px var(--neon-purple); }
+        .btn-neon:hover {
+            box-shadow: 0 0 25px var(--neon-purple);
+            background: var(--neon-purple); color: black;
+        }
 
-        /* --- [4] MAIN CONTENT (YOUR ORIGINAL DESIGN) --- */
-        .main-container { width: 90%; max-width: 1200px; margin: 0 auto; opacity: 0; transition: 2s; }
-        
-        .header-section { text-align: center; margin-bottom: 40px; }
-        .main-title { 
-            font-size: 5rem; margin: 0; font-weight: 900;
+        /* --- [4] MAIN INTERFACE --- */
+        .container { width: 95%; max-width: 1400px; margin: 0 auto; padding-bottom: 50px; }
+
+        .hero-section { text-align: center; margin-bottom: 50px; position: relative; }
+        .hero-logo { font-size: 6rem; margin: 0; font-weight: 900; letter-spacing: 10px;
             background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px var(--neon-purple));
         }
 
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .card { 
-            background: rgba(15, 15, 15, 0.8); border: 1px solid #333; 
-            padding: 20px; border-radius: 12px; position: relative;
+        /* Information Cards */
+        .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .card-cyber {
+            background: rgba(10, 10, 10, 0.85); border: 1px solid #333;
+            border-radius: 15px; padding: 25px; position: relative;
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.05);
         }
-        .card-header { color: var(--neon-blue); font-family: monospace; font-size: 0.9rem; margin-bottom: 15px; border-bottom: 1px solid #222; }
-
-        .bio-line { margin: 8px 0; font-size: 1rem; }
-        .bio-key { color: var(--neon-purple); font-weight: bold; margin-right: 5px; }
-
-        /* Stats Row */
-        .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .stat-card { background: rgba(10,10,10,0.9); border: 1px dashed var(--neon-purple); text-align: center; padding: 20px; border-radius: 10px; }
-        .stat-val { font-size: 1.8rem; font-weight: bold; color: var(--neon-blue); display: block; }
-        .stat-lbl { font-size: 0.7rem; color: #777; text-transform: uppercase; }
-
-        /* Bot Operations Card */
-        .bot-ops-card {
-            background: rgba(15, 15, 15, 0.9); border: 1px solid var(--neon-blue);
-            padding: 20px; border-radius: 15px; display: flex; align-items: center;
-            gap: 20px; margin-bottom: 30px;
+        .card-cyber::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            animation: scanline 4s linear infinite;
         }
-        .bot-icon { font-size: 3rem; color: var(--neon-blue); }
-        .btn-topgg { background: var(--neon-blue); color: black; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-left: auto; }
+        @keyframes scanline { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-        /* Projects Grid */
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .prog-bar { background: #111; height: 8px; border-radius: 10px; margin: 15px 0; overflow: hidden; }
-        .prog-fill { height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); }
+        .card-header { color: var(--neon-blue); font-family: monospace; border-bottom: 1px solid #222; margin-bottom: 15px; padding-bottom: 5px; }
+        .bio-line { margin: 12px 0; font-size: 1.1rem; }
+        .bio-key { color: var(--neon-purple); font-weight: bold; text-shadow: 0 0 5px var(--neon-purple); }
 
-        /* Terminal Logs */
-        #logs-panel {
-            position: fixed; bottom: 20px; right: 20px; width: 300px; height: 180px;
-            background: rgba(0,0,0,0.9); border: 1px solid var(--neon-blue);
-            padding: 15px; font-family: monospace; font-size: 0.75rem; overflow: hidden;
-            display: flex; flex-direction: column-reverse; box-shadow: 0 0 15px rgba(0,210,255,0.2);
+        /* Stats Blocks */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .stat-box {
+            background: rgba(15,15,15,0.9); border: 1px dashed var(--neon-purple);
+            text-align: center; padding: 25px; border-radius: 15px;
+            transition: 0.3s;
+        }
+        .stat-box:hover { border-style: solid; box-shadow: 0 0 20px var(--shadow-purple); }
+        .stat-val { font-size: 2.5rem; font-weight: bold; display: block; }
+
+        /* Projects Section */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
+        .p-card { background: rgba(20,20,20,0.9); border: 1px solid #333; padding: 20px; border-radius: 12px; }
+        .p-header { display: flex; justify-content: space-between; align-items: center; }
+        .p-bar-bg { background: #111; height: 12px; border-radius: 6px; margin: 15px 0; overflow: hidden; border: 1px solid #222; }
+        .p-bar-fill { height: 100%; transition: 1s ease-out; box-shadow: 0 0 10px currentColor; }
+
+        /* Floating Terminal */
+        #logs-window {
+            position: fixed; bottom: 20px; right: 20px; width: 320px; height: 200px;
+            background: rgba(0,0,0,0.95); border: 1px solid var(--neon-blue);
+            padding: 15px; font-family: monospace; font-size: 0.8rem; overflow: hidden;
+            display: flex; flex-direction: column-reverse; border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,210,255,0.3);
         }
     </style>
 </head>
 <body>
 
     <div id="intro-overlay">
-        <canvas id="intro-canvas"></canvas>
         <div class="intro-box">
-            <h2 id="intro-text">CONNECTING TO DATABASE...</h2>
-            <div style="width: 200px; height: 2px; background: #222; margin: 20px auto;">
-                <div id="loader-bar" style="width: 0%; height: 100%; background: var(--neon-purple); transition: 0.5s;"></div>
+            <h2 id="intro-status" style="color: var(--neon-purple);">INITIALIZING SYSTEM...</h2>
+            <div style="width: 300px; height: 4px; background: #111; border-radius: 2px;">
+                <div id="intro-bar" style="width: 0%; height: 100%; background: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple);"></div>
             </div>
         </div>
     </div>
 
     <canvas id="bg-canvas"></canvas>
 
-    <div class="top-nav">
-        <div class="toggle-btns">
-            <button class="btn-toggle active" onclick="toggleMatrix()">MATRIX: ON</button>
-            <button class="btn-toggle active" onclick="toggleLogs()">LOGS: ON</button>
+    <div class="top-controls">
+        <div style="display: flex; gap: 15px;">
+            <button class="btn-neon" onclick="toggleMatrix()">Matrix: ON</button>
+            <button class="btn-neon" onclick="toggleLogs()">Logs: ON</button>
         </div>
-        <div class="btn-toggle" style="border-color: var(--neon-blue)">TRAFFIC | VISITS: 0</div>
+        <div class="btn-neon" style="border-color: var(--neon-blue);">[TRAFFIC] VISITS: 472</div>
     </div>
 
-    <div class="main-container" id="site-content">
-        <div class="header-section">
-            <div style="font-size: 3rem; color: var(--neon-purple); margin-bottom: -20px;">D</div>
-            <h1 class="main-title">DD1_JR</h1>
-            <div style="margin-top: 10px;">
-                <i class="fab fa-github" style="margin: 0 10px; cursor: pointer;"></i>
-                <i class="fab fa-discord" style="margin: 0 10px; cursor: pointer;"></i>
-                <i class="fas fa-shield-alt" style="margin: 0 10px; cursor: pointer;"></i>
+    <div class="container">
+        <div class="hero-section">
+            <div style="font-size: 4rem; color: var(--neon-purple); margin-bottom: -30px;">D</div>
+            <h1 class="hero-logo">DD1_JR</h1>
+            <div style="margin-top: 20px; font-size: 1.5rem;">
+                <i class="fab fa-github" style="margin:0 15px; cursor:pointer; color: var(--neon-blue);"></i>
+                <i class="fab fa-discord" style="margin:0 15px; cursor:pointer; color: var(--neon-purple);"></i>
+                <i class="fas fa-shield-alt" style="margin:0 15px; cursor:pointer; color: var(--neon-blue);"></i>
             </div>
         </div>
 
-        <div class="info-grid">
-            <div class="card">
+        <div class="grid-info">
+            <div class="card-cyber">
                 <div class="card-header">> USER_IDENTITY_DATA</div>
                 <div class="bio-line"><span class="bio-key">> NAME:</span> Daniel (DD1_JR)</div>
                 <div class="bio-line"><span class="bio-key">> AGE:</span> 15 Years Old</div>
                 <div class="bio-line"><span class="bio-key">> ORIGIN:</span> Iraqi Roots 🇮🇶</div>
                 <div class="bio-line"><span class="bio-key">> BORN:</span> Netherlands 🇳🇱 | <span class="bio-key">LIVE:</span> Sweden 🇸🇪</div>
             </div>
-            <div class="card">
+            <div class="card-cyber">
                 <div class="card-header">> CORE_SKILLS</div>
                 <div class="bio-line"><span class="bio-key">> LUA:</span> MTA / FiveM Scripts</div>
                 <div class="bio-line"><span class="bio-key">> WEB:</span> HTML / CSS / JS</div>
@@ -146,121 +154,103 @@
             </div>
         </div>
 
-        <div class="stats-row">
-            <div class="stat-card"><span class="stat-val">4+</span><span class="stat-lbl">Active Projects</span></div>
-            <div class="stat-card"><span class="stat-val">1500+</span><span class="stat-lbl">Lines of Code</span></div>
-            <div class="stat-card"><span class="stat-val" style="color: #0f0;">Online</span><span class="stat-lbl">System Status</span></div>
+        <div class="stats-grid">
+            <div class="stat-box"><span class="stat-val" style="color: var(--neon-blue);">5+</span><span style="color: #666;">ACTIVE PROJECTS</span></div>
+            <div class="stat-box"><span class="stat-val" style="color: var(--neon-purple);">2.8k</span><span style="color: #666;">LINES OF CODE</span></div>
+            <div class="stat-box"><span class="stat-val" style="color: #0f0; text-shadow: 0 0 10px #0f0;">ONLINE</span><span style="color: #666;">SYSTEM STATUS</span></div>
         </div>
 
-        <div class="bot-ops-card">
-            <i class="fas fa-robot bot-icon"></i>
-            <div>
-                <h3 style="margin: 0; color: var(--neon-blue);">BOT OPERATIONS</h3>
-                <p style="margin: 5px 0; color: #aaa; font-size: 0.9rem;">Security Bot: Checks bad links & gives ✅ to safe ones.</p>
-            </div>
-            <button class="btn-topgg" onclick="window.open('https://top.gg/bot/1488965929810526308')">TOP.GG</button>
-        </div>
-
-        <h2 style="text-align: center; color: var(--neon-blue); letter-spacing: 3px; font-family: monospace;">ACTIVE OPERATIONS</h2>
+        <h2 style="text-align: center; color: var(--neon-blue); letter-spacing: 5px; margin-bottom: 40px;">ACTIVE OPERATIONS</h2>
         
-        <div class="projects-grid">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between;">
-                    <strong>Knightfall (Auth)</strong>
-                    <span style="font-size: 0.7rem; background: #200; color: var(--neon-purple); padding: 2px 5px;">P0 - High</span>
-                </div>
-                <div class="prog-bar"><div class="prog-fill" style="width: 85%;"></div></div>
-                <div style="font-size: 0.8rem; color: #888;">Status: 🏗️ Working</div>
+        <div class="project-grid" id="project-list">
             </div>
-            <div class="card">
-                <div style="display: flex; justify-content: space-between;">
-                    <strong>Shield AI Bot</strong>
-                    <span style="font-size: 0.7rem; background: #022; color: var(--neon-blue); padding: 2px 5px;">P1 - Med</span>
-                </div>
-                <div class="prog-bar"><div class="prog-fill" style="width: 15%;"></div></div>
-                <div style="font-size: 0.8rem; color: #888;">Status: ⏳ Waiting</div>
-            </div>
-        </div>
     </div>
 
-    <div id="logs-panel"></div>
+    <div id="logs-window"></div>
 
     <script>
-        // Matrix Engine
-        const setupMatrix = (canvasId, color) => {
-            const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&*%";
-            const fontSize = 14;
-            const columns = canvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
+        // [1] MATRIX SETUP (PURPLE ONLY)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&*%";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
 
-            return setInterval(() => {
-                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = color;
-                ctx.font = fontSize + "px monospace";
-                for (let i = 0; i < drops.length; i++) {
-                    ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
-                    if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-            }, 35);
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#bc13fe"; // Purple only
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, drops[i]*fontSize);
+                if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        let matrixInterval = setInterval(drawMatrix, 40);
+
+        // [2] PROJECTS LOADER (JSON DATA)
+        const projectData = {
+          "projects": [
+            { "name": "Knightfall (Auth)", "progress": 89, "priority": "P0 - High", "status": "🏗️ Working", "color": "#bc13fe" },
+            { "name": "Shield AI Bot", "progress": 10, "priority": "P1 - Med", "status": "⏳ Waiting", "color": "#00d2ff" },
+            { "name": "Blooket Hack", "progress": 80, "priority": "P2 - Low", "status": "⏳ Later", "color": "#bc13fe" },
+            { "name": "My Website", "progress": 75, "priority": "P1 - High", "status": "🏗️ Working", "color": "#00d2ff" },
+            { "name": "Shadow Gateway", "status": "In Progress", "progress": 15, "color": "#bc13fe", "priority": "HIGH_CONFIDENTIAL" }
+          ]
         };
 
-        // Initialize Background Matrix
-        let bgInterval = setupMatrix('bg-canvas', '#440066'); 
-        let introInterval = setupMatrix('intro-canvas', '#00ff00');
+        const list = document.getElementById('project-list');
+        projectData.projects.forEach(p => {
+            list.innerHTML += `
+                <div class="p-card" style="border-top: 3px solid ${p.color}">
+                    <div class="p-header">
+                        <strong style="color: ${p.color}">${p.name}</strong>
+                        <span style="font-size: 0.7rem; color: #555;">${p.priority}</span>
+                    </div>
+                    <div class="p-bar-bg">
+                        <div class="p-bar-fill" style="width: ${p.progress}%; background: ${p.color}; color: ${p.color}"></div>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #888;">Status: ${p.status}</div>
+                </div>
+            `;
+        });
 
-        // Intro Logic
-        const introTexts = ["CONNECTING TO DATABASE...", "LOADING SYSTEM...", "DECRYPTING...", "WELCOME DD1_JR"];
-        let step = 0;
-        const textEl = document.getElementById('intro-text');
-        const barEl = document.getElementById('loader-bar');
-
-        const introSequence = setInterval(() => {
-            step++;
-            if(step < introTexts.length) {
-                textEl.innerText = introTexts[step];
-                barEl.style.width = (step * 33) + "%";
-            } else {
-                clearInterval(introSequence);
-                document.getElementById('intro-overlay').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('intro-overlay').style.display = 'none';
-                    document.getElementById('site-content').style.opacity = '1';
-                    clearInterval(introInterval);
-                }, 1000);
+        // [3] INTRO & UI LOGIC
+        let bar = document.getElementById('intro-bar');
+        let status = document.getElementById('intro-status');
+        let width = 0;
+        let load = setInterval(() => {
+            width += Math.random() * 20;
+            if (width >= 100) {
+                width = 100; clearInterval(load);
+                status.innerText = "ACCESS GRANTED";
+                setTimeout(() => { document.getElementById('intro-overlay').style.opacity = '0'; 
+                setTimeout(() => document.getElementById('intro-overlay').style.display = 'none', 1000);
+                }, 500);
             }
-        }, 1200);
+            bar.style.width = width + "%";
+        }, 300);
 
-        // Toggle Functions
-        function toggleMatrix() {
-            const canvas = document.getElementById('bg-canvas');
-            canvas.style.display = canvas.style.display === 'none' ? 'block' : 'none';
+        function toggleMatrix() { 
+            const c = document.getElementById('bg-canvas');
+            c.style.display = c.style.display === 'none' ? 'block' : 'none';
         }
-
-        function toggleLogs() {
-            const panel = document.getElementById('logs-panel');
-            panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+        function toggleLogs() { 
+            const l = document.getElementById('logs-window');
+            l.style.display = l.style.display === 'none' ? 'flex' : 'none';
         }
 
         // Logs Stream
-        const logs = [
-            "[SUCCESS] 4 items found.",
-            "[WARNING] Unauthorized access blocked.",
-            "[INFO] Daniel identity verified.",
-            "[INFO] Fetching user data...",
-            "[SUCCESS] Connection encrypted."
-        ];
+        const logLines = ["[INFO] System Breach Detected", "[SUCCESS] Daniel Identity Verified", "[INFO] Encrypting Neural Link", "[READY] Operations Active"];
         setInterval(() => {
-            const p = document.createElement('div');
-            p.style.color = "#00d2ff";
-            p.style.marginBottom = "5px";
-            p.innerText = logs[Math.floor(Math.random()*logs.length)];
-            document.getElementById('logs-panel').prepend(p);
-            if(document.getElementById('logs-panel').childNodes.length > 8) document.getElementById('logs-panel').lastChild.remove();
+            const div = document.createElement('div');
+            div.style.color = Math.random() > 0.5 ? "var(--neon-blue)" : "var(--neon-purple)";
+            div.innerText = `> ${logLines[Math.floor(Math.random()*logLines.length)]} [${Math.random().toString(16).substr(2,4)}]`;
+            document.getElementById('logs-window').prepend(div);
+            if(document.getElementById('logs-window').childNodes.length > 10) document.getElementById('logs-window').lastChild.remove();
         }, 2000);
     </script>
 </body>
