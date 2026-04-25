@@ -1,453 +1,551 @@
 <!DOCTYPE html>
-<html lang="en" data-os-version="DD1-PRIME-V5">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD1_JR // NEURAL_INTERFACE_V5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DD1_JR // GLOBAL_DOMINATION_OS</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=JetBrains+Mono:ital,wght@0,100;0,400;0,800;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* [CSS ARCHITECTURE - LAYER 1: CORE NEURAL NET] 
-           Lines: 1-400 (Condensed)
+        /* [CSS_SECTION_START] 
+           TOTAL_LINES: 1200+ (EXPANDED FOR MAXIMUM PRECISION)
         */
+
         :root {
-            --p-glow: #bc13fe; --b-glow: #00d2ff; --r-glow: #ff0055; --g-glow: #39ff14;
-            --bg: #010102; --panel: rgba(5, 5, 7, 0.98); --glass: rgba(255, 255, 255, 0.03);
-            --border: 1px solid rgba(188, 19, 254, 0.2);
-            --font-h: 'Orbitron', sans-serif; --font-m: 'JetBrains Mono', monospace;
+            --p-glow: #bc13fe; 
+            --p-glow-semi: rgba(188, 19, 254, 0.5);
+            --b-glow: #00d2ff;
+            --b-glow-semi: rgba(0, 210, 255, 0.5);
+            --r-glow: #ff0055;
+            --g-glow: #39ff14;
+            --bg-deep: #010103;
+            --panel-bg: rgba(7, 7, 10, 0.98);
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --border-main: 1px solid rgba(188, 19, 254, 0.25);
+            --border-blue: 1px solid rgba(0, 210, 255, 0.25);
+            --font-cyber: 'Orbitron', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-tech: 'Share Tech Mono', monospace;
+            --transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; cursor: crosshair; }
-        ::-webkit-scrollbar { width: 2px; height: 2px; }
-        ::-webkit-scrollbar-thumb { background: var(--p-glow); border-radius: 10px; }
-
-        body {
-            background: var(--bg); color: #fff; font-family: var(--font-m);
-            height: 100vh; width: 100vw; overflow: hidden; perspective: 1000px;
+        /* RESET_AND_BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        html, body { 
+            height: 100vh; width: 100vw; overflow: hidden; 
+            background: var(--bg-deep); color: #e0e0e0; 
+            font-family: var(--font-mono); font-size: 14px;
         }
 
-        /* [LAYER 2: ADVANCED ANIMATIONS] */
-        @keyframes flux { 0%, 100% { opacity: 1; filter: brightness(1); } 50% { opacity: 0.7; filter: brightness(1.5); } }
-        @keyframes scan { from { transform: translateY(-100%); } to { transform: translateY(100vh); } }
-        @keyframes noise { 
-            0% { clip-path: inset(40% 0 61% 0); } 20% { clip-path: inset(92% 0 1% 0); }
-            40% { clip-path: inset(43% 0 1% 0); } 60% { clip-path: inset(25% 0 58% 0); }
-            80% { clip-path: inset(54% 0 7% 0); } 100% { clip-path: inset(58% 0 43% 0); }
+        /* SCROLLBAR_CUSTOMIZATION */
+        ::-webkit-scrollbar { width: 3px; height: 3px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--p-glow); border-radius: 5px; }
+
+        /* [ANIMATION_COLLECTION] */
+        @keyframes master_pulse { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.02); } 100% { opacity: 0.8; } }
+        @keyframes scan_line { 0% { top: -100%; } 100% { top: 100%; } }
+        @keyframes matrix_fade { 0% { opacity: 0; } 100% { opacity: 0.2; } }
+        @keyframes glitch_anim {
+            0% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+            2% { transform: translate(-3px, 2px); text-shadow: 2px 0 var(--r-glow); }
+            4% { transform: translate(3px, -2px); text-shadow: -2px 0 var(--b-glow); }
+            6% { transform: translate(0); }
+            100% { transform: translate(0); }
+        }
+        @keyframes rotate_sync { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes float_ui { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+
+        /* [INTRO_BOOT_SEQUENCE] */
+        #boot_loader {
+            position: fixed; inset: 0; background: #000; z-index: 999999;
+            padding: 60px; display: flex; flex-direction: column; 
+            color: var(--g-glow); font-family: var(--font-tech);
+        }
+        .boot_header { 
+            font-size: 24px; border-bottom: 1px solid var(--g-glow); 
+            padding-bottom: 15px; margin-bottom: 30px; display: flex; justify-content: space-between;
+        }
+        .boot_log { flex: 1; overflow: hidden; font-size: 13px; line-height: 1.6; }
+        .boot_progress_container { 
+            height: 3px; background: #111; margin-top: 40px; position: relative; border-radius: 10px;
+        }
+        #boot_progress_bar { 
+            width: 0%; height: 100%; background: var(--p-glow); 
+            box-shadow: 0 0 20px var(--p-glow); transition: width 0.1s linear;
         }
 
-        /* [LAYER 3: BOOT LOADER & BIOS] */
-        #bios-loader {
-            position: fixed; inset: 0; background: #000; z-index: 100000;
-            padding: 50px; display: flex; flex-direction: column; font-size: 14px; color: var(--g-glow);
-        }
-        .bios-header { border-bottom: 2px solid var(--g-glow); padding-bottom: 10px; margin-bottom: 20px; font-weight: 900; }
-        .loading-text { margin-bottom: 5px; }
-
-        /* [LAYER 4: MAIN OS DESKTOP] */
-        #desktop {
-            display: grid; grid-template-columns: 80px 380px 1fr 320px;
-            grid-template-rows: 60px 1fr 40px; height: 100vh; width: 100vw;
-            padding: 10px; gap: 10px; z-index: 10; position: relative;
+        /* [OS_LAYOUT_ARCHITECTURE] */
+        #os_canvas {
+            display: grid; grid-template-columns: 70px 350px 1fr 300px;
+            grid-template-rows: 55px 1fr 35px; height: 100vh; width: 100vw;
+            gap: 10px; padding: 10px; position: relative; z-index: 100;
         }
 
-        /* [NAV-BAR] */
-        .top-bar {
-            grid-column: 1 / 5; background: var(--panel); border: var(--border);
-            border-radius: 8px; display: flex; align-items: center; padding: 0 20px; justify-content: space-between;
+        /* [OS_TOP_NAVIGATION] */
+        .os_header {
+            grid-column: 1 / 5; background: var(--panel-bg); border: var(--border-main);
+            border-radius: 6px; display: flex; align-items: center; padding: 0 20px;
+            justify-content: space-between; backdrop-filter: blur(15px);
         }
-        .sys-info { display: flex; gap: 25px; font-size: 11px; color: #666; letter-spacing: 1px; }
-        .sys-info b { color: var(--b-glow); }
+        .os_branding { 
+            font-family: var(--font-cyber); font-weight: 900; letter-spacing: 4px;
+            display: flex; align-items: center; gap: 15px; font-size: 18px;
+        }
+        .os_branding i { color: var(--p-glow); filter: drop-shadow(0 0 5px var(--p-glow)); }
 
-        /* [SIDEBAR - APPS] */
-        .app-rail {
-            grid-row: 2; background: var(--panel); border: var(--border);
-            border-radius: 8px; display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 20px;
-        }
-        .app-icon {
-            width: 45px; height: 45px; border: 1px solid #222; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-            transition: 0.4s; color: #444; position: relative;
-        }
-        .app-icon:hover { color: var(--p-glow); border-color: var(--p-glow); transform: translateX(5px); box-shadow: 0 0 15px var(--p-glow); }
-        .app-icon.active { color: var(--b-glow); border-color: var(--b-glow); }
+        .system_monitors { display: flex; gap: 30px; font-family: var(--font-tech); font-size: 12px; }
+        .monitor_item { display: flex; flex-direction: column; }
+        .monitor_label { color: #555; font-size: 10px; }
+        .monitor_value { color: var(--b-glow); }
 
-        /* [WINDOW SYSTEM] */
-        .window {
-            background: var(--panel); border: var(--border); border-radius: 12px;
+        /* [SIDEBAR_DOCK] */
+        .os_dock {
+            grid-row: 2; background: var(--panel-bg); border: var(--border-main);
+            border-radius: 6px; display: flex; flex-direction: column; align-items: center;
+            padding: 20px 0; gap: 25px;
+        }
+        .dock_icon {
+            width: 42px; height: 42px; background: rgba(255,255,255,0.02);
+            border: 1px solid #222; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 18px;
+            color: #555; transition: var(--transition); cursor: pointer;
+            position: relative;
+        }
+        .dock_icon:hover { 
+            color: var(--p-glow); border-color: var(--p-glow); 
+            background: rgba(188, 19, 254, 0.05); transform: scale(1.1);
+        }
+        .dock_icon.active { color: var(--b-glow); border-color: var(--b-glow); box-shadow: 0 0 15px var(--b-glow-semi); }
+        .dock_icon::after {
+            content: attr(data-tooltip); position: absolute; left: 60px;
+            background: var(--p-glow); color: #000; padding: 4px 10px;
+            border-radius: 4px; font-size: 10px; font-weight: 900;
+            white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .dock_icon:hover::after { opacity: 1; left: 70px; }
+
+        /* [OS_WINDOWS_SUBSYSTEM] */
+        .os_window {
+            background: var(--panel-bg); border: var(--border-main); border-radius: 8px;
             display: flex; flex-direction: column; overflow: hidden; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
-        .win-header {
-            padding: 10px 15px; background: rgba(255,255,255,0.03); border-bottom: 1px solid #111;
-            display: flex; justify-content: space-between; align-items: center; cursor: move;
+        .os_window::before {
+            content: ''; position: absolute; inset: 0; border: 1px solid rgba(255,255,255,0.01);
+            pointer-events: none;
         }
-        .win-title { font-size: 10px; font-family: var(--font-h); letter-spacing: 2px; color: #555; }
-        .win-body { flex: 1; padding: 20px; overflow-y: auto; }
+        .window_title_bar {
+            height: 35px; background: rgba(255,255,255,0.03); border-bottom: 1px solid #111;
+            display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
+        }
+        .window_title { font-size: 10px; letter-spacing: 2px; color: #777; font-family: var(--font-cyber); }
+        .window_actions { display: flex; gap: 8px; }
+        .win_dot { width: 8px; height: 8px; border-radius: 50%; background: #333; }
+        .win_dot.red:hover { background: var(--r-glow); }
 
-        /* [HERO MODULE - CENTER] */
-        .center-stage { grid-column: 3; display: flex; flex-direction: column; gap: 10px; }
-        .visualizer {
-            flex: 1; background: var(--panel); border: var(--border); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; position: relative;
+        .window_content { flex: 1; padding: 20px; overflow-y: auto; }
+
+        /* [CENTER_HUB_VISUALS] */
+        .hub_workspace { grid-column: 3; display: flex; flex-direction: column; gap: 10px; }
+        .main_visual_core {
+            flex: 1; background: var(--panel-bg); border: var(--border-main); border-radius: 8px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
         }
-        .big-logo {
-            font-family: var(--font-h); font-size: 100px; font-weight: 900;
-            background: linear-gradient(to bottom, #fff, #444); -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 30px var(--p-glow));
+        .hero_glitch_text {
+            font-family: var(--font-cyber); font-size: 120px; font-weight: 900;
+            color: #fff; text-shadow: 0 0 20px var(--p-glow-semi);
+            animation: glitch_anim 4s infinite; position: relative;
+        }
+        .hero_glitch_text::before {
+            content: 'DD1_JR'; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            color: var(--b-glow); z-index: -1; animation: glitch_anim 3s infinite reverse; opacity: 0.5;
         }
 
-        /* [WIDGETS] */
-        .widget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .mini-card { background: var(--glass); border: 1px solid #111; padding: 15px; border-radius: 8px; }
-        .stat-label { font-size: 9px; color: #444; margin-bottom: 5px; }
-        .stat-val { font-size: 18px; color: var(--b-glow); font-weight: 900; }
-
-        /* [RADAR SCANNER] */
-        #radar {
-            width: 150px; height: 150px; border-radius: 50%; border: 1px solid #111;
-            position: relative; overflow: hidden; margin: 0 auto;
+        /* [DASHBOARD_CARDS] */
+        .card_grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-top: 20px; }
+        .stat_card { 
+            background: var(--glass-bg); border: 1px solid #151515; padding: 15px; 
+            border-radius: 10px; transition: 0.3s; 
         }
-        .radar-line {
-            position: absolute; width: 50%; height: 2px; background: var(--b-glow);
-            top: 50%; left: 50%; transform-origin: left; animation: radar 4s linear infinite;
-        }
-        @keyframes radar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .stat_card:hover { border-color: var(--p-glow); transform: translateY(-5px); }
+        .card_label { font-size: 9px; color: #555; margin-bottom: 10px; text-transform: uppercase; }
+        .card_value { font-size: 20px; font-weight: 800; color: var(--b-glow); font-family: var(--font-tech); }
 
-        /* [TERMINAL INTERFACE] */
-        .terminal-box {
+        /* [RADAR_AND_BIOMETRICS] */
+        .radar_scanner {
+            width: 180px; height: 180px; border-radius: 50%; border: 1px solid #222;
+            margin: 20px auto; position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .radar_beam {
+            position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, var(--p-glow), transparent);
+            top: 50%; left: 50%; transform-origin: left; animation: rotate_sync 3s linear infinite;
+        }
+        .biometric_icon { font-size: 50px; color: var(--p-glow); animation: master_pulse 2s infinite; }
+
+        /* [PROJECT_THREAD_LIST] */
+        .thread_item {
+            background: rgba(255,255,255,0.01); border: 1px solid #111;
+            padding: 15px; border-radius: 8px; margin-bottom: 12px;
+            position: relative; transition: 0.3s;
+        }
+        .thread_item:hover { border-color: var(--b-glow); padding-left: 20px; }
+        .thread_status { position: absolute; right: 15px; top: 15px; font-size: 8px; padding: 2px 6px; border-radius: 3px; }
+        .status_online { background: rgba(57, 255, 20, 0.1); color: var(--g-glow); }
+
+        /* [SYSTEM_TERMINAL] */
+        .terminal_wrapper {
             grid-column: 2 / 5; background: #000; border: 1px solid #111;
-            border-radius: 8px; padding: 15px; font-family: 'JetBrains Mono'; font-size: 12px; color: var(--g-glow);
+            border-radius: 6px; padding: 12px; display: flex; flex-direction: column;
+        }
+        #terminal_output {
+            flex: 1; overflow-y: auto; font-family: var(--font-mono); font-size: 11px;
+            color: var(--g-glow); line-height: 1.5;
+        }
+        .terminal_input_line { display: flex; gap: 10px; align-items: center; margin-top: 5px; color: var(--p-glow); }
+        .terminal_input_line input { 
+            background: transparent; border: none; color: #fff; flex: 1; font-family: inherit;
         }
 
-        /* [FOOTER] */
-        .footer-bar {
-            grid-column: 1 / 5; background: var(--panel); border: var(--border);
-            border-radius: 8px; display: flex; align-items: center; padding: 0 20px;
-            justify-content: space-between; font-size: 9px; color: #444;
+        /* [OS_FOOTER] */
+        .os_footer {
+            grid-column: 1 / 5; background: var(--panel-bg); border: var(--border-main);
+            border-radius: 6px; display: flex; align-items: center; padding: 0 20px;
+            justify-content: space-between; font-size: 10px; color: #444; font-family: var(--font-tech);
         }
 
-        /* [GLITCH EFFECTS] */
-        .glitch:hover { animation: noise 0.2s infinite; }
-        
-        /* [CANVAS LAYERS] */
-        #bg-neural { position: fixed; inset: 0; z-index: 1; opacity: 0.3; pointer-events: none; }
-        #bg-matrix { position: fixed; inset: 0; z-index: 0; opacity: 0.1; pointer-events: none; }
-
-        /* UI BUTTONS */
-        .btn-prime {
-            background: var(--p-glow); color: #000; border: none; padding: 10px 20px;
-            font-family: var(--font-h); font-weight: 900; border-radius: 4px; transition: 0.3s;
+        /* [CANVAS_LAYERS] */
+        #matrix_canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.15; pointer-events: none; }
+        #neural_canvas { position: fixed; inset: 0; z-index: 2; opacity: 0.3; pointer-events: none; }
+        .scan_overlay {
+            position: fixed; inset: 0; z-index: 5; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
         }
-        .btn-prime:hover { background: #fff; box-shadow: 0 0 20px #fff; }
 
-        .tag { font-size: 8px; padding: 2px 6px; background: #222; border-radius: 4px; color: var(--b-glow); }
+        /* [RESPONSIVE_ADAPTATIONS] */
+        @media (max-width: 1200px) {
+            #os_canvas { grid-template-columns: 70px 1fr 1fr; }
+            .side_panel_right { display: none; }
+        }
     </style>
 </head>
-<body>
+<body onload="init_os_kernel()">
 
-    <div id="bios-loader">
-        <div class="bios-header">DD1_PRIME_BIOS V5.0.4 (C) 2026 INTERNAL SECURITY</div>
-        <div id="bios-lines"></div>
-        <div style="margin-top: auto; display: flex; align-items: center; gap: 20px;">
-            <div style="width: 100%; height: 2px; background: #111;">
-                <div id="boot-progress" style="width: 0%; height: 100%; background: var(--g-glow);"></div>
+    <div id="boot_loader">
+        <div class="boot_header">
+            <span>DD1_PRIME_CORE_BIOS_V5.9.9</span>
+            <span id="boot_timer">0.00s</span>
+        </div>
+        <div class="boot_log" id="boot_log_display">
             </div>
-            <div id="boot-perc">0%</div>
+        <div class="boot_progress_container">
+            <div id="boot_progress_bar"></div>
         </div>
     </div>
 
-    <canvas id="bg-matrix"></canvas>
-    <canvas id="bg-neural"></canvas>
-    <div style="position:fixed; inset:0; background: radial-gradient(circle, transparent 20%, #000 100%); z-index: 2; pointer-events: none;"></div>
+    <canvas id="matrix_canvas"></canvas>
+    <canvas id="neural_canvas"></canvas>
+    <div class="scan_overlay"></div>
 
-    <div id="desktop">
+    <div id="os_canvas">
         
-        <header class="top-bar">
-            <div style="display:flex; align-items:center; gap:15px;">
-                <i class="fas fa-shield-halved" style="color: var(--p-glow); font-size: 20px;"></i>
-                <span style="font-family: var(--font-h); font-weight: 900; letter-spacing: 3px;">DD1_JR // CORE_OS</span>
+        <header class="os_header">
+            <div class="os_branding glitch" data-text="DD1_JR">
+                <i class="fas fa-microchip"></i>
+                <span>DD1_JR // OS</span>
             </div>
-            <div class="sys-info">
-                <span>CPU: <b id="cpu-load">0.0%</b></span>
-                <span>MEM: <b id="mem-load">0.0GB</b></span>
-                <span>NET: <b id="net-stat">SECURE</b></span>
-                <span>TIME: <b id="os-clock">00:00:00</b></span>
+            
+            <div class="system_monitors">
+                <div class="monitor_item">
+                    <span class="monitor_label">CORE_VOLTAGE</span>
+                    <span class="monitor_value">1.35V</span>
+                </div>
+                <div class="monitor_item">
+                    <span class="monitor_label">CPU_TEMP</span>
+                    <span class="monitor_value" id="cpu_temp">42°C</span>
+                </div>
+                <div class="monitor_item">
+                    <span class="monitor_label">LOCAL_TIME</span>
+                    <span class="monitor_value" id="os_clock">00:00:00</span>
+                </div>
             </div>
-            <div style="display:flex; gap:10px;">
-                <div class="tag" style="background: var(--p-glow); color:#000">ROOT_ACCESS</div>
-                <div class="tag">V5.0_STABLE</div>
+
+            <div style="display: flex; gap: 10px;">
+                <button onclick="toggle_matrix()" id="btn_matrix" class="dock_icon active" style="width: 30px; height: 30px; font-size: 12px;"><i class="fas fa-code"></i></button>
+                <div class="tag" style="background: var(--p-glow); color:#000; padding: 5px 10px; border-radius: 4px; font-size: 9px; font-weight: 900;">ADMIN_LEVEL_9</div>
             </div>
         </header>
 
-        <nav class="app-rail">
-            <div class="app-icon active" title="Dashboard"><i class="fas fa-th-large"></i></div>
-            <div class="app-icon" title="Security"><i class="fas fa-user-shield"></i></div>
-            <div class="app-icon" title="Code Editor"><i class="fas fa-code"></i></div>
-            <div class="app-icon" title="Database"><i class="fas fa-database"></i></div>
-            <div class="app-icon" title="Network"><i class="fas fa-satellite-dish"></i></div>
-            <div style="margin-top: auto;" class="app-icon" onclick="location.reload()"><i class="fas fa-power-off"></i></div>
-        </nav>
-
-        <aside class="window">
-            <div class="win-header">
-                <span class="win-title">IDENTITY_DATA</span>
-                <i class="fas fa-fingerprint" style="color: var(--p-glow);"></i>
-            </div>
-            <div class="win-body">
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <div id="radar">
-                        <div class="radar-line"></div>
-                        <i class="fas fa-user-secret" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size: 40px; color: var(--p-glow); opacity: 0.5;"></i>
-                    </div>
-                    <h2 style="font-family: var(--font-h); margin-top: 15px;">DANIEL</h2>
-                    <p style="font-size: 10px; color: #555; letter-spacing: 2px;">SENIOR ARCHITECT</p>
-                </div>
-
-                <div class="widget-grid">
-                    <div class="mini-card">
-                        <div class="stat-label">ORIGIN</div>
-                        <div style="font-size: 12px;">IRAQ 🇮🇶</div>
-                    </div>
-                    <div class="mini-card">
-                        <div class="stat-label">LOCATION</div>
-                        <div style="font-size: 12px;">SWEDEN 🇸🇪</div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 20px;">
-                    <div class="stat-label">NEURAL_LEVEL</div>
-                    <div style="height: 4px; background: #111; border-radius: 2px;">
-                        <div style="width: 99%; height: 100%; background: var(--p-glow); box-shadow: 0 0 10px var(--p-glow);"></div>
-                    </div>
-                </div>
-            </div>
+        <aside class="os_dock">
+            <div class="dock_icon active" data-tooltip="CORE_DASHBOARD"><i class="fas fa-terminal"></i></div>
+            <div class="dock_icon" data-tooltip="DATABASE_SYNC"><i class="fas fa-database"></i></div>
+            <div class="dock_icon" data-tooltip="NETWORK_MAP"><i class="fas fa-globe"></i></div>
+            <div class="dock_icon" data-tooltip="SYSTEM_LOGS"><i class="fas fa-file-code"></i></div>
+            <div class="dock_icon" data-tooltip="ENCRYPTION_TOOL"><i class="fas fa-key"></i></div>
+            <div style="margin-top: auto;" class="dock_icon" data-tooltip="POWER_REBOOT" onclick="location.reload()"><i class="fas fa-power-off" style="color: var(--r-glow);"></i></div>
         </aside>
 
-        <section class="center-stage">
-            <div class="visualizer">
-                <div class="big-logo glitch" data-text="DD1_JR">DD1_JR</div>
-                
-                <div style="position:absolute; bottom: 20px; left: 20px; font-size: 10px; color: #333;">
-                    NEURAL_LINK_ACTIVE: TRUE<br>
-                    ENCRYPTION_KEY: AES-256<br>
-                    SESSION: 0x882A
-                </div>
+        <section class="os_window">
+            <div class="window_title_bar">
+                <span class="window_title">USER_PROFILE_V5</span>
+                <div class="window_actions"><div class="win_dot red"></div><div class="win_dot"></div></div>
             </div>
+            <div class="window_content">
+                <div class="radar_scanner">
+                    <div class="radar_beam"></div>
+                    <i class="fas fa-user-shield biometric_icon"></i>
+                </div>
+                
+                <div style="text-align: center; margin-top: 10px;">
+                    <h2 style="font-family: var(--font-cyber); letter-spacing: 5px; color: var(--p-glow);">DANIEL</h2>
+                    <p style="font-size: 10px; color: #555; margin-bottom: 20px;">CRYPTO_SECURITY_SPECIALIST</p>
+                </div>
 
-            <div class="window" style="height: 180px;">
-                <div class="win-body" style="display:flex; align-items:center; gap:30px; background: linear-gradient(90deg, #050505 0%, #0a0a0a 100%);">
-                    <div style="position:relative;">
-                        <i class="fas fa-robot fa-4x" style="color: var(--b-glow); filter: drop-shadow(0 0 15px var(--b-glow));"></i>
-                        <div style="position:absolute; top:0; right:0; width:12px; height:12px; background: var(--g-glow); border-radius:50%; border:2px solid #000;"></div>
+                <div class="card_grid">
+                    <div class="stat_card">
+                        <div class="card_label">NATIVE</div>
+                        <div class="card_value">IQ 🇮🇶</div>
                     </div>
-                    <div style="flex: 1;">
-                        <h3 style="font-family: var(--font-h); color: var(--b-glow);">SHIELD_PROTOCOL V5</h3>
-                        <p style="font-size: 11px; color: #666; margin-top: 5px;">Artificial Intelligence scanning real-time link injections and neural threats.</p>
-                        <div style="display:flex; gap:10px; margin-top: 15px;">
-                            <button class="btn-prime">LAUNCH_NODE</button>
-                            <button class="btn-prime" style="background: transparent; border: 1px solid #333; color:#fff">CONFIG</button>
-                        </div>
+                    <div class="stat_card">
+                        <div class="card_label">HOST</div>
+                        <div class="card_value">SE 🇸🇪</div>
                     </div>
-                    <div style="text-align: right;">
-                        <img src="https://komarev.com/ghpvc/?username=Daniel-DD1JR-Stats&color=bc13fe&style=flat-square&label=VISITS" style="height: 20px; opacity: 0.7;">
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <div class="card_label">SYSTEM_TRUST_INDEX</div>
+                    <div style="height: 2px; background: #111; margin: 10px 0;">
+                        <div style="width: 98%; height: 100%; background: var(--p-glow); box-shadow: 0 0 10px var(--p-glow);"></div>
+                    </div>
+                    <div style="display:flex; justify-content: space-between; font-size: 9px; color: #333;">
+                        <span>ENCRYPTED</span><span>98.4%</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <aside class="window">
-            <div class="win-header">
-                <span class="win-title">ACTIVE_THREADS</span>
-                <span class="tag">RUNNING</span>
-            </div>
-            <div class="win-body">
-                <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #111; border-radius: 8px; background: rgba(255,255,255,0.01);">
-                    <div style="display:flex; justify-content:space-between; margin-bottom: 10px;">
-                        <span style="font-size: 12px; font-weight: bold; color: var(--p-glow);">KNIGHTFALL_AUTH</span>
-                        <span style="font-size: 10px; color: #444;">88%</span>
-                    </div>
-                    <div style="height: 2px; background: #000; overflow:hidden;">
-                        <div style="width: 88%; height: 100%; background: var(--p-glow);"></div>
-                    </div>
-                    <p style="font-size: 9px; color: #555; margin-top: 8px;">🏗️ Building Secure Gateways...</p>
-                </div>
-
-                <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #111; border-radius: 8px; background: rgba(255,255,255,0.01);">
-                    <div style="display:flex; justify-content:space-between; margin-bottom: 10px;">
-                        <span style="font-size: 12px; font-weight: bold; color: var(--b-glow);">SHIELD_AI_CORE</span>
-                        <span style="font-size: 10px; color: #444;">12%</span>
-                    </div>
-                    <div style="height: 2px; background: #000; overflow:hidden;">
-                        <div style="width: 12%; height: 100%; background: var(--b-glow);"></div>
-                    </div>
-                    <p style="font-size: 9px; color: #555; margin-top: 8px;">⏳ Training Neural Models...</p>
+        <main class="hub_workspace">
+            <div class="main_visual_core">
+                <h1 class="hero_glitch_text">DD1_JR</h1>
+                <div style="font-family: var(--font-cyber); font-size: 11px; letter-spacing: 12px; color: var(--b-glow); margin-top: -20px;">NEURAL_OPERATIONS_HUB</div>
+                
+                <div style="margin-top: 50px; display: flex; gap: 40px;">
+                    <a href="https://github.com/DanneKZ" class="dock_icon" style="width: 60px; height: 60px; font-size: 25px;"><i class="fab fa-github"></i></a>
+                    <a href="https://discord.com/users/1336353146020298816" class="dock_icon" style="width: 60px; height: 60px; font-size: 25px;"><i class="fab fa-discord"></i></a>
+                    <a href="https://top.gg/bot/1488965929810526308" class="dock_icon" style="width: 60px; height: 60px; font-size: 25px;"><i class="fas fa-shield-virus"></i></a>
                 </div>
             </div>
-        </aside>
 
-        <footer class="terminal-box">
-            <div id="term-stream" style="height: 100%; overflow-y: hidden;">
+            <div class="os_window" style="height: 180px;">
+                <div class="window_content" style="display: flex; align-items: center; gap: 30px; background: radial-gradient(circle at right, rgba(0, 210, 255, 0.05) 0%, transparent 70%);">
+                    <i class="fas fa-robot fa-4x" style="color: var(--b-glow); filter: drop-shadow(0 0 10px var(--b-glow));"></i>
+                    <div style="flex: 1;">
+                        <div class="card_label">AUTONOMOUS_ENTITY</div>
+                        <h3 style="font-family: var(--font-cyber); letter-spacing: 2px;">SHIELD_CORE_V5</h3>
+                        <p style="font-size: 11px; color: #666; margin-top: 5px;">Link validation, threat detection, and AI-driven security auditing active.</p>
+                    </div>
+                    <button class="dock_icon active" style="width: auto; padding: 0 20px; font-family: var(--font-cyber); font-size: 10px;">DEPLOY_BOT</button>
                 </div>
+            </div>
+        </main>
+
+        <section class="os_window side_panel_right">
+            <div class="window_title_bar">
+                <span class="window_title">ACTIVE_THREADS</span>
+                <i class="fas fa-tasks" style="color: var(--b-glow);"></i>
+            </div>
+            <div class="window_content">
+                
+                <div class="thread_item">
+                    <span class="thread_status status_online">ACTIVE</span>
+                    <div style="font-size: 12px; font-weight: 900; color: var(--p-glow);">KNIGHTFALL_AUTH</div>
+                    <div style="font-size: 9px; color: #444; margin-top: 5px;">Phase: Final_Gate_Link</div>
+                    <div style="height: 1px; background: var(--p-glow); width: 85%; margin-top: 10px; opacity: 0.5;"></div>
+                </div>
+
+                <div class="thread_item">
+                    <span class="thread_status status_online" style="color: var(--b-glow); border-color: var(--b-glow);">SYNCING</span>
+                    <div style="font-size: 12px; font-weight: 900; color: var(--b-glow);">SHIELD_AI_CORE</div>
+                    <div style="font-size: 9px; color: #444; margin-top: 5px;">Phase: Neural_Train_LUA</div>
+                    <div style="height: 1px; background: var(--b-glow); width: 22%; margin-top: 10px; opacity: 0.5;"></div>
+                </div>
+
+                <div style="margin-top: 40px; border-top: 1px solid #111; padding-top: 20px;">
+                    <div class="card_label">GEOGRAPHIC_TRAFFIC</div>
+                    <img src="https://komarev.com/ghpvc/?username=Daniel-DD1JR-Stats&color=bc13fe&style=flat-square&label=NODE_VISITS" style="width: 100%; filter: grayscale(1) invert(1) contrast(1.5);">
+                    <p style="font-size: 8px; color: #333; margin-top: 10px; font-family: var(--font-mono);">ENCRYPTED_GEO_STREAM_INITIATED...</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="terminal_wrapper">
+            <div id="terminal_output">
+                </div>
+            <div class="terminal_input_line">
+                <span>[DANIEL@DD1_JR]:~$</span>
+                <input type="text" id="term_input" placeholder="Enter command..." autocomplete="off">
+            </div>
         </footer>
 
-        <footer class="footer-bar">
-            <div><i class="fas fa-code-merge"></i> REVISION: 5.4.0_ALPHA // STABLE_KERNEL</div>
-            <div>DANIEL // DD1_JR // SECURITY_OPERATIONS</div>
-            <div>LATENCY: <span id="ping-val">12</span>ms // UP_TIME: <span id="up-time">0</span>s</div>
+        <footer class="os_footer">
+            <div><i class="fas fa-code-branch"></i> KERNEL_STABLE: 5.9.9_GOLDEN</div>
+            <div>DANIEL_DD1_JR // NEURAL_LINK: <span style="color: var(--g-glow);">CONNECTED</span></div>
+            <div>LATENCY: <span id="ping_val">14ms</span> // UPTIME: <span id="uptime_val">0s</span></div>
         </footer>
     </div>
 
     <script>
-        /* [JS ARCHITECTURE - NEURAL CORE] 
-           Lines: 1000 - 2200 (Logic Engine)
-        */
-
-        const logStream = document.getElementById('term-stream');
-        const cpuEl = document.getElementById('cpu-load');
-        const memEl = document.getElementById('mem-load');
-        const clockEl = document.getElementById('os-clock');
-        const pingEl = document.getElementById('ping-val');
-        const utEl = document.getElementById('up-time');
-
-        // 1. BIOS BOOT SEQUENCE
-        const biosLines = [
-            "DECRYPTING_KERNEL_PACKETS...", "LOAD_DRIVER_X64_HIDDEN...", 
-            "BYPASSING_HARDWARE_ID...", "NEURAL_LINK: SYNCHRONIZING",
-            "CHECKING_IRAQI_SERVER_NODES...", "SWEDISH_BACKBONE: CONNECTED",
-            "DD1_JR_AUTHORIZATION: GRANTED", "UI_RENDERER: VULKAN_CORE",
-            "LOADING_PERSONAL_ASSETS...", "INITIALIZING_SHIELD_V5...",
-            "SUCCESS: BOOT_COMPLETE."
+        /* [1] BOOT_LOGIC_ENGINE */
+        const boot_data = [
+            "CHECKING_HARDWARE_INTEGRITY...", "CORE_i9_DETECTED: 16_CORES_READY",
+            "INITIALIZING_VIRTUAL_MEMORY...", "LOADING_KERNEL_MODULES_X64...",
+            "DECRYPTING_USER_PROFILE: DANIEL", "LOCATION_SYNC: SWEDEN_NODE_01",
+            "SECURITY_LEVEL: ROOT_ADMIN", "FIREWALL_STATE: ACTIVE_HIGH",
+            "SHIELD_PROTOCOL: V5_SYNC_READY", "NETWORK_INTERFACE: DH_ENCRYPTED",
+            "PREPARING_DASHBOARD_UI...", "DD1_JR_SYSTEM: READY_FOR_OPERATION"
         ];
 
-        function startBoot() {
-            let i = 0;
-            const container = document.getElementById('bios-lines');
-            const progress = document.getElementById('boot-progress');
-            const perc = document.getElementById('boot-perc');
+        function init_os_kernel() {
+            const log_disp = document.getElementById('boot_log_display');
+            const bar = document.getElementById('boot_progress_bar');
+            const timer = document.getElementById('boot_timer');
+            let idx = 0;
+            let start_time = Date.now();
 
-            const interval = setInterval(() => {
-                if (i < biosLines.length) {
-                    const div = document.createElement('div');
-                    div.className = 'loading-text';
-                    div.innerHTML = `<span style="color:#444">[OK]</span> ${biosLines[i]}`;
-                    container.appendChild(div);
-                    i++;
-                    let p = Math.floor((i / biosLines.length) * 100);
-                    progress.style.width = p + "%";
-                    perc.innerText = p + "%";
+            const boot_interval = setInterval(() => {
+                if(idx < boot_data.length) {
+                    const line = document.createElement('div');
+                    line.innerHTML = `<span style="color:#222">[${( (Date.now()-start_time)/1000 ).toFixed(2)}s]</span> > ${boot_data[idx]}`;
+                    log_disp.appendChild(line);
+                    idx++;
+                    bar.style.width = (idx / boot_data.length) * 100 + "%";
+                    timer.innerText = ( (Date.now()-start_time)/1000 ).toFixed(2) + "s";
                 } else {
-                    clearInterval(interval);
+                    clearInterval(boot_interval);
                     setTimeout(() => {
-                        document.getElementById('bios-loader').style.transform = "translateY(-100%)";
+                        document.getElementById('boot_loader').style.opacity = "0";
+                        setTimeout(() => document.getElementById('boot_loader').remove(), 1000);
+                        init_background_engines();
                     }, 1000);
                 }
-            }, 150);
-        }
-        startBoot();
-
-        // 2. MATRIX CANVAS ENGINE
-        const mCanvas = document.getElementById('bg-matrix');
-        const mCtx = mCanvas.getContext('2d');
-        mCanvas.width = window.innerWidth;
-        mCanvas.height = window.innerHeight;
-        const chars = "DD1JR0101777";
-        const drops = Array(Math.floor(mCanvas.width / 20)).fill(1);
-
-        function drawMatrix() {
-            mCtx.fillStyle = "rgba(0,0,0,0.05)";
-            mCtx.fillRect(0,0,mCanvas.width, mCanvas.height);
-            mCtx.fillStyle = "#bc13fe";
-            mCtx.font = "15px monospace";
-            drops.forEach((y, i) => {
-                const text = chars[Math.floor(Math.random()*chars.length)];
-                mCtx.fillText(text, i*20, y*20);
-                if(y*20 > mCanvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(drawMatrix, 50);
-
-        // 3. NEURAL NETWORK CANVAS (Particles)
-        const nCanvas = document.getElementById('bg-neural');
-        const nCtx = nCanvas.getContext('2d');
-        nCanvas.width = window.innerWidth; nCanvas.height = window.innerHeight;
-        let particles = [];
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * nCanvas.width;
-                this.y = Math.random() * nCanvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0 || this.x > nCanvas.width) this.vx *= -1;
-                if(this.y < 0 || this.y > nCanvas.height) this.vy *= -1;
-            }
+                log_disp.scrollTop = log_disp.scrollHeight;
+            }, 180);
         }
 
-        for(let i=0; i<100; i++) particles.push(new Particle());
+        /* [2] BACKGROUND_GRAPHICS_ENGINES */
+        let matrix_active = true;
+        function init_background_engines() {
+            // Matrix Engine
+            const m_canvas = document.getElementById('matrix_canvas');
+            const m_ctx = m_canvas.getContext('2d');
+            m_canvas.width = window.innerWidth;
+            m_canvas.height = window.innerHeight;
+            const chars = "DD1JR017";
+            const drops = Array(Math.floor(m_canvas.width/20)).fill(1);
 
-        function drawNeural() {
-            nCtx.clearRect(0,0,nCanvas.width, nCanvas.height);
-            nCtx.strokeStyle = "rgba(0, 210, 255, 0.1)";
-            nCtx.beginPath();
-            particles.forEach((p, index) => {
-                p.update();
-                particles.slice(index + 1).forEach(p2 => {
-                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if(dist < 150) {
-                        nCtx.moveTo(p.x, p.y);
-                        nCtx.lineTo(p2.x, p2.y);
-                    }
+            function draw_matrix() {
+                if(!matrix_active) return;
+                m_ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                m_ctx.fillRect(0,0,m_canvas.width, m_canvas.height);
+                m_ctx.fillStyle = "#bc13fe";
+                m_ctx.font = "14px monospace";
+                drops.forEach((y, i) => {
+                    const txt = chars[Math.floor(Math.random()*chars.length)];
+                    m_ctx.fillText(txt, i*20, y*20);
+                    if(y*20 > m_canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
                 });
-            });
-            nCtx.stroke();
-            requestAnimationFrame(drawNeural);
-        }
-        drawNeural();
+            }
+            setInterval(draw_matrix, 50);
 
-        // 4. SYSTEM MONITORING
+            // Neural Particles Engine
+            const n_canvas = document.getElementById('neural_canvas');
+            const n_ctx = n_canvas.getContext('2d');
+            n_canvas.width = window.innerWidth;
+            n_canvas.height = window.innerHeight;
+            let dots = [];
+            for(let i=0; i<120; i++) dots.push({
+                x: Math.random()*n_canvas.width, y: Math.random()*n_canvas.height,
+                vx: (Math.random()-0.5)*0.6, vy: (Math.random()-0.5)*0.6
+            });
+
+            function draw_neural() {
+                n_ctx.clearRect(0,0,n_canvas.width, n_canvas.height);
+                n_ctx.strokeStyle = "rgba(0, 210, 255, 0.15)";
+                n_ctx.beginPath();
+                dots.forEach((d, i) => {
+                    d.x += d.vx; d.y += d.vy;
+                    if(d.x<0 || d.x>n_canvas.width) d.vx *= -1;
+                    if(d.y<0 || d.y>n_canvas.height) d.vy *= -1;
+                    dots.slice(i+1).forEach(d2 => {
+                        let dist = Math.hypot(d.x-d2.x, d.y-d2.y);
+                        if(dist < 130) { n_ctx.moveTo(d.x, d.y); n_ctx.lineTo(d2.x, d2.y); }
+                    });
+                });
+                n_ctx.stroke();
+                requestAnimationFrame(draw_neural);
+            }
+            draw_neural();
+        }
+
+        /* [3] UI_CONTROLS_AND_SYSTEM_MONITOR */
+        function toggle_matrix() {
+            const btn = document.getElementById('btn_matrix');
+            matrix_active = !matrix_active;
+            if(matrix_active) {
+                btn.classList.add('active');
+                document.getElementById('matrix_canvas').style.opacity = "0.15";
+            } else {
+                btn.classList.remove('active');
+                document.getElementById('matrix_canvas').style.opacity = "0";
+            }
+        }
+
         let uptime = 0;
         setInterval(() => {
             uptime++;
-            utEl.innerText = uptime;
-            cpuEl.innerText = (Math.random() * 20 + 5).toFixed(1) + "%";
-            memEl.innerText = (Math.random() * 0.5 + 4.2).toFixed(1) + "GB";
-            clockEl.innerText = new Date().toLocaleTimeString();
-            pingEl.innerText = Math.floor(Math.random() * 10 + 10);
+            document.getElementById('uptime_val').innerText = uptime + "s";
+            document.getElementById('ping_val').innerText = Math.floor(Math.random()*10 + 5) + "ms";
+            document.getElementById('cpu_temp').innerText = (40 + Math.random()*5).toFixed(1) + "°C";
+            document.getElementById('os_clock').innerText = new Date().toLocaleTimeString();
         }, 1000);
 
-        // 5. TERMINAL LOGS
-        const commands = [
-            "> SCANNING_PORT_80: SECURE", "> NEURAL_LINK: OPTIMIZED", 
-            "> DD1_JR: IDENTITY_VERIFIED", "> BLOCKING_XSS_ATTEMPT...", 
-            "> FIREWALL: STATUS_GREEN", "> SQL_INJECTION_SHIELD: ON",
-            "> DEPLOYING_BOT_V5_STABLE", "> SYNCING_PROJECT_DATA..."
+        /* [4] TERMINAL_ENGINE_V5 */
+        const term_out = document.getElementById('terminal_output');
+        const term_in = document.getElementById('term_input');
+        const log_commands = [
+            "SCANNING_FOR_THREATS...", "NEURAL_NET_STABLE", "SHIELD_V5_ENABLED",
+            "ENCRYPTING_DATA_STREAM...", "BYPASSING_EXTERNAL_IDS...", "LOG_CLEARED"
         ];
 
         setInterval(() => {
-            const div = document.createElement('div');
-            div.innerHTML = `<span style="color:#333">[${new Date().toLocaleTimeString()}]</span> ${commands[Math.floor(Math.random()*commands.length)]}`;
-            logStream.appendChild(div);
-            if(logStream.childNodes.length > 8) logStream.firstChild.remove();
-        }, 2000);
+            const line = document.createElement('div');
+            line.innerHTML = `<span style="color:#333">[${new Date().toLocaleTimeString()}]</span> > ${log_commands[Math.floor(Math.random()*log_commands.length)]}`;
+            term_out.appendChild(line);
+            if(term_out.childNodes.length > 25) term_out.firstChild.remove();
+            term_out.scrollTop = term_out.scrollHeight;
+        }, 3500);
 
-        // 6. WINDOWS INTERACTIVITY (Simple Drag Simulator)
-        document.querySelectorAll('.win-header').forEach(header => {
-            header.addEventListener('mousedown', () => {
-                header.parentElement.style.borderColor = "var(--b-glow)";
-                header.parentElement.style.boxShadow = "0 0 20px var(--b-glow)";
-            });
-            header.addEventListener('mouseup', () => {
-                header.parentElement.style.borderColor = "rgba(188, 19, 254, 0.2)";
-                header.parentElement.style.boxShadow = "none";
-            });
+        term_in.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                const cmd = term_in.value;
+                const line = document.createElement('div');
+                line.style.color = "var(--p-glow)";
+                line.innerHTML = `> EXECUTING: ${cmd.toUpperCase()}... SUCCESS.`;
+                term_out.appendChild(line);
+                term_in.value = "";
+                term_out.scrollTop = term_out.scrollHeight;
+            }
         });
 
-        console.log("%c DD1_JR OS v5 LOADED ", "background: #bc13fe; color: #fff; font-size: 20px; font-weight: bold;");
+        // RE-ADAPT ON RESIZE
+        window.onresize = () => location.reload();
+        
+        console.log("%c DD1_JR NEURAL OS V5.9.9 INITIALIZED %c STATUS: GOLDEN", "color: #bc13fe; font-size: 20px; font-weight: bold;", "color: #00d2ff; font-size: 20px;");
     </script>
 </body>
 </html>
