@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD1_JR | THE MASTERFRAME</title>
+    <title>DD1_JR | Cyber Operations</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;500&display=swap');
-
+        /* إعادة الألوان والهوية الأصلية لموقع دانيال */
         :root {
-            --neon: #bc13fe;
-            --cyan: #00d2ff;
-            --dark: #020202;
-            --glass: rgba(15, 15, 15, 0.8);
+            --neon-purple: #bc13fe; 
+            --neon-blue: #00d2ff;
+            --bg-dark: #050505;
+            --card-bg: rgba(10, 10, 10, 0.85);
         }
 
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: var(--dark);
+        body {
+            background-color: var(--bg-dark);
             color: white;
-            font-family: 'JetBrains Mono', monospace;
-            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            overflow: hidden; /* يفتح بعد الانترو */
         }
 
-        /* [1] MATRIX INTRO LAYER */
+        /* --- [1] نظام الانترو الماتريكس (الذي أعجبك) --- */
         #intro-wrapper {
             position: fixed;
             inset: 0;
@@ -32,104 +31,82 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 1.5s ease, transform 1.5s ease;
+            transition: opacity 1.5s ease;
         }
-
-        #intro-canvas {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-
+        #intro-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
         .terminal-box {
-            position: relative;
-            z-index: 10001;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--neon);
-            padding: 40px;
+            position: relative; z-index: 10001;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-purple);
+            padding: 30px;
             text-align: center;
-            box-shadow: 0 0 50px var(--neon);
-            pointer-events: none;
-            opacity: 0;
-            animation: fadeIn 1s forwards 1s;
+            box-shadow: 0 0 40px var(--neon-purple);
         }
 
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        .loading-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 5px;
-            color: var(--cyan);
-            text-shadow: 0 0 10px var(--cyan);
+        /* --- [2] العودة لتصميم دانيال الأصلي --- */
+        #matrix-canvas-bg {
+            position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; 
         }
 
-        /* [2] MAIN CONTENT (Hidden initially) */
-        #main-site {
-            opacity: 0;
-            transform: scale(1.1);
-            transition: opacity 2s ease, transform 2s ease;
-            height: 100vh;
-            display: grid;
-            grid-template-columns: 300px 1fr 300px;
-            gap: 20px;
-            padding: 20px;
-            box-sizing: border-box;
+        .visitor-counter-fixed {
+            position: fixed; top: 15px; right: 20px; z-index: 2000;
+            display: flex; align-items: center; gap: 5px;
+            background: rgba(0, 0, 0, 0.8); padding: 5px 10px;
+            border-radius: 5px; border: 1px solid var(--neon-purple);
         }
 
-        /* Designing the Master Dashboard */
-        .sidebar {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(188, 19, 254, 0.3);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            border-radius: 10px;
+        #system-logs {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 250px; height: 150px; background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--neon-blue); border-radius: 10px;
+            padding: 10px; font-family: monospace; font-size: 0.7rem; color: var(--neon-blue);
+            z-index: 100;
         }
 
-        .glitch-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            color: white;
-            text-shadow: 2px 2px var(--neon), -2px -2px var(--cyan);
-            text-align: center;
+        section { padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+        .neon-title {
+            font-size: clamp(3rem, 10vw, 5rem); font-weight: 900;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; text-transform: uppercase;
         }
 
-        .operation-card {
-            background: rgba(255,255,255,0.05);
-            border-left: 4px solid var(--neon);
-            padding: 20px;
-            margin-bottom: 15px;
-            position: relative;
+        .identity-wrapper {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px; width: 100%; max-width: 1000px; margin-top: 40px;
         }
 
-        .status-online { color: #0f0; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0.3; } }
-
-        .btn-action {
-            background: transparent;
-            border: 1px solid var(--cyan);
-            color: var(--cyan);
-            padding: 10px;
-            cursor: pointer;
-            font-family: 'Orbitron';
-            width: 100%;
-            margin-top: 10px;
+        .terminal-box-main {
+            background: var(--card-bg); border: 1px solid #333;
+            padding: 25px; border-radius: 15px;
         }
 
-        .btn-action:hover { background: var(--cyan); color: black; }
+        .terminal-header { color: var(--neon-blue); font-family: monospace; border-bottom: 1px solid #333; margin-bottom: 10px; }
+        .bio-line { margin: 10px 0; }
+        .bio-key { color: var(--neon-purple); font-weight: bold; }
 
-        #logs-stream {
-            font-size: 0.7rem;
-            color: var(--cyan);
-            height: 200px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column-reverse;
+        /* الأقسام الأخرى التي كانت في صورك */
+        .stats-container {
+            width: 100%; max-width: 1000px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px; margin-top: 20px;
         }
+        .stat-item {
+            background: rgba(15, 15, 15, 0.9); border: 1px dashed var(--neon-purple);
+            padding: 15px; border-radius: 10px; text-align: center;
+        }
+
+        .ops-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px; width: 100%; max-width: 1000px; margin-top: 20px;
+        }
+
+        .project-card {
+            background: var(--card-bg); border: 1px solid #333;
+            padding: 20px; border-radius: 15px;
+        }
+        .progress-bg { background: #111; height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); }
     </style>
 </head>
 <body>
@@ -137,132 +114,111 @@
     <div id="intro-wrapper">
         <canvas id="intro-canvas"></canvas>
         <div class="terminal-box">
-            <div class="loading-text">SYSTEM BREACH</div>
-            <div style="color: white; margin-top: 10px; font-size: 0.8rem;">DANIEL IDENTITY VERIFIED...</div>
+            <h2 style="color: var(--neon-purple); font-family: 'Orbitron';">INITIALIZING DD1_JR</h2>
+            <p style="color: var(--neon-blue); font-size: 0.8rem;">LINKING TO SATELLITE... [OK]</p>
         </div>
     </div>
 
-    <div id="main-site">
-        <div class="sidebar">
-            <div class="glitch-title">DD1_JR</div>
-            <div style="text-align: center; margin: 20px 0;">
-                <div style="font-size: 0.7rem; color: var(--neon);">[ROOT_USER]</div>
-                <div style="font-size: 1.2rem;">DANIEL TANK</div>
+    <canvas id="matrix-canvas-bg"></canvas>
+    
+    <div class="visitor-counter-fixed">
+        <span style="color: var(--neon-purple); font-size: 0.7rem;">[TRAFFIC]</span>
+        <img src="https://komarev.com/ghpvc/?username=Daniel-DD1JR-Stats&color=bc13fe&style=flat-square&label=VISITS">
+    </div>
+
+    <div id="system-logs"></div>
+
+    <section id="hero">
+        <h1 class="neon-title">DD1_JR</h1>
+        
+        <div class="identity-wrapper">
+            <div class="terminal-box-main">
+                <div class="terminal-header">> USER_IDENTITY_DATA</div>
+                <div class="bio-line"><span class="bio-key">> NAME:</span> Daniel (DD1_JR)</div>
+                <div class="bio-line"><span class="bio-key">> ORIGIN:</span> Iraqi Roots 🇮🇶</div>
+                <div class="bio-line"><span class="bio-key">> LIVE:</span> Sweden 🇸🇪</div>
             </div>
-            <div class="operation-card">
-                <div style="font-size: 0.8rem; color: var(--neon);">SYSTEM STATUS</div>
-                <div style="margin-top: 5px;">ONLINE <span class="status-online">●</span></div>
+            <div class="terminal-box-main">
+                <div class="terminal-header" style="color: var(--neon-purple);">> CORE_SKILLS</div>
+                <div class="bio-line"><span class="bio-key">> LUA:</span> MTA / FiveM Scripts</div>
+                <div class="bio-line"><span class="bio-key">> SEC:</span> Cyber Security Specialist</div>
             </div>
-            <div id="logs-stream"></div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-            <div class="sidebar" style="flex: 1;">
-                <h3 style="font-family: 'Orbitron'; color: var(--cyan); border-bottom: 1px solid #333; padding-bottom: 10px;">ACTIVE OPERATIONS</h3>
-                <div id="ops-container">
-                    </div>
+        <div class="stats-container">
+            <div class="stat-item">
+                <span style="color: var(--neon-blue); font-size: 1.5rem; font-weight: bold;">4+</span><br>
+                <span style="color: #888; font-size: 0.7rem;">ACTIVE PROJECTS</span>
             </div>
-            <div class="sidebar" style="height: 150px; flex-direction: row; align-items: center; justify-content: space-between;">
-                <div>
-                    <h4 style="margin: 0; color: var(--neon);">SHIELD_PROTOCOL</h4>
-                    <p style="font-size: 0.8rem; color: #777;">Purging malicious links in real-time.</p>
+            <div class="stat-item">
+                <span style="color: var(--neon-blue); font-size: 1.5rem; font-weight: bold;">Online</span><br>
+                <span style="color: #888; font-size: 0.7rem;">SYSTEM STATUS</span>
+            </div>
+        </div>
+
+        <h2 style="color: var(--neon-blue); margin-top: 50px;">ACTIVE OPERATIONS</h2>
+        <div class="ops-grid">
+            <div class="project-card">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>Knightfall (Auth)</strong>
+                    <span style="font-size: 0.6rem; color: var(--neon-purple);">P0 - HIGH</span>
                 </div>
-                <button class="btn-action" style="width: 120px;" onclick="window.open('https://top.gg/bot/1488965929810526308')">DEPLOY</button>
+                <div class="progress-bg"><div class="progress-fill" style="width: 85%;"></div></div>
+                <div style="font-size: 0.7rem; color: #888;">Status: 🏗️ Working</div>
             </div>
-        </div>
-
-        <div class="sidebar">
-            <h4 style="font-family: 'Orbitron'; text-align: center; color: var(--cyan);">NETWORK_STATS</h4>
-            <div class="operation-card" style="text-align: center; border-left: none; border-bottom: 3px solid var(--cyan);">
-                <div style="font-size: 1.5rem;">99.9%</div>
-                <div style="font-size: 0.6rem;">STABILITY</div>
             </div>
-            <div class="operation-card" style="text-align: center; border-left: none; border-bottom: 3px solid var(--neon);">
-                <div style="font-size: 1.5rem;">2026</div>
-                <div style="font-size: 0.6rem;">CURRENT_EPOCH</div>
-            </div>
-            <div style="margin-top: auto;">
-                <button class="btn-action" style="border-color: var(--neon); color: var(--neon);" onclick="window.open('https://github.com/DanneKZ')">SOURCE_CODE</button>
-            </div>
-        </div>
-    </div>
+    </section>
 
     <script>
-        // --- [1] INTRO MATRIX RAIN SCRIPT ---
-        const introCanvas = document.getElementById('intro-canvas');
-        const ictx = introCanvas.getContext('2d');
+        // كود الماتريكس للانترو وللخلفية
+        const setupMatrix = (canvasId, color, speed) => {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
 
-        introCanvas.width = window.innerWidth;
-        introCanvas.height = window.innerHeight;
+            return setInterval(() => {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = color;
+                ctx.font = fontSize + "px monospace";
+                for (let i = 0; i < drops.length; i++) {
+                    const text = letters[Math.floor(Math.random() * letters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }, speed);
+        };
 
-        const charSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&*%";
-        const chars = charSet.split("");
-        const fontSize = 16;
-        const columns = introCanvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
+        // تشغيل ماتريكس الانترو
+        let introInterval = setupMatrix('intro-canvas', '#bc13fe', 35);
+        // تشغيل ماتريكس الخلفية
+        setupMatrix('matrix-canvas-bg', '#bc13fe', 50);
 
-        function drawIntroMatrix() {
-            ictx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ictx.fillRect(0, 0, introCanvas.width, introCanvas.height);
-            
-            ictx.fillStyle = "#bc13fe"; // Purple rain for DD1_JR
-            ictx.font = fontSize + "px monospace";
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ictx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > introCanvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-
-        let introInterval = setInterval(drawIntroMatrix, 35);
-
-        // --- [2] TRANSITION LOGIC ---
+        // إنهاء الانترو بعد 4 ثواني
         setTimeout(() => {
-            const wrapper = document.getElementById('intro-wrapper');
-            const mainSite = document.getElementById('main-site');
-            
-            wrapper.style.opacity = '0';
-            wrapper.style.transform = 'scale(1.2)';
-            
+            document.getElementById('intro-wrapper').style.opacity = '0';
             setTimeout(() => {
-                wrapper.style.display = 'none';
+                document.getElementById('intro-wrapper').style.display = 'none';
+                document.body.style.overflow = 'auto';
                 clearInterval(introInterval);
-                mainSite.style.opacity = '1';
-                mainSite.style.transform = 'scale(1)';
             }, 1500);
-        }, 5000); // 5 Seconds of glorious Matrix rain
+        }, 4000);
 
-        // --- [3] DYNAMIC CONTENT ---
-        const ops = [
-            { name: "SHIELD_AI", status: "SECURE", progress: "95%" },
-            { name: "KNIGHTFALL", status: "RUNNING", progress: "100%" },
-            { name: "SHADOW_GATE", status: "ENCRYPTING", progress: "42%" }
-        ];
-
-        const opsContainer = document.getElementById('ops-container');
-        ops.forEach(op => {
-            opsContainer.innerHTML += `
-                <div class="operation-card">
-                    <div style="display:flex; justify-content:space-between;">
-                        <span style="color:var(--cyan)">${op.name}</span>
-                        <span style="font-size:0.7rem;">${op.status}</span>
-                    </div>
-                    <div style="background:#111; height:4px; margin-top:10px;">
-                        <div style="width:${op.progress}; background:var(--neon); height:100%;"></div>
-                    </div>
-                </div>
-            `;
-        });
-
-        const logs = document.getElementById('logs-stream');
+        // لوق النظام (كما في صورتك)
+        const logsBox = document.getElementById('system-logs');
+        const msgs = ["[SUCCESS] 4 items found.", "[INFO] Daniel identity verified.", "[SUCCESS] Connection encrypted."];
         setInterval(() => {
-            const p = document.createElement('div');
-            p.innerHTML = `<span style="color:var(--neon)">></span> AUTH_CHECK: PASS [${Math.random().toString(16).substr(2, 6)}]`;
-            logs.prepend(p);
-            if(logs.children.length > 10) logs.lastChild.remove();
-        }, 2500);
+            const p = document.createElement('p');
+            p.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+            logsBox.appendChild(p);
+            if(logsBox.childNodes.length > 6) logsBox.removeChild(logsBox.firstChild);
+        }, 3000);
     </script>
 </body>
 </html>
