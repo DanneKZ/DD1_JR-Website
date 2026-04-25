@@ -1,781 +1,600 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD1_JR // CORE_SYSTEM_OVERLOAD</title>
+    <title>DD1_JR // NEURAL_WORKSTATION_V7</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@100;400;800&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS SECTION - LAYER 1: FUNDAMENTAL RESET
-           Writing every property line-by-line for maximum clarity and depth.
+        /* [1] CSS CORE ARCHITECTURE 
+           Extended for maximum visual fidelity and line count.
         */
         :root {
-            --neon-purple: #bc13fe;
-            --neon-blue: #00d2ff;
-            --neon-pink: #ff00ff;
-            --neon-green: #39ff14;
-            --neon-red: #ff3131;
-            --dark-core: #010103;
-            --panel-alpha: rgba(5, 5, 10, 0.95);
-            --border-glow: 1px solid rgba(188, 19, 254, 0.4);
-            --cyber-font: 'Orbitron', sans-serif;
-            --mono-font: 'JetBrains Mono', monospace;
-            --glitch-duration: 4s;
+            --p-glow: #bc13fe;
+            --b-glow: #00d2ff;
+            --g-glow: #39ff14;
+            --r-glow: #ff3131;
+            --bg-ultra: #020205;
+            --glass: rgba(10, 10, 15, 0.9);
+            --border: 1px solid rgba(188, 19, 254, 0.3);
+            --font-main: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-header: 'Orbitron', sans-serif;
         }
 
-        html {
-            background-color: var(--dark-core);
-            overflow: hidden;
-            height: 100%;
-            width: 100%;
+        /* RESET & GLOBAL SCROLLING */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
+            background-color: var(--bg-ultra);
+            color: #fff;
+            font-family: var(--font-main);
             height: 100vh;
-            color: #ffffff;
-            font-family: var(--mono-font);
+            width: 100vw;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            background: radial-gradient(circle at center, #0a0a1a 0%, #010103 100%);
-            cursor: crosshair;
         }
 
-        /* CSS SECTION - LAYER 2: BOOT ANIMATION ENGINE 
+        /* [2] LOADING SYSTEM - NEURAL INITIALIZATION
         */
-        #master-loader {
+        #neural-loader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: #000;
-            z-index: 9999999;
+            z-index: 10000;
             display: flex;
             flex-direction: column;
-            padding: 50px;
-            box-sizing: border-box;
+            justify-content: center;
+            align-items: center;
+            transition: 1s ease-in-out;
         }
 
-        .loader-header {
-            font-family: var(--cyber-font);
-            color: var(--neon-purple);
-            font-size: 28px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #222;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        #boot-stream {
-            flex: 1;
-            overflow-y: hidden;
-            font-size: 14px;
-            color: var(--neon-green);
-            line-height: 1.8;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 4px;
-            background: #111;
-            margin-top: 30px;
+        .loader-ring {
+            width: 250px;
+            height: 250px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--p-glow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
             position: relative;
         }
 
-        #progress-fill {
+        .loader-ring::before {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0%;
-            background: var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-blue);
-            transition: width 0.05s linear;
+            inset: 10px;
+            border: 2px solid transparent;
+            border-bottom: 2px solid var(--b-glow);
+            border-radius: 50%;
+            animation: spin 2s linear infinite reverse;
         }
 
-        /* CSS SECTION - LAYER 3: MAIN OS GRID 
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            margin-top: 30px;
+            font-family: var(--font-header);
+            letter-spacing: 10px;
+            font-size: 14px;
+            color: var(--p-glow);
+            text-shadow: 0 0 10px var(--p-glow);
+        }
+
+        /* [3] WORKSTATION LAYOUT 
         */
-        .os-container {
+        #workstation {
             display: grid;
-            grid-template-columns: 80px 400px 1fr 350px;
-            grid-template-rows: 60px 1fr 40px;
-            gap: 12px;
-            padding: 12px;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            opacity: 0; /* Starts hidden until boot */
-            transition: opacity 1.5s ease-in;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 70px 1fr 40px;
+            height: 100vh;
+            width: 100vw;
+            gap: 15px;
+            padding: 15px;
+            background: radial-gradient(circle at top right, rgba(188, 19, 254, 0.05), transparent);
+            position: relative;
+            z-index: 5;
         }
 
-        /* [TOP NAVIGATION BAR] */
-        .top-navbar {
-            grid-column: 1 / 5;
-            background: var(--panel-alpha);
-            border: var(--border-glow);
-            border-radius: 8px;
+        /* NEURAL BACKGROUND CANVAS */
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* HEADER BAR */
+        .top-nav {
+            grid-column: 1 / 4;
+            background: var(--glass);
+            border: var(--border);
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            padding: 0 25px;
             justify-content: space-between;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
+            padding: 0 30px;
+            backdrop-filter: blur(20px);
         }
 
-        .logo-area {
+        .brand-logo {
+            font-family: var(--font-header);
+            font-weight: 900;
+            font-size: 22px;
+            background: linear-gradient(90deg, #fff, var(--p-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .pulse-node {
-            width: 12px;
-            height: 12px;
-            background: var(--neon-purple);
-            border-radius: 50%;
-            animation: pulse-ring 2s infinite;
-        }
-
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(188, 19, 254, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(188, 19, 254, 0); }
-            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(188, 19, 254, 0); }
-        }
-
-        .main-title {
-            font-family: var(--cyber-font);
-            font-weight: 900;
-            letter-spacing: 5px;
-            font-size: 20px;
-            text-transform: uppercase;
-        }
-
-        .sys-clock-container {
-            display: flex;
-            gap: 20px;
-            font-size: 13px;
-            color: #888;
-        }
-
-        /* [APP RAIL DOCK] */
-        .app-dock {
-            grid-row: 2;
-            background: var(--panel-alpha);
-            border: var(--border-glow);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 25px 0;
-            gap: 30px;
-        }
-
-        .dock-btn {
-            width: 45px;
-            height: 45px;
-            border: 1px solid #333;
+        /* LEFT SIDEBAR - TOOLS & UTILS */
+        .sidebar-left {
+            grid-column: 1;
+            background: var(--glass);
+            border: var(--border);
             border-radius: 12px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 22px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .dock-btn:hover {
-            color: var(--neon-blue);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .dock-btn.active {
-            color: var(--neon-purple);
-            border-color: var(--neon-purple);
-            background: rgba(188, 19, 254, 0.1);
-        }
-
-        /* [SIDE PANEL: BIO-METRICS] */
-        .bio-panel {
-            grid-column: 2;
-            background: var(--panel-alpha);
-            border: var(--border-glow);
-            border-radius: 8px;
-            padding: 30px;
-            display: flex;
             flex-direction: column;
-            overflow: hidden;
-        }
-
-        .bio-header {
-            font-family: var(--cyber-font);
-            font-size: 11px;
-            color: var(--neon-purple);
-            letter-spacing: 3px;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-        }
-
-        .avatar-container {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 30px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .avatar-circle {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 2px dashed #333;
-            border-radius: 50%;
-            animation: rotate-left 10s linear infinite;
-        }
-
-        .avatar-circle-inner {
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            border: 1px solid var(--neon-purple);
-            border-radius: 50%;
-            animation: rotate-right 5s linear infinite;
-        }
-
-        @keyframes rotate-left { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes rotate-right { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-
-        .avatar-icon {
-            font-size: 60px;
-            color: #fff;
-            filter: drop-shadow(0 0 15px var(--neon-purple));
-        }
-
-        .info-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid #151515;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .label { font-size: 9px; color: #444; text-transform: uppercase; margin-bottom: 5px; }
-        .value { font-size: 18px; font-weight: bold; color: var(--neon-blue); font-family: var(--cyber-font); }
-
-        /* [CENTRAL VISUAL HUB] */
-        .hub-area {
-            grid-column: 3;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .visualizer-box {
-            flex: 1;
-            background: var(--panel-alpha);
-            border: var(--border-glow);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glitch-logo {
-            font-family: var(--cyber-font);
-            font-size: 150px;
-            font-weight: 900;
-            color: #fff;
-            position: relative;
-            user-select: none;
-        }
-
-        .glitch-logo::before, .glitch-logo::after {
-            content: "DD1_JR";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-        }
-
-        .glitch-logo::before {
-            left: 3px;
-            text-shadow: -3px 0 var(--neon-pink);
-            clip: rect(24px, 400px, 90px, 0);
-            animation: glitch-anim 3s infinite linear alternate-reverse;
-        }
-
-        .glitch-logo::after {
-            left: -3px;
-            text-shadow: -3px 0 var(--neon-blue);
-            clip: rect(85px, 400px, 140px, 0);
-            animation: glitch-anim 2s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(44px, 9999px, 56px, 0); }
-            20% { clip: rect(12px, 9999px, 30px, 0); }
-            40% { clip: rect(88px, 9999px, 98px, 0); }
-            60% { clip: rect(5px, 9999px, 15px, 0); }
-            80% { clip: rect(67px, 9999px, 80px, 0); }
-            100% { clip: rect(33px, 9999px, 45px, 0); }
-        }
-
-        /* [RIGHT PANEL: THREAD MONITOR] */
-        .thread-panel {
-            grid-column: 4;
-            background: var(--panel-alpha);
-            border: var(--border-glow);
-            border-radius: 8px;
             padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .module-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .module-card:hover {
+            border-color: var(--p-glow);
+            transform: scale(1.02);
+        }
+
+        .card-title {
+            font-family: var(--font-header);
+            font-size: 10px;
+            color: #555;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        /* CENTER AREA - THE PRODUCTIVE HUB */
+        .workspace-hub {
+            grid-column: 2;
+            display: grid;
+            grid-template-rows: 1fr 300px;
+            gap: 15px;
+        }
+
+        /* CODE EDITOR COMPONENT */
+        .editor-container {
+            background: #050508;
+            border: var(--border);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        .thread-item {
-            padding: 15px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            border-left: 3px solid var(--neon-purple);
-            position: relative;
-            transition: transform 0.2s;
-        }
-
-        .thread-item:hover { transform: translateX(-5px); background: rgba(188, 19, 254, 0.05); }
-
-        .thread-tag {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            font-size: 8px;
-            background: #222;
-            color: var(--neon-green);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        /* [TERMINAL CONSOLE] */
-        .terminal-panel {
-            grid-column: 2 / 5;
-            grid-row: 3;
-            background: #000;
-            border: 1px solid #222;
-            border-radius: 6px;
+        .editor-header {
+            height: 40px;
+            background: #0a0a0f;
             display: flex;
             align-items: center;
-            padding: 0 15px;
-            color: var(--neon-green);
-            font-family: var(--mono-font);
-            font-size: 12px;
+            padding: 0 20px;
+            justify-content: space-between;
+            border-bottom: 1px solid #111;
         }
 
-        .terminal-input {
+        #code-input {
+            flex: 1;
             background: transparent;
             border: none;
-            color: #fff;
-            flex: 1;
-            margin-left: 15px;
-            font-family: inherit;
+            color: var(--b-glow);
+            font-family: var(--font-mono);
+            padding: 20px;
+            resize: none;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
-        /* [OS FOOTER BAR] */
-        .footer-bar {
-            grid-column: 1 / 5;
-            grid-row: 3;
-            background: var(--panel-alpha);
-            border: var(--border-glow);
-            border-radius: 6px;
-            margin-top: 10px;
+        /* TASK MANAGER COMPONENT */
+        .task-manager {
+            background: var(--glass);
+            border: var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-item {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-left: 3px solid var(--p-glow);
+        }
+
+        /* RIGHT SIDEBAR - ANALYTICS & MUSIC */
+        .sidebar-right {
+            grid-column: 3;
+            background: var(--glass);
+            border: var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* MUSIC PLAYER */
+        .music-player {
+            background: linear-gradient(135deg, rgba(188,19,254,0.1), rgba(0,210,255,0.1));
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .player-disc {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #111;
+            margin: 0 auto 20px;
+            border: 5px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 5s linear infinite;
+        }
+
+        /* FOOTER STATUS BAR */
+        .status-bar {
+            grid-column: 1 / 4;
+            background: var(--glass);
+            border: var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
             padding: 0 20px;
+            justify-content: space-between;
+            font-family: var(--font-mono);
             font-size: 10px;
-            color: #444;
+            color: #666;
         }
 
-        /* [CANVAS ELEMENTS] */
-        #particle-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-        #matrix-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.15; pointer-events: none; }
+        /* SCROLLBAR CUSTOMS */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--p-glow); border-radius: 10px; }
 
-        .vignette {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.8) 100%);
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        /* [BUTTONS & INTERACTIVE] */
-        .btn-launch {
-            background: var(--neon-purple);
+        /* BUTTONS */
+        .btn-prime {
+            background: var(--p-glow);
             color: #000;
             border: none;
-            padding: 12px 30px;
-            font-family: var(--cyber-font);
-            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-family: var(--font-header);
+            font-weight: 900;
+            font-size: 10px;
             cursor: pointer;
-            border-radius: 4px;
             transition: 0.3s;
-            text-transform: uppercase;
         }
 
-        .btn-launch:hover {
-            box-shadow: 0 0 25px var(--neon-purple);
-            background: #fff;
+        .btn-prime:hover {
+            box-shadow: 0 0 15px var(--p-glow);
+            transform: translateY(-2px);
+        }
+
+        /* GLITCH CLASS */
+        .glitch-text:hover {
+            animation: glitch-anim 0.2s infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); text-shadow: 2px 0 red, -2px 0 blue; }
+            50% { transform: translate(-2px, 2px); text-shadow: -2px 0 red, 2px 0 blue; }
+            100% { transform: translate(2px, -2px); text-shadow: 2px 0 red, -2px 0 blue; }
         }
     </style>
 </head>
 <body>
 
-    <div id="master-loader">
-        <div class="loader-header">
-            <span>DD1_PRIME_BIOS_6.0.1</span>
-            <span id="load-percent">0%</span>
-        </div>
-        <div id="boot-stream">
+    <div id="neural-loader">
+        <div class="loader-ring"></div>
+        <div class="loader-text">INITIALIZING NEURAL LINK...</div>
+        <div id="loader-logs" style="color: #333; font-size: 10px; margin-top: 20px; font-family: var(--font-mono);">
             </div>
-        <div class="progress-container">
-            <div id="progress-fill"></div>
-        </div>
     </div>
 
-    <canvas id="matrix-canvas"></canvas>
-    <canvas id="particle-canvas"></canvas>
-    <div class="vignette"></div>
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="os-container" id="os-main">
+    <div id="workstation">
         
-        <header class="top-navbar">
-            <div class="logo-area">
-                <div class="pulse-node"></div>
-                <h1 class="main-title">DD1_JR // CORE_OS</h1>
+        <header class="top-nav">
+            <div class="brand-logo glitch-text">
+                <i class="fas fa-brain"></i>
+                <span>DD1_JR // V7</span>
             </div>
-            
-            <div class="sys-clock-container">
-                <div style="text-align: right;">
-                    <div style="color: var(--neon-blue); font-weight: bold;" id="real-clock">00:00:00</div>
-                    <div style="font-size: 9px; letter-spacing: 2px;">NEURAL_LINK_STABLE</div>
+
+            <div style="display:flex; gap:40px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 18px; font-weight: 900; color: var(--b-glow);" id="cpu-load">05%</div>
+                    <div style="font-size: 8px; color: #444; letter-spacing: 2px;">CPU_UTILITY</div>
                 </div>
-                <div style="border-left: 1px solid #333; padding-left: 20px;">
-                    <div style="color: var(--neon-green);" id="ping-val">12ms</div>
-                    <div style="font-size: 9px;">LATENCY</div>
+                <div style="text-align: center;">
+                    <div style="font-size: 18px; font-weight: 900; color: var(--p-glow);" id="net-speed">1.2GB/s</div>
+                    <div style="font-size: 8px; color: #444; letter-spacing: 2px;">NEURAL_SYNC</div>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 15px;">
-                <div style="font-size: 9px; padding: 4px 8px; border: 1px solid var(--neon-purple); color: var(--neon-purple); border-radius: 4px;">SECURE_MODE</div>
-                <div style="font-size: 9px; padding: 4px 8px; background: var(--neon-purple); color: #000; border-radius: 4px; font-weight: bold;">ROOT</div>
+            <div style="display:flex; gap:15px; align-items:center;">
+                <div id="clock" style="font-family: var(--font-mono); font-weight: 800; color: #888;">00:00:00</div>
+                <button class="btn-prime">SAVE_SESSION</button>
             </div>
         </header>
 
-        <nav class="app-dock">
-            <div class="dock-btn active"><i class="fas fa-home"></i></div>
-            <div class="dock-btn"><i class="fas fa-shield-alt"></i></div>
-            <div class="dock-btn"><i class="fas fa-project-diagram"></i></div>
-            <div class="dock-btn"><i class="fas fa-database"></i></div>
-            <div class="dock-btn"><i class="fas fa-satellite-dish"></i></div>
-            <div class="dock-btn"><i class="fas fa-user-secret"></i></div>
-            <div style="margin-top: auto;" class="dock-btn" onclick="location.reload()"><i class="fas fa-power-off" style="color: var(--neon-red);"></i></div>
-        </nav>
-
-        <aside class="bio-panel">
-            <div class="bio-header">Biometric_Authorization</div>
-            <div class="avatar-container">
-                <div class="avatar-circle"></div>
-                <div class="avatar-circle-inner"></div>
-                <i class="fas fa-user-ninja avatar-icon"></i>
-            </div>
-
-            <div class="info-card">
-                <div class="label">Primary_Subject</div>
-                <div class="value">DANIEL</div>
-            </div>
-
-            <div class="info-card">
-                <div class="label">Operation_Base</div>
-                <div class="value">STOCKHOLM, SE</div>
-            </div>
-
-            <div class="info-card">
-                <div class="label">Access_Level</div>
-                <div class="value" style="color: var(--neon-purple);">LEVEL_X_ADMIN</div>
-            </div>
-
-            <div style="margin-top: 20px;">
-                <div class="label">Neural_Link_Integrity</div>
-                <div style="height: 3px; background: #111; margin-top: 10px; border-radius: 2px;">
-                    <div style="width: 98%; height: 100%; background: var(--neon-purple); box-shadow: 0 0 10px var(--neon-purple);"></div>
+        <aside class="sidebar-left">
+            <div class="module-card">
+                <div class="card-title">PROJECT_INFO</div>
+                <h3 style="font-size: 16px; margin-bottom: 5px;">ALPHA_GATE</h3>
+                <p style="font-size: 12px; color: #666;">Security layer for neural encryption nodes.</p>
+                <div style="margin-top: 15px; display: flex; gap: 5px;">
+                    <span style="background: rgba(0,210,255,0.1); color: var(--b-glow); font-size: 8px; padding: 3px 7px; border-radius: 10px;">ACTIVE</span>
+                    <span style="background: rgba(188,19,254,0.1); color: var(--p-glow); font-size: 8px; padding: 3px 7px; border-radius: 10px;">PRIVATE</span>
                 </div>
+            </div>
+
+            <div class="module-card">
+                <div class="card-title">QUICK_UTILS</div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <button style="background: #111; border: 1px solid #222; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px;"><i class="fas fa-terminal"></i></button>
+                    <button style="background: #111; border: 1px solid #222; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px;"><i class="fas fa-search"></i></button>
+                    <button style="background: #111; border: 1px solid #222; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px;"><i class="fas fa-bug"></i></button>
+                    <button style="background: #111; border: 1px solid #222; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px;"><i class="fas fa-shield-alt"></i></button>
+                </div>
+            </div>
+
+            <div style="margin-top: auto; padding: 15px; text-align: center;">
+                <img src="https://komarev.com/ghpvc/?username=Daniel-DD1JR-V7&color=bc13fe&style=flat-square&label=VISITOR_ID" style="width: 100%;">
             </div>
         </aside>
 
-        <main class="hub-area">
-            <div class="visualizer-box">
-                <div class="glitch-logo" data-text="DD1_JR">DD1_JR</div>
-                
-                <div style="position: absolute; top: 20px; left: 20px; font-size: 10px; color: #444; line-height: 1.5;">
-                    ID: 0x8892-BA21<br>
-                    KERNEL: DD1-V6-GOLDEN<br>
-                    MEM: 64GB_ECC_READY
+        <main class="workspace-hub">
+            <div class="editor-container">
+                <div class="editor-header">
+                    <span style="font-size: 10px; font-family: var(--font-header); color: #444;">DANIEL_SCRIPT_EDITOR.LUA</span>
+                    <div style="display:flex; gap:5px;">
+                        <div style="width:10px; height:10px; border-radius:50%; background: #ff5f56;"></div>
+                        <div style="width:10px; height:10px; border-radius:50%; background: #ffbd2e;"></div>
+                        <div style="width:10px; height:10px; border-radius:50%; background: #27c93f;"></div>
+                    </div>
                 </div>
+                <textarea id="code-input" spellcheck="false">-- Initializing Shield Protocol...
+function main_gate()
+    local access = "DD1_JR_V7"
+    if security.level > 9 then
+        print("Neural Link Established to: " .. access)
+        system.deploy_vanguards()
+    end
+end
+
+main_gate()</textarea>
             </div>
 
-            <div style="height: 150px; background: var(--panel-alpha); border: var(--border-glow); border-radius: 8px; display: flex; align-items: center; padding: 0 40px; gap: 30px;">
-                <i class="fas fa-shield-virus fa-4x" style="color: var(--neon-blue); filter: drop-shadow(0 0 15px var(--neon-blue));"></i>
-                <div style="flex: 1;">
-                    <h3 style="font-family: var(--cyber-font); color: var(--neon-blue);">SHIELD_PROTOCOL_ACTIVE</h3>
-                    <p style="font-size: 11px; color: #666; margin-top: 5px;">Scanning for malicious injections, phishing routes, and neural bypasses in real-time.</p>
+            <div class="task-manager">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                    <h2 style="font-family: var(--font-header); font-size: 14px;">NEURAL_TASKS</h2>
+                    <button class="btn-prime" onclick="addTask()">+ NEW_TASK</button>
                 </div>
-                <button class="btn-launch">Execute_Scan</button>
+                <div class="task-list" id="task-container">
+                    <div class="task-item">
+                        <div>
+                            <div style="font-weight: 700;">Rewrite Encryption Kernel</div>
+                            <div style="font-size: 10px; color: #555;">Due: 2026-05-12 // Priority: HIGH</div>
+                        </div>
+                        <i class="fas fa-check-circle" style="color: var(--g-glow);"></i>
+                    </div>
+                    <div class="task-item" style="border-left-color: var(--b-glow);">
+                        <div>
+                            <div style="font-weight: 700;">Sync Swedish Security Nodes</div>
+                            <div style="font-size: 10px; color: #555;">Due: 2026-05-14 // Priority: MED</div>
+                        </div>
+                        <i class="fas fa-clock" style="color: var(--b-glow);"></i>
+                    </div>
+                </div>
             </div>
         </main>
 
-        <aside class="thread-panel">
-            <div class="bio-header" style="margin-bottom: 20px;">Live_Thread_Monitor</div>
-            
-            <div class="thread-item">
-                <span class="thread-tag">STABLE</span>
-                <div style="font-weight: bold; font-size: 13px;">Knightfall_Auth_V4</div>
-                <div style="font-size: 10px; color: #555; margin-top: 5px;">Running secure gateway...</div>
-                <div style="height: 1px; width: 100%; background: #222; margin-top: 10px;">
-                    <div style="width: 85%; height: 100%; background: var(--neon-purple);"></div>
+        <aside class="sidebar-right">
+            <div class="music-player">
+                <div class="player-disc">
+                    <i class="fas fa-music fa-2x" style="color: var(--p-glow);"></i>
+                </div>
+                <h4 id="song-name">LO-FI NEURAL BEATS</h4>
+                <p style="font-size: 10px; color: #888; margin-bottom: 15px;">STATION: STOCKHOLM_RADIO</p>
+                <div style="display:flex; justify-content: center; gap: 20px;">
+                    <i class="fas fa-step-backward"></i>
+                    <i class="fas fa-play" id="play-btn"></i>
+                    <i class="fas fa-step-forward"></i>
                 </div>
             </div>
 
-            <div class="thread-item">
-                <span class="thread-tag" style="color: var(--neon-blue);">ACTIVE</span>
-                <div style="font-weight: bold; font-size: 13px;">Shield_AI_Neural</div>
-                <div style="font-size: 10px; color: #555; margin-top: 5px;">Training LUA modules...</div>
-                <div style="height: 1px; width: 100%; background: #222; margin-top: 10px;">
-                    <div style="width: 32%; height: 100%; background: var(--neon-blue);"></div>
+            <div class="module-card" style="flex: 1;">
+                <div class="card-title">ENVIRONMENT_STATS</div>
+                <div style="text-align: center; margin: 20px 0;">
+                    <i class="fas fa-cloud-moon fa-3x" style="color: #888;"></i>
+                    <div style="font-size: 30px; font-weight: 900; margin-top: 10px;">12°C</div>
+                    <div style="font-size: 10px; color: #444;">STOCKHOLM, SWEDEN</div>
                 </div>
-            </div>
-
-            <div class="thread-item" style="border-color: var(--neon-blue);">
-                <span class="thread-tag">PENDING</span>
-                <div style="font-weight: bold; font-size: 13px;">External_API_Sync</div>
-                <div style="font-size: 10px; color: #555; margin-top: 5px;">Waiting for Iraq_Node_7...</div>
-            </div>
-
-            <div style="margin-top: auto; padding: 20px; border: 1px dashed #222; text-align: center; border-radius: 10px;">
-                <img src="https://komarev.com/ghpvc/?username=Daniel-DD1JR-Stats&color=bc13fe&style=flat-square&label=TRAFFIC_LOAD" style="width: 100%; opacity: 0.6;">
+                <hr style="border: 0; border-top: 1px solid #111; margin: 15px 0;">
+                <div style="font-size: 11px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom: 5px;">
+                        <span>HUMIDITY</span><span style="color: var(--b-glow);">44%</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>WIND_SPEED</span><span style="color: var(--b-glow);">12km/h</span>
+                    </div>
+                </div>
             </div>
         </aside>
 
-        <footer class="terminal-panel">
-            <span style="color: var(--neon-purple);">[ROOT@DANIEL_DD1_JR]:~#</span>
-            <input type="text" class="terminal-input" placeholder="Enter system command or help..." id="os-input">
+        <footer class="status-bar">
+            <div><i class="fas fa-check-double" style="color: var(--g-glow);"></i> KERNEL_ACTIVE: DD1_OS_V7.4</div>
+            <div>DANIEL // DD1_JR // WORKSTATION_2026</div>
+            <div>LATENCY: <span id="ping-val">12</span>ms // STABILITY: 99.98%</div>
         </footer>
-
     </div>
 
     <script>
-        /* JAVASCRIPT - COMPONENT 1: BOOT SEQUENCER
-           Explicitly defining every boot step to increase depth.
-        */
-        const bootStrings = [
-            "INITIALIZING KERNEL_DD1_V6...",
-            "CHECKING HARDWARE INTEGRITY...",
-            "CPU: OCTA-CORE THREADRIPPER DETECTED",
-            "RAM: 64GB DDR5 - ALLOCATION SUCCESSFUL",
-            "GPU: RTX_9090_TI (VIRTUALIZED) - READY",
-            "MOUNTING ENCRYPTED_FILESYSTEM...",
-            "DECRYPTING RSA_KEYS_4096...",
-            "ESTABLISHING SECURE_NODE: SWEDEN_01",
-            "BYPASSING LOCAL_FIREWALLS...",
-            "ACCESSING IRAQI_SATELLITE_LINK...",
-            "SYNCING BIOMETRIC_DATA (DANIEL)...",
-            "LOADING UI_CORE_MODULES...",
-            "COMPILING SCSS_STYLES_LIVE...",
-            "INITIALIZING MATRIX_ENGINE...",
-            "STABILIZING NEURAL_LINK...",
-            "CONNECTING TO SHIELD_AI_BOT...",
-            "SCANNING FOR INTRUSIONS... NONE.",
-            "PREPARING WORKSPACE...",
-            "SYSTEM_READY: TRUE",
-            "WELCOME BACK, COMMANDER."
+        // 1. NEURAL BOOT SEQUENCE
+        const loaderLogs = [
+            "DECOMPRESSING_V7_ASSETS...",
+            "INITIALIZING_PHYSICS_ENGINE...",
+            "LINKING_STOCKHOLM_SERVER...",
+            "DECRYPTING_DANIEL_PROFILE...",
+            "VULKAN_RENDERER_STARTED...",
+            "SHIELD_AI_VERSION_STABLE...",
+            "MOUNTING_USER_INTERFACE...",
+            "SYSTEM_READY_STABLE_V7"
         ];
 
-        function runBoot() {
-            const stream = document.getElementById('boot-stream');
-            const fill = document.getElementById('progress-fill');
-            const perc = document.getElementById('load-percent');
+        function startBoot() {
+            const logBox = document.getElementById('loader-logs');
             let idx = 0;
-
-            const interval = setInterval(() => {
-                if (idx < bootStrings.length) {
-                    const line = document.createElement('div');
-                    line.style.marginBottom = '5px';
-                    line.innerHTML = `<span style="color:#444">[${new Date().toLocaleTimeString()}]</span> > ${bootStrings[idx]}`;
-                    stream.appendChild(line);
-                    
+            const bootInt = setInterval(() => {
+                if(idx < loaderLogs.length) {
+                    const l = document.createElement('div');
+                    l.innerText = `> ${loaderLogs[idx]}`;
+                    logBox.appendChild(l);
                     idx++;
-                    let p = Math.floor((idx / bootStrings.length) * 100);
-                    fill.style.width = p + "%";
-                    perc.innerText = p + "%";
-                    
-                    stream.scrollTop = stream.scrollHeight;
                 } else {
-                    clearInterval(interval);
+                    clearInterval(bootInt);
                     setTimeout(() => {
-                        document.getElementById('master-loader').style.display = 'none';
-                        document.getElementById('os-main').style.opacity = '1';
-                        initBackgrounds();
-                    }, 800);
+                        document.getElementById('neural-loader').style.opacity = '0';
+                        setTimeout(() => document.getElementById('neural-loader').remove(), 1000);
+                        initGraphics();
+                    }, 500);
                 }
-            }, 120);
+            }, 150);
         }
+        startBoot();
 
-        /* JAVASCRIPT - COMPONENT 2: MATRIX ENGINE
-        */
-        function initBackgrounds() {
-            const mCanvas = document.getElementById('matrix-canvas');
-            const mCtx = mCanvas.getContext('2d');
-            mCanvas.width = window.innerWidth;
-            mCanvas.height = window.innerHeight;
+        // 2. BACKGROUND GRAPHICS (NEURAL NETWORK)
+        function initGraphics() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-            const chars = "DD1JR017אבג";
-            const fontSize = 16;
-            const columns = mCanvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
-
-            function drawMatrix() {
-                mCtx.fillStyle = "rgba(0, 0, 0, 0.05)";
-                mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
-                mCtx.fillStyle = "#bc13fe";
-                mCtx.font = fontSize + "px monospace";
-
-                for (let i = 0; i < drops.length; i++) {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    if (drops[i] * fontSize > mCanvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
-            }
-            setInterval(drawMatrix, 50);
-
-            /* JAVASCRIPT - COMPONENT 3: PARTICLE ENGINE 
-            */
-            const pCanvas = document.getElementById('particle-canvas');
-            const pCtx = pCanvas.getContext('2d');
-            pCanvas.width = window.innerWidth;
-            pCanvas.height = window.innerHeight;
             let particles = [];
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * pCanvas.width;
-                    this.y = Math.random() * pCanvas.height;
-                    this.size = Math.random() * 2 + 1;
-                    this.speedX = Math.random() * 1 - 0.5;
-                    this.speedY = Math.random() * 1 - 0.5;
-                }
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    if (this.x > pCanvas.width) this.x = 0;
-                    if (this.x < 0) this.x = pCanvas.width;
-                    if (this.y > pCanvas.height) this.y = 0;
-                    if (this.y < 0) this.y = pCanvas.height;
-                }
-                draw() {
-                    pCtx.fillStyle = "rgba(0, 210, 255, 0.5)";
-                    pCtx.beginPath();
-                    pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    pCtx.fill();
-                }
-            }
-
-            for (let i = 0; i < 100; i++) particles.push(new Particle());
-
-            function animateParticles() {
-                pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-                particles.forEach(p => {
-                    p.update();
-                    p.draw();
+            for(let i=0; i<150; i++) {
+                particles.push({
+                    x: Math.random()*canvas.width,
+                    y: Math.random()*canvas.height,
+                    vx: (Math.random()-0.5)*0.4,
+                    vy: (Math.random()-0.5)*0.4
                 });
-                requestAnimationFrame(animateParticles);
             }
-            animateParticles();
+
+            function draw() {
+                ctx.clearRect(0,0,canvas.width, canvas.height);
+                ctx.strokeStyle = "rgba(188, 19, 254, 0.1)";
+                ctx.beginPath();
+                particles.forEach((p, i) => {
+                    p.x += p.vx; p.y += p.vy;
+                    if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                    particles.slice(i+1).forEach(p2 => {
+                        let d = Math.hypot(p.x-p2.x, p.y-p2.y);
+                        if(d < 120) {
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                        }
+                    });
+                });
+                ctx.stroke();
+                requestAnimationFrame(draw);
+            }
+            draw();
         }
 
-        /* JAVASCRIPT - COMPONENT 4: SYSTEM CLOCK & STATS 
-        */
+        // 3. SYSTEM MONITORS & CLOCK
         setInterval(() => {
-            document.getElementById('real-clock').innerText = new Date().toLocaleTimeString();
-            document.getElementById('ping-val').innerText = Math.floor(Math.random() * 10 + 5) + "ms";
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+            document.getElementById('cpu-load').innerText = (Math.random()*15 + 2).toFixed(0).padStart(2, '0') + "%";
+            document.getElementById('ping-val').innerText = Math.floor(Math.random()*5 + 10);
         }, 1000);
 
-        /* JAVASCRIPT - COMPONENT 5: TERMINAL INTERACTION 
-        */
-        const osInput = document.getElementById('os-input');
-        osInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const cmd = this.value.toLowerCase();
-                if (cmd === 'help') {
-                    alert('System Commands: scan, status, root, clear, exit');
-                } else if (cmd === 'scan') {
-                    alert('Threat Scan Initiated...');
-                }
-                this.value = '';
+        // 4. TASK MANAGER LOGIC
+        function addTask() {
+            const taskName = prompt("Enter Task Description:");
+            if(taskName) {
+                const container = document.getElementById('task-container');
+                const div = document.createElement('div');
+                div.className = "task-item";
+                div.style.borderLeftColor = "var(--g-glow)";
+                div.innerHTML = `
+                    <div>
+                        <div style="font-weight: 700;">${taskName.toUpperCase()}</div>
+                        <div style="font-size: 10px; color: #555;">Due: NEW_ENTRY // Priority: URGENT</div>
+                    </div>
+                    <i class="fas fa-circle-notch fa-spin" style="color: var(--p-glow);"></i>
+                `;
+                container.prepend(div);
             }
-        });
-
-        // Fire the boot sequence
-        runBoot();
-
-        // 
-        // [ADVANCED SECTION - MORE RAW CODE TO ENSURE 1500+ LINES STRUCTURALLY]
-        // Adding dummy complex logic to expand the file size and technical complexity
-        // as requested by Daniel.
-        //
-
-        const systemDatabase = {
-            nodes: ["Node-A1", "Node-B2", "Node-C3"],
-            encrypt: function(data) { return btoa(data); },
-            decrypt: function(data) { return atob(data); },
-            logEvent: function(msg) { console.log("[SYSLOG]: " + msg); }
-        };
-
-        function complexPhysicsCalculation() {
-            let result = 0;
-            for(let i=0; i<1000; i++) {
-                result += Math.sqrt(i) * Math.sin(i);
-            }
-            return result;
         }
 
-        // Window Resizer Logic
-        window.addEventListener('resize', () => {
-            const mCanvas = document.getElementById('matrix-canvas');
-            const pCanvas = document.getElementById('particle-canvas');
-            mCanvas.width = window.innerWidth;
-            mCanvas.height = window.innerHeight;
-            pCanvas.width = window.innerWidth;
-            pCanvas.height = window.innerHeight;
+        // 5. MUSIC PLAYER TOGGLE
+        let isPlaying = false;
+        document.getElementById('play-btn').addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            this.className = isPlaying ? "fas fa-pause" : "fas fa-play";
+            document.getElementById('song-name').style.color = isPlaying ? "var(--p-glow)" : "#fff";
         });
 
-        /* END OF CORE LOGIC.
-           The rest of the lines are distributed in the CSS/HTML 
-           structure to provide the requested visual density.
-        */
+        // 6. WINDOW RESIZE HANDLING
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('bg-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // 7. KEYBOARD SHORTCUTS (ADVANCED)
+        document.addEventListener('keydown', (e) => {
+            if(e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                alert("SESSION_SAVED_TO_DD1_CLOUD");
+            }
+        });
+
+        console.log("%c DD1_JR NEURAL OS V7.4 LOADING SUCCESSFUL ", "background: #bc13fe; color: #000; font-weight: bold; padding: 10px;");
     </script>
 </body>
 </html>
