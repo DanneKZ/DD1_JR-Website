@@ -3,68 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD1_JR | Cyber Operations v2.0-PRO</title>
+    <title>DD1_JR | HUNTER_MODE v3.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* [1] الماوس الجديد - سريع وعملي */
-        * { cursor: none !important; }
-        #cursor-dot { position: fixed; width: 6px; height: 6px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10001; box-shadow: 0 0 15px var(--neon-blue); }
-        #cursor-glow { position: fixed; width: 30px; height: 30px; border: 1px solid var(--neon-purple); border-radius: 50%; pointer-events: none; z-index: 10000; transition: transform 0.05s linear; transform: translate(-50%, -50%); }
-
         :root {
-            --neon-purple: #bc13fe; --neon-blue: #00d2ff; --bg-dark: #020202; --card-bg: rgba(8, 8, 8, 0.92);
-            --disabled: #444;
+            --danger-red: #ff003c; --target-blue: #00d2ff; --bg-dark: #050000;
+            --disabled: #333;
         }
 
-        body {
-            background-color: var(--bg-dark); color: white; font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0; overflow-x: hidden; height: auto; scroll-behavior: smooth;
+        * { cursor: none !important; }
+        body { background-color: var(--bg-dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* ماوس الرادار */
+        #cursor-dot { position: fixed; width: 4px; height: 4px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10001; }
+        #cursor-glow { 
+            position: fixed; width: 40px; height: 40px; border: 1px solid var(--danger-red); 
+            border-radius: 50%; pointer-events: none; z-index: 10000; 
+            transition: transform 0.08s ease-out; transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px var(--danger-red);
         }
 
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.35; filter: blur(0.5px); }
+        #matrix-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; filter: grayscale(1) sepia(1) hue-rotate(-50deg) saturate(5); }
 
-        /* [2] قائمة الإعدادات المحسنة */
-        .ui-controls { position: fixed; top: 20px; left: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 2000; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 8px; border: 1px solid var(--neon-purple); }
-        .ui-controls button {
-            background: #000; border: 1px solid var(--neon-purple); color: var(--neon-purple); 
-            padding: 10px 20px; border-radius: 6px; cursor: pointer; font-family: 'Share Tech Mono', monospace; 
-            font-size: 0.85rem; transition: 0.4s; display: flex; align-items: center; gap: 8px;
+        /* لوحة التحكم الهجومية */
+        .settings-panel {
+            position: fixed; top: 20px; left: 20px; z-index: 2000;
+            background: rgba(10, 0, 0, 0.9); border: 1px solid var(--danger-red);
+            padding: 15px; border-radius: 5px; backdrop-filter: blur(5px);
         }
-        .ui-controls button.is-off { border-color: var(--disabled); color: var(--disabled); }
-        .slider-box { margin-top: 5px; }
-        .slider-box label { font-size: 0.6rem; color: var(--neon-blue); font-family: monospace; display: block; margin-bottom: 3px; }
-        #op-slider { width: 100%; accent-color: var(--neon-purple); cursor: none; }
+        .control-btn {
+            width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid var(--danger-red);
+            background: transparent; color: var(--danger-red); font-family: monospace; font-size: 0.7rem; text-align: left;
+        }
+        .control-btn.is-off { border-color: var(--disabled); color: var(--disabled); }
 
-        /* [3] ستايلاتك الأصلية v2.0 (بدون تغيير) */
-        #intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #1a002b 0%, #000 100%); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .intro-logo-text { font-size: 5rem; font-weight: 900; color: white; text-shadow: 0 0 30px #bc13fe; font-family: 'Courier New', monospace; letter-spacing: 15px; }
-        .load-track { width: 300px; height: 3px; background: rgba(255,255,255,0.1); margin-top: 35px; overflow: hidden; }
-        #bar { width: 0%; height: 100%; background: linear-gradient(90deg, #bc13fe, #00d2ff); }
+        #system-logs {
+            position: fixed; bottom: 20px; right: 20px; width: 300px; height: 180px;
+            background: rgba(0,0,0,0.9); border-left: 3px solid var(--danger-red);
+            padding: 15px; font-family: monospace; font-size: 0.7rem; color: var(--danger-red);
+        }
 
-        .terminal-box, .bot-card, .project-card { transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); cursor: none; position: relative; overflow: hidden; }
-        .terminal-box:hover { transform: translateY(-12px) rotateX(5deg); border-color: #bc13fe !important; box-shadow: 0 15px 40px rgba(188, 19, 254, 0.4); }
+        section { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; }
+        .neon-title { 
+            font-size: 5rem; font-weight: 900; color: var(--danger-red);
+            text-shadow: 0 0 20px var(--danger-red); letter-spacing: 10px; margin: 0;
+        }
+
+        .identity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 40px; }
+        .terminal-box { 
+            background: rgba(15, 0, 0, 0.9); border: 1px solid #300; padding: 25px; 
+            border-radius: 10px; transition: 0.3s;
+        }
+        .terminal-box:hover { border-color: var(--danger-red); box-shadow: 0 0 20px rgba(255,0,60,0.2); }
+
+        .bio-key { color: var(--danger-red); font-weight: bold; }
         
-        #system-logs { position: fixed; bottom: 25px; right: 25px; width: 300px; height: 180px; background: rgba(0, 0, 0, 0.95); border-left: 4px solid var(--neon-blue); padding: 15px; font-family: 'Consolas', monospace; font-size: 0.75rem; color: var(--neon-blue); z-index: 100; overflow: hidden; }
+        .bot-card { 
+            width: 100%; max-width: 1000px; background: #100; border: 1px dashed var(--danger-red); 
+            padding: 20px; margin-top: 20px; border-radius: 10px; display: flex; align-items: center; gap: 20px; 
+        }
 
-        section { padding: 80px 25px; display: flex; flex-direction: column; align-items: center; }
-        .neon-title { font-size: clamp(3.5rem, 12vw, 6rem); font-weight: 900; background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
-        @keyframes shine { to { background-position: 200% center; } }
+        /* حالة المشاريع الموقوفة */
+        .progress-bg { background: #111; height: 10px; border-radius: 5px; margin: 10px 0; border: 1px solid #222; }
+        .progress-fill { height: 100%; background: #444; } /* لون رمادي للمشاريع المتوقفة */
 
-        .identity-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; width: 100%; max-width: 1100px; margin-top: 50px; }
-        .terminal-box { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px); }
-        .bio-line { margin: 12px 0; font-size: 1.05rem; } .bio-key { color: var(--neon-purple); font-weight: bold; }
-
-        .stats-container { width: 100%; max-width: 1100px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; }
-        .stat-item { background: #0a0a0a; border: 1px solid rgba(188, 19, 254, 0.2); padding: 25px; border-radius: 15px; text-align: center; }
-
-        .bot-card { background: rgba(0,0,0,0.8); border: 1px solid var(--neon-blue); padding: 25px; border-radius: 20px; width: 100%; max-width: 1100px; margin-top: 30px; display: flex; align-items: center; gap: 25px; }
-        
-        .progress-bg { background: #111; height: 12px; border-radius: 10px; margin: 20px 0; border: 1px solid #222; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); }
-        
-        .social-bar { display: flex; gap: 25px; margin: 30px 0; }
-        .social-bar a { color: #666; font-size: 1.8rem; transition: 0.4s; }
-        .social-bar a:hover { color: var(--neon-blue); transform: scale(1.2); }
     </style>
 </head>
 <body>
@@ -72,78 +74,53 @@
     <div id="cursor-dot"></div>
     <div id="cursor-glow"></div>
 
-    <div id="intro-overlay">
-        <div class="intro-logo-text">DD1_JR</div>
-        <div class="load-track"><div id="bar"></div></div>
-    </div>
-
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="ui-controls">
-        <button onclick="toggleMatrix()" id="mBtn"><i class="fas fa-code"></i> MATRIX: ON</button>
-        <div class="slider-box">
-            <label>OPACITY_LEVEL</label>
-            <input type="range" id="op-slider" min="0" max="1" step="0.01" value="0.35" oninput="adjustOp(this.value)">
-        </div>
-        <button onclick="toggleLogs()" id="lBtn"><i class="fas fa-terminal"></i> OS_LOGS: ON</button>
+    <div class="settings-panel">
+        <div style="font-size: 0.6rem; color: #555; margin-bottom: 5px;">STATUS: HUNTING_JET</div>
+        <button class="control-btn" onclick="toggleMatrix()" id="mBtn">RADAR: ACTIVE</button>
+        <input type="range" min="0" max="1" step="0.05" value="0.2" oninput="adjMatrix(this.value)" style="width:100%; accent-color: var(--danger-red);">
+        <button class="control-btn" onclick="toggleLogs()" id="lBtn">INTEL_FEED: ON</button>
     </div>
 
     <div id="system-logs"></div>
 
-    <section id="hero">
-        <h1 class="neon-title">DD1_JR</h1>
-        
-        <div class="social-bar">
-            <a href="https://github.com/DanneKZ" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://discord.com/users/1336353146020298816" target="_blank"><i class="fab fa-discord"></i></a>
-            <a href="#" target="_blank"><i class="fas fa-shield-alt"></i></a>
-        </div>
+    <section>
+        <h1 class="neon-title">HUNTER</h1>
+        <p style="color: #666; letter-spacing: 5px; margin-top: -10px;">ID: DD1_JR // OPERATIONS_ONLY</p>
 
-        <div class="identity-wrapper">
+        <div class="identity-grid">
             <div class="terminal-box">
-                <div style="color:var(--neon-blue); font-family:monospace; margin-bottom:15px;">CORE_IDENT_MODULE</div>
-                <div class="bio-line"><span class="bio-key">> USERNAME:</span> Daniel (DD1_JR)</div>
-                <div class="bio-line"><span class="bio-key">> LEVEL:</span> 15 Cycles</div>
-                <div class="bio-line"><span class="bio-key">> LEGACY:</span> Iraqi Heritage 🇮🇶</div>
+                <h3 style="color:var(--danger-red);">[ TARGET_INTEL ]</h3>
+                <p>> TARGET_CODE: JET</p>
+                <p>> LOCATION: Spain (Possible) 🇪🇸</p>
+                <p>> OS_FINGERPRINT: macOS / Safari</p>
+                <p>> ACTIVITY: Moomoo.io / Browser-Discord</p>
             </div>
-            <div class="terminal-box" style="border: 1px solid var(--neon-blue);">
-                <div style="color:var(--neon-purple); font-family:monospace; margin-bottom:15px;">TECH_STACK_OVERRIDE</div>
-                <div class="bio-line"><span class="bio-key">> ENGINE:</span> LUA (MTA / FiveM)</div>
-                <div class="bio-line"><span class="bio-key">> INTERFACE:</span> HTML5 / CSS3 / JS</div>
-                <div class="bio-line"><span class="bio-key">> SEC_OPS:</span> Cyber Security</div>
+            <div class="terminal-box">
+                <h3 style="color:var(--danger-red);">[ MISSION_STATUS ]</h3>
+                <p>> MODE: Offensive Counter-Strike</p>
+                <p>> DEV_WORK: <span style="color:var(--danger-red);">SUSPENDED</span></p>
+                <p>> OBJECTIVE: Full Account Recovery</p>
+                <p>> THREAT_LEVEL: CRITICAL</p>
             </div>
-        </div>
-
-        <div class="stats-container">
-            <div class="stat-item"><span style="color:var(--neon-blue); font-size:2rem; font-weight:800;">04+</span><br><small>DEPLOYMENTS</small></div>
-            <div class="stat-item"><span style="color:var(--neon-purple); font-size:2rem; font-weight:800;">2.5k</span><br><small>LINES_SYNCED</small></div>
-            <div class="stat-item"><span id="ping-val" style="color:var(--neon-blue); font-size:2rem; font-weight:800;">20ms</span><br><small>LATENCY</small></div>
         </div>
 
         <div class="bot-card">
-            <i class="fas fa-robot" style="font-size: 3rem; color: var(--neon-blue);"></i>
-            <div style="flex: 1; text-align: left;">
-                <div style="color: var(--neon-blue); font-weight: 900; font-family: monospace;">AUTOMATED_DEFENSE_v1</div>
-                <p style="margin: 5px 0; color: #888;">Security Bot: Scans link signatures & validates safe gateways.</p>
+            <i class="fas fa-crosshairs" style="font-size: 2.5rem; color: var(--danger-red);"></i>
+            <div>
+                <b style="color: #fff;">TRACKING_INITIALIZED</b>
+                <p style="font-size: 0.75rem; color: #777; margin: 5px 0;">جمع المعلومات الجارية.. سيتم الرد عند اكتمال البصمة الرقمية.</p>
             </div>
-            <a href="https://top.gg/bot/1488965929810526308" target="_blank" style="background: var(--neon-blue); color: black; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: 900;">TOP.GG</a>
         </div>
 
-        <h2 style="color: var(--neon-blue); margin-top:50px; letter-spacing: 5px;">[ ACTIVE_OPERATIONS ]</h2>
-        <div style="width: 100%; max-width: 1100px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-            <div class="terminal-box">
-                <b>Knightfall Auth System</b>
-                <div class="progress-bg"><div class="progress-fill" style="width: 92%;"></div></div>
-            </div>
-            <div class="terminal-box">
-                <b>Shield AI Defender</b>
-                <div class="progress-bg"><div class="progress-fill" style="width: 45%;"></div></div>
-            </div>
+        <div style="width: 100%; max-width: 1000px; margin-top: 40px; opacity: 0.5;">
+            <p style="font-size: 0.7rem; color: #555;">NORMAL_PROJECTS (FROZEN)</p>
+            <div class="progress-bg"><div class="progress-fill" style="width: 100%;"></div></div>
         </div>
     </section>
 
     <script>
-        // [1] ماوس سريع
         const dot = document.getElementById('cursor-dot');
         const glow = document.getElementById('cursor-glow');
         document.addEventListener('mousemove', (e) => {
@@ -151,64 +128,42 @@
             glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px';
         });
 
-        // [2] لوجات ذكية
         const logBox = document.getElementById('system-logs');
-        function pushLog(msg) {
-            const d = document.createElement('div');
-            d.innerHTML = `<span style="color:#555">[${new Date().toLocaleTimeString()}]</span> > ${msg}`;
-            logBox.appendChild(d);
+        function addLog(msg) {
+            const div = document.createElement('div');
+            div.innerHTML = `<span style="color:#400">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
+            logBox.appendChild(div);
             if(logBox.childNodes.length > 8) logBox.firstChild.remove();
         }
 
-        // [3] التحكم
+        // كود الماتريكس (أحمر)
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        function adjustOp(v) { canvas.style.opacity = v; }
-        
-        let mOn = true;
-        function toggleMatrix() {
-            mOn = !mOn;
-            const btn = document.getElementById('mBtn');
-            canvas.style.display = mOn ? "block" : "none";
-            btn.innerHTML = mOn ? "MATRIX: ON" : "MATRIX: OFF";
-            btn.classList.toggle('is-off', !mOn);
-            pushLog(mOn ? "Matrix stream restored." : "Matrix stream terminated.");
-        }
-
-        let lOn = true;
-        function toggleLogs() {
-            lOn = !lOn;
-            const btn = document.getElementById('lBtn');
-            logBox.style.display = lOn ? "block" : "none";
-            btn.innerHTML = lOn ? "OS_LOGS: ON" : "OS_LOGS: OFF";
-            btn.classList.toggle('is-off', !lOn);
-        }
-
-        // [4] الماتريكس الأصلي
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const drops = Array(Math.floor(canvas.width/16)).fill(1);
-        function drawM() {
-            ctx.fillStyle = "rgba(0,0,0,0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "#bc13fe"; ctx.font = "16px monospace";
+        function draw() {
+            ctx.fillStyle = "rgba(5, 0, 0, 0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#f00"; ctx.font = "15px monospace";
             drops.forEach((y, i) => {
-                ctx.fillText("01D"[Math.floor(Math.random()*3)], i*16, y*16);
+                ctx.fillText("X1"[Math.floor(Math.random()*2)], i*16, y*16);
                 if(y*16 > canvas.height && Math.random() > 0.98) drops[i] = 0;
                 drops[i]++;
             });
         }
-        setInterval(drawM, 50);
+        setInterval(draw, 50);
 
-        // شاشة التحميل
-        let p = 0;
-        const loader = setInterval(() => {
-            p += 10; document.getElementById('bar').style.width = p+"%";
-            if(p>=100) { clearInterval(loader); document.getElementById('intro-overlay').style.display="none"; pushLog("DD1_JR System Stable."); }
-        }, 150);
-
+        // لوجات استخباراتية وهمية
         setInterval(() => {
-            document.getElementById('ping-val').innerText = Math.floor(Math.random()*10+15)+"ms";
-            pushLog("Scanning Node " + Math.floor(Math.random()*900));
-        }, 4000);
+            const lines = ["Scanning Spain nodes...", "Target ping: 42ms", "Checking macOS vulns...", "Intercepting MooMoo packets...", "Digital trail detected."];
+            addLog(lines[Math.floor(Math.random()*lines.length)]);
+        }, 3000);
+
+        function toggleMatrix() {
+            const b = document.getElementById('mBtn');
+            canvas.style.display = canvas.style.display === "none" ? "block" : "none";
+            b.classList.toggle('is-off');
+            b.innerText = canvas.style.display === "none" ? "RADAR: OFF" : "RADAR: ACTIVE";
+        }
     </script>
 </body>
 </html>
