@@ -3,167 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD1_JR | HUNTER_MODE v3.0</title>
+    <title>TERMINATE_JET | DD1_JR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --danger-red: #ff003c; --target-blue: #00d2ff; --bg-dark: #050000;
-            --disabled: #333;
+            --blood: #660000; --neon-red: #ff0000; --dark: #000;
         }
 
-        * { cursor: none !important; }
-        body { background-color: var(--bg-dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
+        * { cursor: crosshair !important; box-sizing: border-box; }
+        body { background: var(--dark); color: white; font-family: 'Courier New', Courier, monospace; margin: 0; overflow-x: hidden; }
 
-        /* ماوس الرادار */
-        #cursor-dot { position: fixed; width: 4px; height: 4px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10001; }
-        #cursor-glow { 
-            position: fixed; width: 40px; height: 40px; border: 1px solid var(--danger-red); 
-            border-radius: 50%; pointer-events: none; z-index: 10000; 
-            transition: transform 0.08s ease-out; transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--danger-red);
-        }
+        /* تأثير الجليتش (الخلل) في الخلفية */
+        .glitch-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(rgba(10,0,0,0.9), rgba(0,0,0,0.9)), url('your-background-image.jpg'); background-size: cover; opacity: 0.3; }
 
-        #matrix-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; filter: grayscale(1) sepia(1) hue-rotate(-50deg) saturate(5); }
-
-        /* لوحة التحكم الهجومية */
-        .settings-panel {
-            position: fixed; top: 20px; left: 20px; z-index: 2000;
-            background: rgba(10, 0, 0, 0.9); border: 1px solid var(--danger-red);
-            padding: 15px; border-radius: 5px; backdrop-filter: blur(5px);
-        }
-        .control-btn {
-            width: 100%; padding: 8px; margin-bottom: 5px; border: 1px solid var(--danger-red);
-            background: transparent; color: var(--danger-red); font-family: monospace; font-size: 0.7rem; text-align: left;
-        }
-        .control-btn.is-off { border-color: var(--disabled); color: var(--disabled); }
-
-        #system-logs {
-            position: fixed; bottom: 20px; right: 20px; width: 300px; height: 180px;
-            background: rgba(0,0,0,0.9); border-left: 3px solid var(--danger-red);
-            padding: 15px; font-family: monospace; font-size: 0.7rem; color: var(--danger-red);
-        }
-
-        section { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; }
-        .neon-title { 
-            font-size: 5rem; font-weight: 900; color: var(--danger-red);
-            text-shadow: 0 0 20px var(--danger-red); letter-spacing: 10px; margin: 0;
-        }
-
-        .identity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 40px; }
-        .terminal-box { 
-            background: rgba(15, 0, 0, 0.9); border: 1px solid #300; padding: 25px; 
-            border-radius: 10px; transition: 0.3s;
-        }
-        .terminal-box:hover { border-color: var(--danger-red); box-shadow: 0 0 20px rgba(255,0,60,0.2); }
-
-        .bio-key { color: var(--danger-red); font-weight: bold; }
+        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle, #200 0%, #000 100%); }
         
-        .bot-card { 
-            width: 100%; max-width: 1000px; background: #100; border: 1px dashed var(--danger-red); 
-            padding: 20px; margin-top: 20px; border-radius: 10px; display: flex; align-items: center; gap: 20px; 
+        .main-title { font-size: 5rem; color: var(--neon-red); text-transform: uppercase; margin: 0; animation: shake 0.5s infinite; text-shadow: 2px 2px #500; }
+        @keyframes shake { 0% { transform: translate(1px, 1px); } 10% { transform: translate(-1px, -2px); } 100% { transform: translate(1px, -1px); } }
+
+        .warning-bar { background: var(--neon-red); color: black; font-weight: bold; width: 100%; padding: 10px; font-size: 1.2rem; white-space: nowrap; overflow: hidden; }
+
+        /* معرض الفضائح */
+        .evidence-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; padding: 50px; background: #050000; }
+        .evidence-card { border: 2px solid #200; background: #100; padding: 10px; transition: 0.3s; position: relative; }
+        .evidence-card:hover { border-color: var(--neon-red); transform: scale(1.05); z-index: 10; box-shadow: 0 0 30px var(--neon-red); }
+        .evidence-card img, .evidence-card video { width: 100%; height: auto; filter: grayscale(50%) contrast(120%); }
+        .evidence-label { position: absolute; top: 5px; right: 5px; background: var(--neon-red); font-size: 0.6rem; padding: 2px 5px; }
+
+        /* قسم التحميل الكارثي */
+        .download-zone { padding: 80px 20px; text-align: center; border-top: 2px solid var(--neon-red); background: linear-gradient(to bottom, #000, #100); }
+        .hell-btn { 
+            display: inline-block; padding: 25px 60px; background: var(--neon-red); color: white; 
+            text-decoration: none; font-size: 2rem; font-weight: 900; border-radius: 5px; 
+            box-shadow: 0 0 50px rgba(255,0,0,0.5); transition: 0.3s; border: 3px solid #fff;
         }
+        .hell-btn:hover { background: #fff; color: #ff0000; transform: skew(-10deg); }
 
-        /* حالة المشاريع الموقوفة */
-        .progress-bg { background: #111; height: 10px; border-radius: 5px; margin: 10px 0; border: 1px solid #222; }
-        .progress-fill { height: 100%; background: #444; } /* لون رمادي للمشاريع المتوقفة */
-
+        .jet-target { border: 2px solid #333; padding: 30px; margin: 40px; background: rgba(255,0,0,0.05); }
     </style>
 </head>
 <body>
 
-    <div id="cursor-dot"></div>
-    <div id="cursor-glow"></div>
+    <div class="glitch-bg"></div>
 
-    <canvas id="matrix-canvas"></canvas>
+    <div class="warning-bar"> WARNING: TARGET JET EXPOSED // EVIDENCE UPLOADED BY DD1_JR // NO ESCAPE // </div>
 
-    <div class="settings-panel">
-        <div style="font-size: 0.6rem; color: #555; margin-bottom: 5px;">STATUS: HUNTING_JET</div>
-        <button class="control-btn" onclick="toggleMatrix()" id="mBtn">RADAR: ACTIVE</button>
-        <input type="range" min="0" max="1" step="0.05" value="0.2" oninput="adjMatrix(this.value)" style="width:100%; accent-color: var(--danger-red);">
-        <button class="control-btn" onclick="toggleLogs()" id="lBtn">INTEL_FEED: ON</button>
-    </div>
-
-    <div id="system-logs"></div>
-
-    <section>
-        <h1 class="neon-title">HUNTER</h1>
-        <p style="color: #666; letter-spacing: 5px; margin-top: -10px;">ID: DD1_JR // OPERATIONS_ONLY</p>
-
-        <div class="identity-grid">
-            <div class="terminal-box">
-                <h3 style="color:var(--danger-red);">[ TARGET_INTEL ]</h3>
-                <p>> TARGET_CODE: JET</p>
-                <p>> LOCATION: Spain (Possible) 🇪🇸</p>
-                <p>> OS_FINGERPRINT: macOS / Safari</p>
-                <p>> ACTIVITY: Moomoo.io / Browser-Discord</p>
-            </div>
-            <div class="terminal-box">
-                <h3 style="color:var(--danger-red);">[ MISSION_STATUS ]</h3>
-                <p>> MODE: Offensive Counter-Strike</p>
-                <p>> DEV_WORK: <span style="color:var(--danger-red);">SUSPENDED</span></p>
-                <p>> OBJECTIVE: Full Account Recovery</p>
-                <p>> THREAT_LEVEL: CRITICAL</p>
-            </div>
+    <header>
+        <h1 class="main-title">JET EXPOSED</h1>
+        <p style="letter-spacing: 10px; color: #666;">OPERATION: TOTAL DESTRUCTION</p>
+        <div class="jet-target">
+            <h2 style="color: var(--neon-red);">TARGET_ID: JET</h2>
+            <p>LOCATION: SPAIN 🇪🇸 | OS: macOS | STATUS: HUNTED</p>
         </div>
+        <a href="#evidence" class="hell-btn" style="font-size: 1rem; padding: 10px 30px; margin-top: 20px;">مشاهدة الأدلة</a>
+    </header>
 
-        <div class="bot-card">
-            <i class="fas fa-crosshairs" style="font-size: 2.5rem; color: var(--danger-red);"></i>
-            <div>
-                <b style="color: #fff;">TRACKING_INITIALIZED</b>
-                <p style="font-size: 0.75rem; color: #777; margin: 5px 0;">جمع المعلومات الجارية.. سيتم الرد عند اكتمال البصمة الرقمية.</p>
-            </div>
-        </div>
-
-        <div style="width: 100%; max-width: 1000px; margin-top: 40px; opacity: 0.5;">
-            <p style="font-size: 0.7rem; color: #555;">NORMAL_PROJECTS (FROZEN)</p>
-            <div class="progress-bg"><div class="progress-fill" style="width: 100%;"></div></div>
+    <section id="evidence" class="evidence-grid">
+        <div class="evidence-card"><span class="evidence-label">FILE_01</span><img src="proof vs JET!.jpg" alt="Evidence 1"></div>
+        <div class="evidence-card"><span class="evidence-label">LOG_01</span><img src="HOW to feind loggers #1.png" alt="Evidence 2"></div>
+        <div class="evidence-card"><span class="evidence-label">LOG_02</span><img src="HOW to feind loggers #2.png" alt="Evidence 3"></div>
+        <div class="evidence-card"><span class="evidence-label">LOG_03</span><img src="HOW to feind loggers #3.png" alt="Evidence 4"></div>
+        <div class="evidence-card"><span class="evidence-label">CHAT_01</span><img src="Proof vs jet text #2.png" alt="Evidence 5"></div>
+        <div class="evidence-card"><span class="evidence-label">VIDEO_01</span><video controls><source src="proof vedio.webm" type="video/webm"></video></div>
+        
+        <div class="evidence-card" style="display: flex; align-items: center; justify-content: center; color: #300; height: 200px;">
+            <h3>+16 MORE FILES HIDDEN...</h3>
         </div>
     </section>
 
+    <section class="download-zone">
+        <h2 style="font-size: 3rem;">📥 تحميل ملف الفضيحة الكامل 📥</h2>
+        <p style="color: #888; margin-bottom: 30px;">اضغط بالأسفل لتحميل كافة السكربتات والأدلة ضد JET</p>
+        <a href="URL_OF_YOUR_FILE_HERE" class="hell-btn" download>DOWNLOAD EXPOSE_FILE.ZIP</a>
+        <p style="margin-top: 50px; color: var(--neon-red); font-weight: bold;">YOU CANNOT HIDE, JET. WE HAVE EVERYTHING.</p>
+    </section>
+
+    <footer style="text-align: center; padding: 40px; color: #222;">
+        DD1_JR JUSTICE SYSTEM v4.0
+    </footer>
+
     <script>
-        const dot = document.getElementById('cursor-dot');
-        const glow = document.getElementById('cursor-glow');
+        // تأثير الماوس النبضي للرعب
         document.addEventListener('mousemove', (e) => {
-            dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
-            glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px';
+            if (Math.random() > 0.95) {
+                document.body.style.backgroundColor = '#100';
+                setTimeout(() => document.body.style.backgroundColor = '#000', 50);
+            }
         });
-
-        const logBox = document.getElementById('system-logs');
-        function addLog(msg) {
-            const div = document.createElement('div');
-            div.innerHTML = `<span style="color:#400">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
-            logBox.appendChild(div);
-            if(logBox.childNodes.length > 8) logBox.firstChild.remove();
-        }
-
-        // كود الماتريكس (أحمر)
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const drops = Array(Math.floor(canvas.width/16)).fill(1);
-        function draw() {
-            ctx.fillStyle = "rgba(5, 0, 0, 0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "#f00"; ctx.font = "15px monospace";
-            drops.forEach((y, i) => {
-                ctx.fillText("X1"[Math.floor(Math.random()*2)], i*16, y*16);
-                if(y*16 > canvas.height && Math.random() > 0.98) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(draw, 50);
-
-        // لوجات استخباراتية وهمية
-        setInterval(() => {
-            const lines = ["Scanning Spain nodes...", "Target ping: 42ms", "Checking macOS vulns...", "Intercepting MooMoo packets...", "Digital trail detected."];
-            addLog(lines[Math.floor(Math.random()*lines.length)]);
-        }, 3000);
-
-        function toggleMatrix() {
-            const b = document.getElementById('mBtn');
-            canvas.style.display = canvas.style.display === "none" ? "block" : "none";
-            b.classList.toggle('is-off');
-            b.innerText = canvas.style.display === "none" ? "RADAR: OFF" : "RADAR: ACTIVE";
-        }
     </script>
 </body>
 </html>
